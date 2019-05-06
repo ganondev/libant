@@ -21,9 +21,10 @@ typedef struct turmite_t {
 	
 } turmite_t;
 
-position_t buildPosition(size_t size)
-{
+typedef struct grid_t {
 	
-	return malloc(-1);
+	
 	
 }
+
+orientation_t generateOrientation(int x, int y);
