@@ -24,7 +24,7 @@ struct ant_orientation_t
 struct ant_t
 {
 
-	ant_cell_t * position;
+	ant_cell_t * location;
 	ant_orientation_t orientation;
 
 };
@@ -32,6 +32,7 @@ struct ant_t
 struct ant_cell_t
 {
 
+	ant_position_t position;
 	void (* rule)(ant_cell_t *, ant_t *);
 	int state;
 
@@ -48,3 +49,5 @@ struct ant_grid_t
 ant_orientation_t generate_orientation(int x, int y);
 
 ant_grid_t new_grid(ant_cell_t * origin);
+
+ant_cell_t new_cell(ant_grid_t * grid, ant_position_t position, void (* rule)(ant_cell_t *));

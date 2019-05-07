@@ -10,7 +10,9 @@ void printlnd(int i)
 
 int main() {
 
-	ant_orientation_t orientation = generate_orientation(5, 6);
-	printlnd(orientation.x);
+	ant_grid_t grid;
+	ant_cell_t cell;
+	grid.origin = &cell;
+	printlnd(grid.origin->state);
 
 }
