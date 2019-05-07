@@ -1,40 +1,50 @@
 #include <stdlib.h>
 
-#define INTSIZE sizeof(int)
-
 //variable sized integer array
-typedef int * position_t;
+typedef int * ant_position_t;
 
 //Two degrees of expressability, generally rotation for 3 dimensional motion
-typedef struct orientation {
-	
-	int x;
-	int y;
-	
-} orientation_t;
+typedef struct ant_orientation_t ant_orientation_t;
 
 //Should represent a single ant on 2D or 3D grid
-typedef struct turmite {
-	
-	position_t position;
-	orientation_t orientation;
-	
-} turmite_t;
+typedef struct ant_t ant_t;
 
-typedef struct cell {
+typedef struct ant_cell_t ant_cell_t;
 
-	void (* rule)(struct cell *, turmite_t *);
+typedef struct ant_grid_t ant_grid_t;
+
+struct ant_orientation_t
+{
+
+	int x;
+	int y;
+
+};
+
+struct ant_t
+{
+
+	ant_cell_t * position;
+	ant_orientation_t orientation;
+
+};
+
+struct ant_cell_t
+{
+
+	void (* rule)(ant_cell_t *, ant_t *);
 	int state;
 
-} cell_t;
+};
 
-typedef struct grid {
-	
-	turmite_t * turmites;
-	cell_t ** cells;
-	
-} grid_t;
+struct ant_grid_t
+{
 
-orientation_t generateOrientation(int x, int y);
+	ant_t * ants;
+	ant_cell_t * origin;
 
-//TODO Function to create cell with some initial state, and determine way to locate cell in grid
+};
+
+ant_orientation_t generate_orientation(int x, int y);
+
+ant_grid_t new_grid(ant_cell_t * origin);
