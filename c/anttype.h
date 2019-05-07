@@ -36,6 +36,12 @@ struct ant_cell_t
 	void (* rule)(ant_cell_t *, ant_t *);
 	int state;
 
+	//TODO array
+	ant_cell_t * north;
+	ant_cell_t * south;
+	ant_cell_t * east;
+	ant_cell_t * west;
+
 };
 
 struct ant_grid_t
@@ -49,5 +55,6 @@ struct ant_grid_t
 ant_orientation_t generate_orientation(int x, int y);
 
 ant_grid_t new_grid(ant_cell_t * origin);
+ant_cell_t new_cell_empty();
 
-ant_cell_t new_cell(ant_grid_t * grid, ant_position_t position, void (* rule)(ant_cell_t *));
+void add_grid_cell(ant_grid_t * grid, ant_position_t position, void (* rule)(ant_cell_t *));
