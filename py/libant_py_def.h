@@ -12,13 +12,24 @@ typedef struct
 	ant_t ant;
 
 } py_ant;
-//
+
 //static PyMemberDef ant_members[] = {
 //
 //        {"test", T_INT, offsetof(py_ant, test), 0, "test field"},
 //        {NULL}
 //
 //};
+
+static PyTupleObject * ant_get_position(py_ant *, void *);
+
+static int ant_set_position(py_ant *, PyObject *, void *);
+
+static PyGetSetDef ant_getsetters[] = {
+
+	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
+	{NULL}
+
+};
 
 static PyObject * ant_new(PyTypeObject *, PyObject *, PyObject *);
 
@@ -33,6 +44,7 @@ static PyTypeObject py_ant_type = {
         .tp_basicsize = sizeof(py_ant),
         .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
         //.tp_members = ant_members,
+	.tp_getset = ant_getsetters,
         .tp_new = ant_new,
         .tp_init = (initproc) ant_init,
         .tp_dealloc = (destructor) ant_dealloc,
@@ -46,5 +58,7 @@ static PyModuleDef libant = {
 };
 
 PyMODINIT_FUNC PyInit_libant(void);
+
+static void zero_ant_position(py_ant *, Py_ssize_t);
 
 #endif //LIBANT_LIBANT_PY_DEF_H

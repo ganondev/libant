@@ -1,6 +1,40 @@
 #include <stdio.h>
 #include "libant_py_def.h"
 
+PyTupleObject * ant_get_position(py_ant * self, void * closure)
+{
+
+	#ifdef PY_DEBUG
+	puts("Get Ant position");
+	#endif
+	PyTupleObject * position_tuple = (PyTupleObject *) PyTuple_New(3);
+	Py_INCREF(position_tuple);
+	return position_tuple;
+
+}
+
+int ant_set_position(py_ant * self, PyObject * value, void * closure)
+{
+
+	#ifdef PY_DEBUG
+	puts("Set Ant position");
+	#endif
+
+	PyTupleObject * tmp;
+	if (value == NULL) //position is being deleted, set to zeros
+	{
+		//TODO zero the tuple
+		Py_ssize_t tuple_size = (long int) sizeof(self->ant.position);
+		printf("%ld", tuple_size);
+		value = (PyTupleObject *) PyTuple_Pack(tuple_size, PyLong_FromLong(0));
+		
+	}
+	//TODO otherwise just use the size of value
+
+	return 0;
+
+}
+
 PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 {
 
@@ -8,7 +42,7 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     if (self != NULL)
     {
 
-	#ifdef DEBUG
+	#ifdef PY_DEBUG
         puts("Got a new Ant!");
 	#endif
 
@@ -23,6 +57,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
     //static char * kwlist[] = {"test", NULL};
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
+	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
     return 0;
 
 }
@@ -38,15 +73,22 @@ PyMODINIT_FUNC PyInit_libant(void)
 {
 
     PyObject *m;
-    if (PyType_Ready(&py_ant_type) < 0)
-    return NULL;
+    if (PyType_Ready(&py_ant_type) < 0) return NULL;
 
     m = PyModule_Create(&libant);
-    if (m == NULL)
-    return NULL;
+    if (m == NULL) return NULL;
 
     Py_INCREF(&py_ant_type);
     PyModule_AddObject(m, "Ant", (PyObject *) &py_ant_type);
     return m;
+
+}
+
+void zero_ant_position(py_ant * ant, Py_ssize_t size)
+{
+	
+	realloc(ant->ant.position, ((size_t) size) * sizeof(int));
+	//TODO define int array at ant->ant.position (needs to be zeroed?
+	value = (PyTupleObject *) PyTuple_Pack(tuple_size, PyLong_FromLong(0));
 
 }
