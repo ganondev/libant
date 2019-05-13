@@ -24,7 +24,7 @@ struct ant_orientation_t
 struct ant_t
 {
 
-	ant_cell_t * location;
+	ant_position_t position;
 	ant_orientation_t orientation;
 
 };
