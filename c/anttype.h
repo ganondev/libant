@@ -57,4 +57,3 @@ ant_orientation_t generate_orientation(int x, int y);
 ant_grid_t new_grid(ant_cell_t * origin);
 ant_cell_t new_cell_empty();
 
-void add_grid_cell(ant_grid_t * grid, ant_position_t position, void (* rule)(ant_cell_t *));

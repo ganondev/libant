@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "anttype.h"
 
 ant_orientation_t generate_orientation(int x, int y)
@@ -27,3 +28,4 @@ ant_cell_t new_cell_empty()
 	return *cell;
 
 }
+
