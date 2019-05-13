@@ -3,21 +3,22 @@
 
 #include <Python.h>
 #include <structmember.h>
-//#include "anttype.h"
+#include "anttype.h"
 
 typedef struct
 {
-    PyObject_HEAD
-    int test;
-    /* Type-specific fields go here. */
+
+	PyObject_HEAD
+	ant_t ant;
+
 } py_ant;
-
-static PyMemberDef ant_members[] = {
-
-        {"test", T_INT, offsetof(py_ant, test), 0, "test field"},
-        {NULL}
-
-};
+//
+//static PyMemberDef ant_members[] = {
+//
+//        {"test", T_INT, offsetof(py_ant, test), 0, "test field"},
+//        {NULL}
+//
+//};
 
 static PyObject * ant_new(PyTypeObject *, PyObject *, PyObject *);
 
@@ -31,7 +32,7 @@ static PyTypeObject py_ant_type = {
         .tp_doc = "An ant to move on the grid.",
         .tp_basicsize = sizeof(py_ant),
         .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-        .tp_members = ant_members,
+        //.tp_members = ant_members,
         .tp_new = ant_new,
         .tp_init = (initproc) ant_init,
         .tp_dealloc = (destructor) ant_dealloc,

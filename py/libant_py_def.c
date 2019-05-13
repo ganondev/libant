@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "libant_py_def.h"
 
 PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
@@ -7,7 +8,9 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     if (self != NULL)
     {
 
-        self->test = 1231;
+	#ifdef DEBUG
+        puts("Got a new Ant!");
+	#endif
 
     }
 
@@ -18,8 +21,8 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-    static char * kwlist[] = {"test", NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
+    //static char * kwlist[] = {"test", NULL};
+    //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
     return 0;
 
 }
