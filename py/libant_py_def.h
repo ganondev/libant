@@ -1,9 +1,18 @@
 #ifndef LIBANT_LIBANT_PY_DEF_H
 #define LIBANT_LIBANT_PY_DEF_H
 
+#include <stdbool.h>
 #include <Python.h>
 #include <structmember.h>
 #include "anttype.h"
+
+typedef enum
+{
+
+	NO_FREE = 0,
+	FREE = 1
+
+} do_free;
 
 typedef struct
 {
@@ -59,6 +68,6 @@ static PyModuleDef libant = {
 
 PyMODINIT_FUNC PyInit_libant(void);
 
-static void zero_ant_position(py_ant *, Py_ssize_t);
+static void zero_ant_position(py_ant *, Py_ssize_t, bool);
 
 #endif //LIBANT_LIBANT_PY_DEF_H

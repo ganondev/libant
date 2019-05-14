@@ -84,11 +84,13 @@ PyMODINIT_FUNC PyInit_libant(void)
 
 }
 
-void zero_ant_position(py_ant * ant, Py_ssize_t size)
+void zero_ant_position(py_ant * ant, Py_ssize_t size, bool allocated)
 {
-	
-	realloc(ant->ant.position, ((size_t) size) * sizeof(int));
-	//TODO define int array at ant->ant.position (needs to be zeroed?
-	value = (PyTupleObject *) PyTuple_Pack(tuple_size, PyLong_FromLong(0));
+
+	if (allocated) free(ant->ant.position);
+	ant->ant.position = calloc((size_t) size, sizeof(int));
+	//TODO figure out how to support any sized tuple 
+	PyObject * zero = PyLong_FromLong(0);
+	PyTupleObject * value = (PyTupleObject *) PyTuple_Pack(size, zero, zero, zero);
 
 }
