@@ -1,18 +1,16 @@
 #ifndef LIBANT_LIBANT_PY_DEF_H
 #define LIBANT_LIBANT_PY_DEF_H
 
+#ifdef PY_DEBUG
+#define ANSI_RED "\033[31;1;4m"
+#define ANSI_END "\033[0m"
+#define DEBUG(tok) ANSI_RED tok ANSI_END
+#endif
+
 #include <stdbool.h>
 #include <Python.h>
 #include <structmember.h>
 #include "anttype.h"
-
-typedef enum
-{
-
-	NO_FREE = 0,
-	FREE = 1
-
-} do_free;
 
 typedef struct
 {
@@ -31,7 +29,7 @@ typedef struct
 
 static PyTupleObject * ant_get_position(py_ant *, void *);
 
-static int ant_set_position(py_ant *, PyObject *, void *);
+static int ant_set_position(py_ant *, PyTupleObject *, void *);
 
 static PyGetSetDef ant_getsetters[] = {
 
@@ -53,7 +51,7 @@ static PyTypeObject py_ant_type = {
         .tp_basicsize = sizeof(py_ant),
         .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
         //.tp_members = ant_members,
-	.tp_getset = ant_getsetters,
+		.tp_getset = ant_getsetters,
         .tp_new = ant_new,
         .tp_init = (initproc) ant_init,
         .tp_dealloc = (destructor) ant_dealloc,
@@ -67,7 +65,5 @@ static PyModuleDef libant = {
 };
 
 PyMODINIT_FUNC PyInit_libant(void);
-
-static void zero_ant_position(py_ant *, Py_ssize_t, bool);
 
 #endif //LIBANT_LIBANT_PY_DEF_H

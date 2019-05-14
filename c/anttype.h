@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdbool.h>
 
 //variable sized integer array
 typedef int * ant_position_t;
@@ -52,8 +53,13 @@ struct ant_grid_t
 
 };
 
+void zero_ant_position(ant_t *, size_t, bool);
+
+size_t ant_position_tuple_size(ant_t *);
+
 ant_orientation_t generate_orientation(int x, int y);
 
 ant_grid_t new_grid(ant_cell_t * origin);
+
 ant_cell_t new_cell_empty();
 

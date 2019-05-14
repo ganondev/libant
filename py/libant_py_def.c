@@ -5,31 +5,63 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 {
 
 	#ifdef PY_DEBUG
-	puts("Get Ant position");
+	puts(DEBUG("Getting Ant position..."));
 	#endif
-	PyTupleObject * position_tuple = (PyTupleObject *) PyTuple_New(3);
+	size_t size = ant_position_tuple_size(&(self->ant));
+	PyObject * position_tuple = PyTuple_New(size);
+	#ifdef PY_DEBUG
+	printf(DEBUG("Size of tuple: %ld")"\n", size);
+	#endif
+	for (int i = 0; i < size; i++)
+	{
+		
+		PyTuple_SetItem(position_tuple, i, PyLong_FromLong(self->ant.position[i]));
+		
+	}
 	Py_INCREF(position_tuple);
-	return position_tuple;
+	return (PyTupleObject *) position_tuple;
 
 }
 
-int ant_set_position(py_ant * self, PyObject * value, void * closure)
+int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
 
 	#ifdef PY_DEBUG
-	puts("Set Ant position");
+	puts(DEBUG("Setting Ant position..."));
 	#endif
-
-	PyTupleObject * tmp;
-	if (value == NULL) //position is being deleted, set to zeros
+	
+	size_t stored_tuple_size = ant_position_tuple_size(&(self->ant));
+	if (value == NULL)
 	{
-		//TODO zero the tuple
-		Py_ssize_t tuple_size = (long int) sizeof(self->ant.position);
-		printf("%ld", tuple_size);
-		value = (PyTupleObject *) PyTuple_Pack(tuple_size, PyLong_FromLong(0));
+		
+		//zero-fill the tuple and maintain its size
+		#ifdef PY_DEBUG
+		puts(DEBUG("Attempting to zero internal position array..."));
+		#endif
+		zero_ant_position(&(self->ant), stored_tuple_size, true);
+		return 0;
 		
 	}
-	//TODO otherwise just use the size of value
+	else if(!PyTuple_Check(value))
+	{
+		
+		//Invalid type, not a tuple
+		PyErr_SetString(PyExc_TypeError, "Position value should be a tuple.");
+		return -1;
+		
+	}
+	
+	size_t incoming_tuple_size = PyTuple_GET_SIZE(value);
+	if (incoming_tuple_size != stored_tuple_size)
+	{
+		
+		#ifdef PY_DEBUG
+		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
+		#endif
+		
+		zero_ant_position(&(self->ant), incoming_tuple_size, true);
+		
+	}
 
 	return 0;
 
@@ -43,7 +75,7 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     {
 
 	#ifdef PY_DEBUG
-        puts("Got a new Ant!");
+        puts(DEBUG("Got a new Ant!"));
 	#endif
 
     }
@@ -58,6 +90,9 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
     //static char * kwlist[] = {"test", NULL};
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
+	
+	zero_ant_position(&(self->ant), 2, false);
+	
     return 0;
 
 }
@@ -81,16 +116,5 @@ PyMODINIT_FUNC PyInit_libant(void)
     Py_INCREF(&py_ant_type);
     PyModule_AddObject(m, "Ant", (PyObject *) &py_ant_type);
     return m;
-
-}
-
-void zero_ant_position(py_ant * ant, Py_ssize_t size, bool allocated)
-{
-
-	if (allocated) free(ant->ant.position);
-	ant->ant.position = calloc((size_t) size, sizeof(int));
-	//TODO figure out how to support any sized tuple 
-	PyObject * zero = PyLong_FromLong(0);
-	PyTupleObject * value = (PyTupleObject *) PyTuple_Pack(size, zero, zero, zero);
 
 }
