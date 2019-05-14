@@ -25,8 +25,10 @@ struct ant_orientation_t
 struct ant_t
 {
 
-	ant_position_t position;
 	ant_orientation_t orientation;
+	ant_position_t position;
+	size_t tuple_size;
+	int pos[];
 
 };
 
@@ -53,7 +55,7 @@ struct ant_grid_t
 
 };
 
-void zero_ant_position(ant_t *, size_t, bool);
+ant_t * zero_ant_position(ant_t *, size_t, bool);
 
 size_t ant_position_tuple_size(ant_t *);
 

@@ -16,7 +16,7 @@ typedef struct
 {
 
 	PyObject_HEAD
-	ant_t ant;
+	ant_t * ant;
 
 } py_ant;
 

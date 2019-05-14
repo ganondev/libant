@@ -1,23 +1,31 @@
 #include "anttype.h"
 #include "string.h"
 
-void zero_ant_position(ant_t * ant, size_t size, bool allocated)
+ant_t * zero_ant_position(ant_t * ant, size_t size, bool allocated)
 {
 	
-	if (allocated) free(ant->position);
-	//ant->position = memset(realloc(ant->position, sizeof(int) * size), 0, size * sizeof(int));
-	reallocarray(ant->position, size, sizeof(int));
-	ant_position_t position = ant->position;
-	memset(position, 0, sizeof(position));
-	//printf("zero here\nsize var: %d ----- sizeof alloc: %d\n",size, sizeof(ant->position));
+//	ant->tuple_size = size;
+//	if (allocated) free(ant->position);
+//	printf("%d\n", sizeof(ant->position));
+//	void * alloc = realloc(ant->position, sizeof(int) * size);
+//	void * alloc = realloc(ant->pos, sizeof(int) * size);
+//	puts("here");
+//	printf("%d %d %d\n", sizeof(alloc), sizeof(int) * size, sizeof(ant->position));
+//	memset(alloc, 0, sizeof(int) * size);
+//	printf("%d %d\n", sizeof(ant->position), sizeof(alloc));
+	ant = realloc(ant, sizeof(ant_t) + size * sizeof(int));
+	memset(ant->pos, 0, size * sizeof(int));
+	ant->tuple_size = size;
+	
+	return ant;
 	
 }
 
 size_t ant_position_tuple_size(ant_t * ant)
 {
-	
-	//printf("%d\n", sizeof(ant->position));
-	return sizeof(ant->position) / sizeof(ant->position[0]);
+		
+//	return sizeof(ant->pos) / sizeof(ant->pos[0]);
+	return ant->tuple_size;
 	
 }
 

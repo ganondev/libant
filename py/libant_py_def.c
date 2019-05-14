@@ -7,15 +7,16 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	#ifdef PY_DEBUG
 	puts(DEBUG("Getting Ant position..."));
 	#endif
-	size_t size = ant_position_tuple_size(&(self->ant));
+//	size_t size = ant_position_tuple_size(self->ant);
+	size_t size = self->ant->tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
 	#ifdef PY_DEBUG
 	printf(DEBUG("Size of tuple: %ld")"\n", size);
 	#endif
 	for (int i = 0; i < size; i++)
 	{
-		
-		PyTuple_SetItem(position_tuple, i, PyLong_FromLong(self->ant.position[i]));
+			
+		PyTuple_SetItem(position_tuple, i, PyLong_FromLong(self->ant->pos[i]));
 		
 	}
 	Py_INCREF(position_tuple);
@@ -30,7 +31,8 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	puts(DEBUG("Setting Ant position..."));
 	#endif
 	
-	size_t stored_tuple_size = ant_position_tuple_size(&(self->ant));
+//	size_t stored_tuple_size = ant_position_tuple_size(self->ant);
+	size_t stored_tuple_size = self->ant->tuple_size;
 	if (value == NULL)
 	{
 		
@@ -38,7 +40,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		#ifdef PY_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
-		zero_ant_position(&(self->ant), stored_tuple_size, true);
+		self->ant = zero_ant_position(self->ant, stored_tuple_size, true);
 		return 0;
 		
 	}
@@ -59,7 +61,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
 		#endif
 		
-		zero_ant_position(&(self->ant), incoming_tuple_size, true);
+		self->ant = zero_ant_position(self->ant, incoming_tuple_size, true);
 		
 	}
 
@@ -91,7 +93,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
 	
-	zero_ant_position(&(self->ant), 2, false);
+	self->ant = zero_ant_position(self->ant, 5, false);
 	
     return 0;
 
