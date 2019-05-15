@@ -13,19 +13,11 @@ ant_t * zero_ant_position(ant_t * ant, size_t size, bool allocated)
 //	printf("%d %d %d\n", sizeof(alloc), sizeof(int) * size, sizeof(ant->position));
 //	memset(alloc, 0, sizeof(int) * size);
 //	printf("%d %d\n", sizeof(ant->position), sizeof(alloc));
-	ant = realloc(ant, sizeof(ant_t) + size * sizeof(int));
-	memset(ant->pos, 0, size * sizeof(int));
+	ant = realloc(ant, sizeof(ant_t) + size * sizeof(long long int));
+	memset(ant->pos, 0, size * sizeof(long long int));
 	ant->tuple_size = size;
 	
 	return ant;
-	
-}
-
-size_t ant_position_tuple_size(ant_t * ant)
-{
-		
-//	return sizeof(ant->pos) / sizeof(ant->pos[0]);
-	return ant->tuple_size;
 	
 }
 

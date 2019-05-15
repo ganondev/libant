@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 //variable sized integer array
+//TODO redundant?
 typedef int * ant_position_t;
 
 //Two degrees of expressability, generally rotation for 3 dimensional motion
@@ -28,7 +29,7 @@ struct ant_t
 	ant_orientation_t orientation;
 	ant_position_t position;
 	size_t tuple_size;
-	int pos[];
+	long long int pos[];
 
 };
 

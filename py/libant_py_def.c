@@ -7,7 +7,6 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	#ifdef PY_DEBUG
 	puts(DEBUG("Getting Ant position..."));
 	#endif
-//	size_t size = ant_position_tuple_size(self->ant);
 	size_t size = self->ant->tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
 	#ifdef PY_DEBUG
@@ -16,7 +15,7 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	for (int i = 0; i < size; i++)
 	{
 			
-		PyTuple_SetItem(position_tuple, i, PyLong_FromLong(self->ant->pos[i]));
+		PyTuple_SetItem(position_tuple, i, PyLong_FromLongLong(self->ant->pos[i]));
 		
 	}
 	Py_INCREF(position_tuple);
@@ -31,7 +30,6 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	puts(DEBUG("Setting Ant position..."));
 	#endif
 	
-//	size_t stored_tuple_size = ant_position_tuple_size(self->ant);
 	size_t stored_tuple_size = self->ant->tuple_size;
 	if (value == NULL)
 	{
@@ -47,13 +45,33 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	else if(!PyTuple_Check(value))
 	{
 		
-		//Invalid type, not a tuple
+		//Invalid type - not a tuple
 		PyErr_SetString(PyExc_TypeError, "Position value should be a tuple.");
 		return -1;
 		
 	}
 	
 	size_t incoming_tuple_size = PyTuple_GET_SIZE(value);
+	PyObject * tuple_values[incoming_tuple_size];
+	for (int i = 0; i < incoming_tuple_size; i++)
+	{
+
+		//Retreive value from tuple
+		PyObject * tuple_member = PyTuple_GET_ITEM(value, (Py_ssize_t) i); 
+		//Assert that tuple member is a python integer
+		if (!PyLong_Check(tuple_member))
+		{
+
+			//Invalid type - not an integer
+			PyErr_SetString(PyExc_TypeError, "Tuple value should be an integer.");
+			return -1;
+
+		}
+
+		tuple_values[i] = tuple_member;
+
+	}
+
 	if (incoming_tuple_size != stored_tuple_size)
 	{
 		
@@ -63,6 +81,15 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		
 		self->ant = zero_ant_position(self->ant, incoming_tuple_size, true);
 		
+	}
+
+	for (int i = 0; i < incoming_tuple_size; i++)
+	{
+		
+		//Evaluate long long int value of tuple member
+		long long int int_value = PyLong_AsLongLong(tuple_values[i]);
+		self->ant->pos[i] = int_value;
+
 	}
 
 	return 0;
