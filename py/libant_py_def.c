@@ -52,7 +52,13 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	}
 	
 	size_t incoming_tuple_size = PyTuple_GET_SIZE(value);
+	#ifndef _WIN32
 	PyObject * tuple_values[incoming_tuple_size];
+	#else
+	//TODO free
+	PyObject ** tuple_values = malloc(sizeof(PyObject *) * incoming_tuple_size);
+	#endif
+	
 	for (int i = 0; i < incoming_tuple_size; i++)
 	{
 
