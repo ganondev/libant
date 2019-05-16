@@ -5,3 +5,6 @@ build/
 *.dll
 *.pyd
 *.swp
+*.exp
+*.lib
+*.obj
