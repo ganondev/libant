@@ -1,9 +1,16 @@
 import pygame
+import libant
 
 SCREEN_SIZE = 700
 STAGE_SIZE = 175  # 175 is largest size without bezels for 700 x 700 window
 DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
+
+class OrientedAnt(libant.Ant):
+
+	def __init__(self):
+		libant.Ant.__init__(self)
+		self.orientation = 0
 
 def draw_bordered_square(x, y, filled, size):
 	cells[(x, y)] = pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
@@ -22,7 +29,7 @@ def flip_cell(cell):
 def rotate_ant(color, ant):
 	# False is right turn
 	# True is left turn
-	return (ant[0] + (1 if color else -1)) % 4
+	return (ant.orientation + (1 if color else -1)) % 4
 
 
 pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
@@ -41,7 +48,9 @@ for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 x_pos = y_pos = int(STAGE_SIZE / 2)
 cell = cells[grid_to_screen(x_pos, y_pos)]
 flip_cell(cell)
-ant = (0, (x_pos, y_pos))
+#ant = (0, (x_pos, y_pos))
+ant = OrientedAnt()
+ant.position = (x_pos, y_pos)
 
 pause = True
 while True:
@@ -57,9 +66,11 @@ while True:
 		if event.type == pygame.QUIT:
 			exit(0)
 	if not pause:
-		cell = cells[grid_to_screen(*ant[1])]
+		cell = cells[grid_to_screen(*ant.position)]
 		new_angle = rotate_ant(cell[1], ant)
 		flip_cell(cell)
-		ant = (new_angle, (ant[1][0] + DIRECTIONS[new_angle][0], ant[1][1] + DIRECTIONS[new_angle][1]))
-		pygame.draw.rect(screen, (255, 0, 0), cells[grid_to_screen(ant[1][0], ant[1][1])][0])
+		#ant = (new_angle, (ant[1][0] + DIRECTIONS[new_angle][0], ant[1][1] + DIRECTIONS[new_angle][1]))
+		ant.orientation = new_angle
+		ant.position = (ant.position[0] + DIRECTIONS[new_angle][0], ant.position[1] + DIRECTIONS[new_angle][1])
+		pygame.draw.rect(screen, (255, 0, 0), cells[grid_to_screen(ant.position[0], ant.position[1])][0])
 	pygame.display.flip()
