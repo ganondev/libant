@@ -1,1 +1,0 @@
-cl /TC /LD libant_py_def.c /I "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\include" /I ../c/ /link /LIBPATH "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\libs\python36.lib" 
