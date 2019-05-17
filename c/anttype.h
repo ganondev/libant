@@ -13,6 +13,7 @@ struct ant_t
 
 	int orientation;
 	size_t tuple_size;
+	void (* directive)(ant_t *);
 	long long int position[];
 
 };
