@@ -4,3 +4,5 @@ Ant2D
 	Ant2DCartesian
 
 Highway Detection
+
+Going with enumerated orientation for now.
