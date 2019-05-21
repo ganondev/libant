@@ -123,6 +123,13 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 
 }
 
+int ant_set_orientation(py_ant * self, PyLongObject * value, void * closure)
+{
+
+	unsigned long test;
+
+}
+
 /* END SETTERS */
 
 PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)

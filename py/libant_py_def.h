@@ -33,10 +33,12 @@ static PyLongObject * ant_get_orientation(py_ant *, void*);
 
 static int ant_set_position(py_ant *, PyTupleObject *, void *);
 
+static int ant_set_orientation(py_ant *, PyLongObject *, void *);
+
 static PyGetSetDef ant_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
-	{"orientation", (getter) ant_get_orientation, (setter) NULL, "ant orientation", NULL},  
+	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
 	//{"directive", (getter) NULL, (setter) NULL, "directive function called every pass by the grid", NULL}, 
 	{NULL}
 
