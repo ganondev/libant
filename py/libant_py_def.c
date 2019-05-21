@@ -149,8 +149,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
 	
-	self->ant = zero_ant_position(self->ant, 2);
-	self->ant->orientation = 0;
+	self->ant = create_ant(2);
 	
     return 0;
 

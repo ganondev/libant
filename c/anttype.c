@@ -1,6 +1,17 @@
 #include "anttype.h"
 #include "string.h"
 
+ant_t * create_ant(size_t position_size)
+{
+
+	size_t block_size = sizeof(ant_t) + position_size * sizeof(long long int); 
+	ant_t * ant = malloc(block_size);
+	memset(ant, 0, block_size);
+	ant->tuple_size = position_size;
+	return ant;
+
+}
+
 ant_t * zero_ant_position(ant_t * ant, size_t size)
 {
 	
