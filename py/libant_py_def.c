@@ -123,10 +123,41 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 
 }
 
-int ant_set_orientation(py_ant * self, PyLongObject * value, void * closure)
+int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 {
 
-	unsigned long test;
+	if (!PyLong_Check(value))
+	{
+
+		//Invalid type - not an integer
+		PyErr_SetString(PyExc_TypeError, "Value should be an unsigned long.");
+		return -1;
+
+	}
+
+
+	unsigned long long_value = PyLong_AsUnsignedLong(value);
+
+	if (long_value == -1 || long_value > 4294967295) //TODO this bound is really weird and not acting right
+	{
+
+		#ifdef PY_DEBUG
+		puts(DEBUG("Error in getting unsigned long from orientation value."));
+		#endif
+		
+		PyErr_SetString(PyExc_ValueError, "Invalid value for orientation. Value should be unsigned and less than or equal to 4294967295."); // ULONG_MAX aka " xstr(UINT_MAX) ".");
+		return -1;
+
+	}
+
+	#ifdef PY_DEBUG
+	printf(DEBUG("Setting Ant position with unsigned long value of %ld...")"\n", long_value);
+	#endif
+
+	self->ant->orientation = long_value;
+
+
+	return 0;
 
 }
 

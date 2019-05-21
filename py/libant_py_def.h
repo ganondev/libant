@@ -7,9 +7,15 @@
 #define DEBUG(tok) ANSI_RED tok ANSI_END
 #endif
 
+#define str(x) #x
+#define xstr(x) str(x)
+
 #include <stdbool.h>
+#include <limits.h>
+
 #include <Python.h>
 #include <structmember.h>
+
 #include "anttype.h"
 
 typedef struct
@@ -33,7 +39,7 @@ static PyLongObject * ant_get_orientation(py_ant *, void*);
 
 static int ant_set_position(py_ant *, PyTupleObject *, void *);
 
-static int ant_set_orientation(py_ant *, PyLongObject *, void *);
+static int ant_set_orientation(py_ant *, PyObject *, void *);
 
 static PyGetSetDef ant_getsetters[] = {
 
