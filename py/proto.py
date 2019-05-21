@@ -5,13 +5,6 @@ SCREEN_SIZE = 700
 STAGE_SIZE = 175  # 175 is largest size without bezels for 700 x 700 window
 DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
-
-class OrientedAnt(libant.Ant):
-
-	def __init__(self):
-		libant.Ant.__init__(self)
-		self.orientation = 0
-
 def draw_bordered_square(x, y, filled, size):
 	cells[(x, y)] = pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
 	if not filled:
@@ -48,8 +41,7 @@ for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 x_pos = y_pos = int(STAGE_SIZE / 2)
 cell = cells[grid_to_screen(x_pos, y_pos)]
 flip_cell(cell)
-#ant = (0, (x_pos, y_pos))
-ant = OrientedAnt()
+ant = libant.Ant()
 ant.position = (x_pos, y_pos)
 
 pause = True
