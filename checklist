@@ -2,6 +2,7 @@
 
 Ant2D
 	Ant2DCartesian
+New ant allocated in anttype, not python
 
 Highway Detection
 
