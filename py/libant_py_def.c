@@ -138,7 +138,7 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 
 	unsigned long long_value = PyLong_AsUnsignedLong(value);
 
-	if (long_value == -1 || long_value > 4294967295) //TODO this bound is really weird and not acting right
+	if (long_value == -1 || long_value > 4294967295) //TODO this bound is really weird and not acting right, also using same value is overflow on windows
 	{
 
 		#ifdef PY_DEBUG
