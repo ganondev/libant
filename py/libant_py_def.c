@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "libant_py_def.h"
 
+
+/* GETTERS */
 PyTupleObject * ant_get_position(py_ant * self, void * closure)
 {
 
@@ -15,13 +17,32 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	for (int i = 0; i < size; i++)
 	{
 			
-		PyTuple_SetItem(position_tuple, i, PyLong_FromLongLong(self->ant->pos[i]));
+		PyTuple_SetItem(position_tuple,
+						i,
+						PyLong_FromLongLong(self->ant->position[i]));
 		
 	}
 	Py_INCREF(position_tuple);
 	return (PyTupleObject *) position_tuple;
 
 }
+
+PyLongObject * ant_get_orientation(py_ant * self, void * closure)
+{
+
+	#ifdef PY_DEBUG
+	puts(DEBUG("Getting Ant orientation..."));
+	#endif
+
+	PyObject * orientation = PyLong_FromUnsignedLong(self->ant->orientation);
+	Py_INCREF(orientation);
+	return (PyLongObject *) orientation;
+
+}
+
+/* END GETTERS */
+
+/* SETTERS */
 
 int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
@@ -38,7 +59,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		#ifdef PY_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
-		self->ant = zero_ant_position(self->ant, stored_tuple_size, true);
+		self->ant = zero_ant_position(self->ant, stored_tuple_size);
 		return 0;
 		
 	}
@@ -85,7 +106,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
 		#endif
 		
-		self->ant = zero_ant_position(self->ant, incoming_tuple_size, true);
+		self->ant = zero_ant_position(self->ant, incoming_tuple_size);
 		
 	}
 
@@ -94,13 +115,15 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		
 		//Evaluate long long int value of tuple member
 		long long int int_value = PyLong_AsLongLong(tuple_values[i]);
-		self->ant->pos[i] = int_value;
+		self->ant->position[i] = int_value;
 
 	}
 
 	return 0;
 
 }
+
+/* END SETTERS */
 
 PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 {
@@ -126,7 +149,8 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
 	
-	self->ant = zero_ant_position(self->ant, 5, false);
+	self->ant = zero_ant_position(self->ant, 2);
+	self->ant->orientation = 0;
 	
     return 0;
 
