@@ -11,7 +11,7 @@ typedef struct ant_grid_t ant_grid_t;
 struct ant_t
 {
 
-	int orientation;
+	unsigned int orientation;
 	size_t tuple_size;
 	void (* directive)(ant_t *);
 	long long int position[];
