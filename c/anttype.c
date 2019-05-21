@@ -39,4 +39,3 @@ ant_cell_t new_cell_empty()
 	return * cell;
 
 }
-

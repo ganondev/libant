@@ -1,9 +1,14 @@
-3D in general
+Grid:
+	3D in general
+	Adding cells to scan list
+	Dictionary of cells -- to quadtree eventually?
+	Count of uniquely visited cells
+	Count of total moves so far
 
 Ant2D
 	Ant2DCartesian
-New ant allocated in anttype, not python
 
-Highway Detection
+Alg:
+	Highway Detection
 
 Going with enumerated orientation for now.

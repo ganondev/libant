@@ -33,6 +33,7 @@ struct ant_grid_t
 
 	ant_t * ants;
 	ant_cell_t * origin;
+	ant_cell_t * scan_list;
 
 };
 
