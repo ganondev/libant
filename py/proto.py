@@ -5,6 +5,7 @@ SCREEN_SIZE = 700
 STAGE_SIZE = 175  # 175 is largest size without bezels for 700 x 700 window
 DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
+
 def draw_bordered_square(x, y, filled, size):
 	cells[(x, y)] = pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
 	if not filled:
@@ -61,7 +62,6 @@ while True:
 		cell = cells[grid_to_screen(*ant.position)]
 		new_angle = rotate_ant(cell[1], ant)
 		flip_cell(cell)
-		#ant = (new_angle, (ant[1][0] + DIRECTIONS[new_angle][0], ant[1][1] + DIRECTIONS[new_angle][1]))
 		ant.orientation = new_angle
 		ant.position = (ant.position[0] + DIRECTIONS[new_angle][0], ant.position[1] + DIRECTIONS[new_angle][1])
 		pygame.draw.rect(screen, (255, 0, 0), cells[grid_to_screen(ant.position[0], ant.position[1])][0])
