@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "libant_py_def.h"
 
-
 /* GETTERS */
 PyTupleObject * ant_get_position(py_ant * self, void * closure)
 {
@@ -209,8 +208,20 @@ PyMODINIT_FUNC PyInit_libant(void)
     m = PyModule_Create(&libant);
     if (m == NULL) return NULL;
 
-    Py_INCREF(&py_ant_type);
-    PyModule_AddObject(m, "Ant", (PyObject *) &py_ant_type);
+	
+	//Constants
+	PyObject * north_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(NORTH_2D[0]), PyLong_FromLong(NORTH_2D[1]));
+	add_pyobj_to_module(m, "NORTH_2D", north_2d_tuple);
+	PyObject * south_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(SOUTH_2D[0]), PyLong_FromLong(SOUTH_2D[1]));
+	add_pyobj_to_module(m, "SOUTH_2D", south_2d_tuple);
+	PyObject * west_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(WEST_2D[0]), PyLong_FromLong(WEST_2D[1]));
+	add_pyobj_to_module(m, "WEST_2D", west_2d_tuple);
+	PyObject * east_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(EAST_2D[0]), PyLong_FromLong(EAST_2D[1]));
+	add_pyobj_to_module(m, "EAST_2D", east_2d_tuple);
+	
+	//Class Definitions
+	add_pyobj_to_module(m, "Ant", &py_ant_type);
+	
     return m;
 
 }

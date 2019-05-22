@@ -10,6 +10,8 @@
 #define str(x) #x
 #define xstr(x) str(x)
 
+#define add_pyobj_to_module(module, name, obj) Py_INCREF(obj); PyModule_AddObject(module, name, (PyObject *) obj);
+
 #include <stdbool.h>
 #include <limits.h>
 
@@ -17,6 +19,7 @@
 #include <structmember.h>
 
 #include "anttype.h"
+#include "antalgo.h"
 
 typedef struct
 {
