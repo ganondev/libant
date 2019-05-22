@@ -1,3 +1,6 @@
+#ifndef LIBANT_ANTTYPE_H
+#define LIBANT_ANTTYPE_H
+
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -45,3 +48,4 @@ ant_grid_t new_grid(ant_cell_t * origin);
 
 ant_cell_t new_cell_empty();
 
+#endif
