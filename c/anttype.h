@@ -26,7 +26,7 @@ struct ant_cell_t
 
 	//TODO Same as ant_t: C99 VLA? 
 	long long int * position;
-	void (* rule)(ant_cell_t *, ant_t *);
+	void (* rule)(ant_cell_t *, ant_t *); //TODO change to int for error checking
 	int state;
 
 };
