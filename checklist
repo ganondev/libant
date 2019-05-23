@@ -5,8 +5,9 @@ Grid:
 	Count of uniquely visited cells
 	Count of total moves so far
 
-Ant2D
-	Ant2DCartesian
+Ant
+	Ant2DCartesian -- Limit position tuple size to 2
+		LangtonsAnt -- Comes with a default directive
 
 Alg:
 	Highway Detection
