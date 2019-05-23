@@ -10,7 +10,7 @@
 #define str(x) #x
 #define xstr(x) str(x)
 
-#define add_pyobj_to_module(module, name, obj) Py_INCREF(obj); PyModule_AddObject(module, name, (PyObject *) obj);
+#define ADD_OBJ_TO_MODULE(module, name, obj) Py_INCREF(obj); PyModule_AddObject(module, name, (PyObject *) obj);
 
 #include <stdbool.h>
 #include <limits.h>
@@ -29,13 +29,6 @@ typedef struct
 
 } py_ant;
 
-//static PyMemberDef ant_members[] = {
-//
-//        {"test", T_INT, offsetof(py_ant, test), 0, "test field"},
-//        {NULL}
-//
-//};
-
 static PyTupleObject * ant_get_position(py_ant *, void *);
 
 static PyLongObject * ant_get_orientation(py_ant *, void*);
@@ -48,7 +41,7 @@ static PyGetSetDef ant_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
 	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
-	//{"directive", (getter) NULL, (setter) NULL, "directive function called every pass by the grid", NULL}, 
+	{"directive", (getter) NULL, (setter) NULL, "directive function called every pass by the grid", NULL}, 
 	{NULL}
 
 };
