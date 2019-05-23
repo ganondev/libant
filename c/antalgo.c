@@ -15,7 +15,7 @@
 
 // }
 
-void langtons_ant_default_directive(ant_t * ant)
+void langtons_ant_default_directive(ant_t * ant, ...)
 {
 	
 	ant->position[0] += CARDINAL_2D[ant->orientation][0];
