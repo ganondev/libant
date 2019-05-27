@@ -1,15 +1,6 @@
 #ifndef LIBANT_LIBANT_PY_ANT_H
 #define LIBANT_LIBANT_PY_ANT_H
 
-#ifdef PY_DEBUG
-#define ANSI_RED "\033[31;1;4m"
-#define ANSI_END "\033[0m"
-#define DEBUG(tok) ANSI_RED tok ANSI_END
-#endif
-
-#define str(x) #x
-#define xstr(x) str(x)
-
 #include <stdbool.h>
 #include <limits.h>
 
@@ -41,6 +32,9 @@ int ant_init(py_ant *, PyObject *, PyObject *);
 
 void ant_dealloc(py_ant *);
 
+#ifndef _WIN32
+static
+#endif
 PyGetSetDef ant_getsetters[];
 
 PyTypeObject py_ant_type;

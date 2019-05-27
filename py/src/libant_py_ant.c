@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include "libant_py_ant.h"
+#include "antmacro.h"
 
 /* GETTERS */
 PyTupleObject * ant_get_position(py_ant * self, void * closure)
 {
 
-	#ifdef PY_DEBUG
+	#ifdef LIBANT_DEBUG
 	puts(DEBUG("Getting Ant position..."));
 	#endif
 	size_t size = self->ant->tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
-	#ifdef PY_DEBUG
+	#ifdef LIBANT_DEBUG
 	printf(DEBUG("Size of tuple: %ld")"\n", size);
 	#endif
 	for (int i = 0; i < size; i++)
@@ -29,7 +30,7 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 {
 
-	#ifdef PY_DEBUG
+	#ifdef LIBANT_DEBUG
 	puts(DEBUG("Getting Ant orientation..."));
 	#endif
 
@@ -46,7 +47,7 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
 
-	#ifdef PY_DEBUG
+	#ifdef LIBANT_DEBUG
 	puts(DEBUG("Setting Ant position..."));
 	#endif
 	
@@ -55,7 +56,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	{
 		
 		//zero-fill the tuple and maintain its size
-		#ifdef PY_DEBUG
+		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
 		self->ant = zero_ant_position(self->ant, stored_tuple_size);
@@ -101,7 +102,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	if (incoming_tuple_size != stored_tuple_size)
 	{
 		
-		#ifdef PY_DEBUG
+		#ifdef LIBANT_DEBUG
 		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
 		#endif
 		
@@ -140,7 +141,7 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 	if (long_value == -1 || long_value > 4294967295) //TODO this bound is really weird and not acting right, also using same value is overflow on windows
 	{
 
-		#ifdef PY_DEBUG
+		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Error in getting unsigned long from orientation value."));
 		#endif
 		
@@ -149,7 +150,7 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 
 	}
 
-	#ifdef PY_DEBUG
+	#ifdef LIBANT_DEBUG
 	printf(DEBUG("Setting Ant position with unsigned long value of %ld...")"\n", long_value);
 	#endif
 
@@ -169,7 +170,7 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     if (self != NULL)
     {
 
-	#ifdef PY_DEBUG
+	#ifdef LIBANT_DEBUG
         puts(DEBUG("Got a new Ant!"));
 	#endif
 
@@ -200,6 +201,9 @@ void ant_dealloc(py_ant * self)
 
 }
 
+#ifndef _WIN32
+static
+#endif
 PyGetSetDef ant_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
