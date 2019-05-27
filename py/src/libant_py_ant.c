@@ -200,7 +200,7 @@ void ant_dealloc(py_ant * self)
 
 }
 
-static PyGetSetDef ant_getsetters[] = {
+PyGetSetDef ant_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
 	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  

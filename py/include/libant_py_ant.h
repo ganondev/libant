@@ -41,7 +41,7 @@ int ant_init(py_ant *, PyObject *, PyObject *);
 
 void ant_dealloc(py_ant *);
 
-static PyGetSetDef ant_getsetters[];
+PyGetSetDef ant_getsetters[];
 
 PyTypeObject py_ant_type;
 
