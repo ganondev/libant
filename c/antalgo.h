@@ -3,12 +3,12 @@
 
 #include "anttype.h"
 
-static const int NORTH_2D[2] = {0, -1};
-static const int EAST_2D[2]= {1, 0};
-static const int SOUTH_2D[2] = {0, 1};
-static const int WEST_2D[2] = {-1, 0};
+const int NORTH_2D[2];
+const int EAST_2D[2];
+const int SOUTH_2D[2];
+const int WEST_2D[2];
 
-static const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
+const int * CARDINAL_2D[4];
 
 // general functions for this library's automaton
 void turmite_update(ant_t * ant);
@@ -18,6 +18,6 @@ ant_grid_t langtons_ant(/* TODO initial state */);
 
 void langtons_ant_default_directive(ant_t *, ...);
 
-ant_t * create_langtons_ant();
+ant_t * create_langtons_ant(void);
 
 #endif

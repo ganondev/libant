@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "libant_py_def.h"
+#include "libant_py_ant.h"
 
 /* GETTERS */
 PyTupleObject * ant_get_position(py_ant * self, void * closure)
@@ -200,28 +200,25 @@ void ant_dealloc(py_ant * self)
 
 }
 
-PyMODINIT_FUNC PyInit_libant(void)
-{
+static PyGetSetDef ant_getsetters[] = {
 
-    PyObject *m;
-    if (PyType_Ready(&py_ant_type) < 0) return NULL;
+	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
+	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
+	{"directive", (getter) NULL, (setter) NULL, "directive function called every pass by the grid", NULL}, 
+	{NULL}
 
-    m = PyModule_Create(&libant);
-    if (m == NULL) return NULL;
-	
-	//Constants
-	PyObject * north_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(NORTH_2D[0]), PyLong_FromLong(NORTH_2D[1]));
-	ADD_OBJ_TO_MODULE(m, "NORTH_2D", north_2d_tuple);
-	PyObject * south_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(SOUTH_2D[0]), PyLong_FromLong(SOUTH_2D[1]));
-	ADD_OBJ_TO_MODULE(m, "SOUTH_2D", south_2d_tuple);
-	PyObject * west_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(WEST_2D[0]), PyLong_FromLong(WEST_2D[1]));
-	ADD_OBJ_TO_MODULE(m, "WEST_2D", west_2d_tuple);
-	PyObject * east_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(EAST_2D[0]), PyLong_FromLong(EAST_2D[1]));
-	ADD_OBJ_TO_MODULE(m, "EAST_2D", east_2d_tuple);
-	
-	//Class Definitions
-	ADD_OBJ_TO_MODULE(m, "Ant", &py_ant_type);
-	
-    return m;
+};
 
-}
+PyTypeObject py_ant_type = {
+	
+        PyVarObject_HEAD_INIT(NULL, 0)
+        .tp_name = "libant.Ant",
+        .tp_doc = "An ant to move on the grid.",
+        .tp_basicsize = sizeof(py_ant),
+        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+		.tp_getset = ant_getsetters,
+        .tp_new = ant_new,
+        .tp_init = (initproc) ant_init,
+        .tp_dealloc = (destructor) ant_dealloc,
+		
+};

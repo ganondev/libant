@@ -1,19 +1,11 @@
 #include "antalgo.h"
 
-// void next_state_create(grid_t * grid)
-// {
+const int NORTH_2D[2] = {0, -1};
+const int EAST_2D[2] = {1, 0};
+const int SOUTH_2D[2] = {0, 1};
+const int WEST_2D[2] = {-1, 0};
 
-    // int ant_count = sizeof(grid->turmites);
-    // for (int i = 0; i < ant_count; i++)
-    // {
-
-        // turmite_t * ant = grid->turmites[i];
-        // cell_t * ant_cell = ant->position;
-        // ant_cell->rule(ant_cell, ant);
-
-    // }
-
-// }
+const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
 
 void langtons_ant_default_directive(ant_t * ant, ...)
 {
@@ -23,7 +15,7 @@ void langtons_ant_default_directive(ant_t * ant, ...)
 	
 }
 
-ant_t * create_langtons_ant()
+ant_t * create_langtons_ant(void)
 {
 	
 	ant_t * ant = create_ant(2);
