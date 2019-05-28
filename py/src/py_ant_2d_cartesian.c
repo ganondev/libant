@@ -71,6 +71,38 @@ int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closur
 
 }
 
+int ant_2d_cart_set_x(py_ant * self, PyLongObject * value, void * closure)
+{
+	
+	#ifdef LIBANT_DEBUG
+	puts(DEBUG("Setting Ant position x value..."));
+	#endif
+	
+	if (value == NULL)
+	{
+		
+		#ifdef LIBANT_DEBUG
+		puts(DEBUG("Setting x to zero in leu of deletion..."));
+		#endif
+		self->ant->position[0] = 0;
+		return 0;
+		
+	}
+	else if(!PyLong_Check(value))
+	{
+		
+		//Invalid type - not an int
+		PyErr_SetString(PyExc_TypeError, "Position values should be signed integers.");
+		return -1;
+		
+	}
+	
+	self->ant->position[0] = PyLong_AsLongLong((PyObject *) value);
+	
+	return 0;
+	
+}
+
 /* END SETTERS */
 
 #ifndef _WIN32
@@ -79,7 +111,7 @@ static
 PyGetSetDef ant_2d_cart_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_2d_cart_set_position, "ant position", NULL},
-	{"x", (getter) ant_2d_cart_get_x, (setter) NULL, "ant position", NULL},
+	{"x", (getter) ant_2d_cart_get_x, (setter) ant_2d_cart_set_x, "ant position", NULL},
 	{"y", (getter) ant_2d_cart_get_y, (setter) NULL, "ant position", NULL},
 	{NULL}
 
