@@ -187,8 +187,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
 	
-	//TODO return to this: self->ant = create_ant(2);
-	self->ant = create_langtons_ant();
+	self->ant = create_ant(2);
 	
     return 0;
 

@@ -2,56 +2,15 @@
 #include "py_ant_2d_cartesian.h"
 #include "antmacro.h"
 
-/* GETTERS */
-PyTupleObject * ant_2d_cart_get_position(py_ant * self, void * closure)
-{
-
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Getting Ant position..."));
-	#endif
-	size_t size = self->ant->tuple_size;
-	PyObject * position_tuple = PyTuple_New(size);
-	#ifdef LIBANT_DEBUG
-	printf(DEBUG("Size of tuple: %ld")"\n", size);
-	#endif
-	for (int i = 0; i < size; i++)
-	{
-			
-		PyTuple_SetItem(position_tuple,
-						i,
-						PyLong_FromLongLong(self->ant->position[i]));
-		
-	}
-	Py_INCREF(position_tuple);
-	return (PyTupleObject *) position_tuple;
-
-}
-
-PyLongObject * ant_2d_cart_get_orientation(py_ant * self, void * closure)
-{
-
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Getting Ant orientation..."));
-	#endif
-
-	PyObject * orientation = PyLong_FromUnsignedLong(self->ant->orientation);
-	Py_INCREF(orientation);
-	return (PyLongObject *) orientation;
-
-}
-
-/* END GETTERS */
-
 /* SETTERS */
 
 int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
 
 	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Setting Ant position..."));
+	puts(DEBUG("Setting 2D Cartesian Ant position..."));
 	#endif
 	
-	size_t stored_tuple_size = self->ant->tuple_size;
 	if (value == NULL)
 	{
 		
@@ -59,7 +18,7 @@ int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closur
 		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
-		self->ant = zero_ant_position(self->ant, stored_tuple_size);
+		self->ant = zero_ant_position(self->ant, 2);
 		return 0;
 		
 	}
@@ -67,59 +26,20 @@ int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closur
 	{
 		
 		//Invalid type - not a tuple
-		PyErr_SetString(PyExc_TypeError, "Position value should be a tuple.");
+		PyErr_SetString(PyExc_TypeError, "Position value should be a duple for a 2D Cartesian Ant.");
+		return -1;
+		
+	}
+	else if (PyTuple_GET_SIZE(value) != 2)
+	{
+		
+		//Tuple is not correct size
+		PyErr_SetString(PyExc_ValueError, "Position value must be a duple (tuple of size 2).");
 		return -1;
 		
 	}
 	
-	size_t incoming_tuple_size = PyTuple_GET_SIZE(value);
-	#ifndef _WIN32
-	PyObject * tuple_values[incoming_tuple_size];
-	#else
-	//TODO free
-	PyObject ** tuple_values = malloc(sizeof(PyObject *) * incoming_tuple_size);
-	#endif
-	
-	for (int i = 0; i < incoming_tuple_size; i++)
-	{
-
-		//Retreive value from tuple
-		PyObject * tuple_member = PyTuple_GET_ITEM(value, (Py_ssize_t) i); 
-		//Assert that tuple member is a python integer
-		if (!PyLong_Check(tuple_member))
-		{
-
-			//Invalid type - not an integer
-			PyErr_SetString(PyExc_TypeError, "Tuple value should be an integer.");
-			return -1;
-
-		}
-
-		tuple_values[i] = tuple_member;
-
-	}
-
-	if (incoming_tuple_size != stored_tuple_size)
-	{
-		
-		#ifdef LIBANT_DEBUG
-		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
-		#endif
-		
-		self->ant = zero_ant_position(self->ant, incoming_tuple_size);
-		
-	}
-
-	for (int i = 0; i < incoming_tuple_size; i++)
-	{
-		
-		//Evaluate long long int value of tuple member
-		long long int int_value = PyLong_AsLongLong(tuple_values[i]);
-		self->ant->position[i] = int_value;
-
-	}
-
-	return 0;
+	return ant_set_position(self, value, closure);
 
 }
 
@@ -163,50 +83,12 @@ int ant_2d_cart_set_orientation(py_ant * self, PyObject * value, void * closure)
 
 /* END SETTERS */
 
-PyObject * ant_2d_cart_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
-{
-
-    py_ant * self = (py_ant *) type->tp_alloc(type, 0);
-    if (self != NULL)
-    {
-
-	#ifdef LIBANT_DEBUG
-        puts(DEBUG("Got a new Ant!"));
-	#endif
-
-    }
-
-    return (PyObject *) self;
-
-}
-
-int ant_2d_cart_init(py_ant * self, PyObject * args, PyObject * kwargs)
-{
-
-    //static char * kwlist[] = {"test", NULL};
-    //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
-	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
-	
-	//TODO return to this: self->ant = create_ant(2);
-	self->ant = create_langtons_ant();
-	
-    return 0;
-
-}
-
-void ant_2d_cart_dealloc(py_ant * self)
-{
-
-    Py_TYPE(self)->tp_free((PyObject *) self);
-
-}
-
 #ifndef _WIN32
 static
 #endif
 PyGetSetDef ant_2d_cart_getsetters[] = {
 
-	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
+	{"position", (getter) ant_get_position, (setter) ant_2d_cart_set_position, "ant position", NULL},
 	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
 	{NULL}
 
@@ -214,14 +96,11 @@ PyGetSetDef ant_2d_cart_getsetters[] = {
 
 PyTypeObject py_ant_2d_cartesian_type = {
 	
-        PyVarObject_HEAD_INIT(NULL, 0)
-        .tp_name = "libant.Ant2DCartesian",
-        .tp_doc = "2D ant",
-        .tp_basicsize = sizeof(py_ant),
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "libant.Ant2DCartesian",
+    .tp_doc = "2D ant",
+    .tp_basicsize = sizeof(py_ant),
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
 	.tp_getset = ant_2d_cart_getsetters,
-        .tp_new = ant_2d_cart_new,
-        .tp_init = (initproc) ant_2d_cart_init,
-        .tp_dealloc = (destructor) ant_2d_cart_dealloc,
 		
 };
