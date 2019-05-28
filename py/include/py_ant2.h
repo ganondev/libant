@@ -12,8 +12,6 @@
 
 #include "libant_py_ant.h"
 
-PyTupleObject * ant2_get_position(py_ant *, void *);
-
 int ant2_set_position(py_ant *, PyTupleObject *, void *);
 
 PyObject * ant2_new(PyTypeObject *, PyObject *, PyObject *);
