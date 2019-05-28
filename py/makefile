@@ -1,5 +1,5 @@
 debug:
-	c99 -Wall -D LIBANT_DEBUG -I../c -I./include -I/usr/include/python3.7 -shared -o libant.so -fPIC ../c/anttype.c ../c/antalgo.c ./src/libant_py_ant.c ./src/libant_py_module.c ./src/py_ant_2d_cartesian.c
+	c99 -Wall -D LIBANT_DEBUG -I../c -I./include -I/usr/include/python3.7 -shared -o libant.so -fPIC ../c/anttype.c ../c/antalgo.c ./src/libant_py_ant.c ./src/libant_py_module.c ./src/py_ant2.c
 
 all: module py_ant antalgo anttype
 	c99 -Wall *.o -shared -o libant.so

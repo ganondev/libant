@@ -1,5 +1,5 @@
 #include "libant_py_module.h"
-#include "py_ant_2d_cartesian.h"
+#include "py_ant2.h"
 
 #define ADD_OBJ_TO_MODULE(module, name, obj) Py_INCREF(obj); PyModule_AddObject(module, name, (PyObject *) obj);
 
@@ -10,8 +10,8 @@ PyMODINIT_FUNC PyInit_libant(void)
 
 	//Check if types are ready
 	if (PyType_Ready(&py_ant_type) < 0) return NULL;
-	py_ant_2d_cartesian_type.tp_base = &py_ant_type;
-	if (PyType_Ready(&py_ant_2d_cartesian_type) < 0) return NULL;
+	py_ant2_type.tp_base = &py_ant_type;
+	if (PyType_Ready(&py_ant2_type) < 0) return NULL;
 
     m = PyModule_Create(&libant);
     if (m == NULL) return NULL;
@@ -28,7 +28,7 @@ PyMODINIT_FUNC PyInit_libant(void)
 	
 	//Class Definitions
 	ADD_OBJ_TO_MODULE(m, "Ant", &py_ant_type);
-	ADD_OBJ_TO_MODULE(m, "Ant2DCartesian", &py_ant_2d_cartesian_type);
+	ADD_OBJ_TO_MODULE(m, "Ant2", &py_ant2_type);
 	
     return m;
 

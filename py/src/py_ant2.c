@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "py_ant_2d_cartesian.h"
+#include "py_ant2.h"
 #include "antmacro.h"
 
 /* GETTERS */
 
-PyLongObject * ant_2d_cart_get_x(py_ant * self, void * closure)
+PyLongObject * ant2_get_x(py_ant * self, void * closure)
 {
 
 	#ifdef LIBANT_DEBUG
@@ -17,7 +17,7 @@ PyLongObject * ant_2d_cart_get_x(py_ant * self, void * closure)
 
 }
 
-PyLongObject * ant_2d_cart_get_y(py_ant * self, void * closure)
+PyLongObject * ant2_get_y(py_ant * self, void * closure)
 {
 
 	#ifdef LIBANT_DEBUG
@@ -32,11 +32,11 @@ PyLongObject * ant_2d_cart_get_y(py_ant * self, void * closure)
 
 /* SETTERS */
 
-int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closure)
+int ant2_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
 
 	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Setting 2D Cartesian Ant position..."));
+	puts(DEBUG("Setting Ant2 duple position..."));
 	#endif
 	
 	if (value == NULL)
@@ -54,7 +54,7 @@ int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closur
 	{
 		
 		//Invalid type - not a tuple
-		PyErr_SetString(PyExc_TypeError, "Position value should be a duple for a 2D Cartesian Ant.");
+		PyErr_SetString(PyExc_TypeError, "Position value should be a duple for an Ant2 instance.");
 		return -1;
 		
 	}
@@ -71,7 +71,7 @@ int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closur
 
 }
 
-int ant_2d_cart_set_x(py_ant * self, PyLongObject * value, void * closure)
+int ant2_set_x(py_ant * self, PyLongObject * value, void * closure)
 {
 	
 	#ifdef LIBANT_DEBUG
@@ -103,7 +103,7 @@ int ant_2d_cart_set_x(py_ant * self, PyLongObject * value, void * closure)
 	
 }
 
-int ant_2d_cart_set_y(py_ant * self, PyLongObject * value, void * closure)
+int ant2_set_y(py_ant * self, PyLongObject * value, void * closure)
 {
 	
 	#ifdef LIBANT_DEBUG
@@ -140,22 +140,22 @@ int ant_2d_cart_set_y(py_ant * self, PyLongObject * value, void * closure)
 #ifndef _WIN32
 static
 #endif
-PyGetSetDef ant_2d_cart_getsetters[] = {
+PyGetSetDef ant2_getsetters[] = {
 
-	{"position", (getter) ant_get_position, (setter) ant_2d_cart_set_position, "ant position", NULL},
-	{"x", (getter) ant_2d_cart_get_x, (setter) ant_2d_cart_set_x, "ant position", NULL},
-	{"y", (getter) ant_2d_cart_get_y, (setter) ant_2d_cart_set_y, "ant position", NULL},
+	{"position", (getter) ant_get_position, (setter) ant2_set_position, "ant position", NULL},
+	{"x", (getter) ant2_get_x, (setter) ant2_set_x, "ant position", NULL},
+	{"y", (getter) ant2_get_y, (setter) ant2_set_y, "ant position", NULL},
 	{NULL}
 
 };
 
-PyTypeObject py_ant_2d_cartesian_type = {
+PyTypeObject py_ant2_type = {
 	
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "libant.Ant2DCartesian",
+    .tp_name = "libant.Ant2",
     .tp_doc = "2D ant",
     .tp_basicsize = sizeof(py_ant),
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-	.tp_getset = ant_2d_cart_getsetters,
+	.tp_getset = ant2_getsetters,
 		
 };
