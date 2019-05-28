@@ -1,5 +1,5 @@
-#ifndef PY_ANT_2D_CARTESIAN_H
-#define PY_ANT_2D_CARTESIAN_H
+#ifndef PY_ANT2_H
+#define PY_ANT2_H
 
 #include <stdbool.h>
 #include <limits.h>
