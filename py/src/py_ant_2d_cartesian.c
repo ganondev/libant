@@ -2,6 +2,34 @@
 #include "py_ant_2d_cartesian.h"
 #include "antmacro.h"
 
+/* GETTERS */
+
+PyLongObject * ant_2d_cart_get_x(py_ant * self, void * closure)
+{
+
+	#ifdef LIBANT_DEBUG
+	puts(DEBUG("Getting Ant position x value..."));
+	#endif
+
+	PyObject * x = PyLong_FromLong(self->ant->position[0]);
+	Py_INCREF(x);
+	return (PyLongObject *) x;
+
+}
+
+PyLongObject * ant_2d_cart_get_y(py_ant * self, void * closure)
+{
+
+	#ifdef LIBANT_DEBUG
+	puts(DEBUG("Getting Ant position y value..."));
+	#endif
+
+	PyObject * y = PyLong_FromLong(self->ant->position[1]);
+	Py_INCREF(y);
+	return (PyLongObject *) y;
+
+}
+
 /* SETTERS */
 
 int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closure)
@@ -43,44 +71,6 @@ int ant_2d_cart_set_position(py_ant * self, PyTupleObject * value, void * closur
 
 }
 
-int ant_2d_cart_set_orientation(py_ant * self, PyObject * value, void * closure)
-{
-
-	if (!PyLong_Check(value))
-	{
-
-		//Invalid type - not an integer
-		PyErr_SetString(PyExc_TypeError, "Value should be an unsigned long.");
-		return -1;
-
-	}
-
-
-	unsigned long long_value = PyLong_AsUnsignedLong(value);
-
-	if (long_value == -1 || long_value > 4294967295) //TODO this bound is really weird and not acting right, also using same value is overflow on windows
-	{
-
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Error in getting unsigned long from orientation value."));
-		#endif
-		
-		PyErr_SetString(PyExc_ValueError, "Invalid value for orientation. Value should be unsigned and less than or equal to 4294967295."); // ULONG_MAX aka " xstr(UINT_MAX) ".");
-		return -1;
-
-	}
-
-	#ifdef LIBANT_DEBUG
-	printf(DEBUG("Setting Ant position with unsigned long value of %ld...")"\n", long_value);
-	#endif
-
-	self->ant->orientation = long_value;
-
-
-	return 0;
-
-}
-
 /* END SETTERS */
 
 #ifndef _WIN32
@@ -89,7 +79,8 @@ static
 PyGetSetDef ant_2d_cart_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_2d_cart_set_position, "ant position", NULL},
-	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
+	{"x", (getter) ant_2d_cart_get_x, (setter) NULL, "ant position", NULL},
+	{"y", (getter) ant_2d_cart_get_y, (setter) NULL, "ant position", NULL},
 	{NULL}
 
 };
