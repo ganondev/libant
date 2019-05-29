@@ -40,7 +40,10 @@ struct ant_grid_t
 
 };
 
-inline ant_t * create_ant(size_t);
+#ifndef _WIN32
+inline
+#endif
+ant_t * create_ant(size_t);
 
 inline void zero_ant_position(ant_t *);
 
