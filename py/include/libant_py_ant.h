@@ -17,7 +17,7 @@ typedef struct
 
 	PyObject_HEAD
 	ant_t * ant;
-	
+	PyObject * py_directive;
 
 } py_ant;
 
