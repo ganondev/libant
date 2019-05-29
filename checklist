@@ -8,6 +8,7 @@ Grid:
 Ant
 	Ant2DCartesian -- Limit position tuple size to 2
 		LangtonsAnt -- Comes with a default directive
+	Rework position setter to be more OO friendly
 
 Alg:
 	Highway Detection
