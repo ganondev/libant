@@ -11,7 +11,7 @@ PyObject * position_as_py_long(ant_t * ant, int index)
 	
 }
 
-
+//TODO general position checker
 
 /* END GENERALS */
 
@@ -56,7 +56,8 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 PyFunctionObject * ant_get_directive(py_ant * self, void * closure)
 {
 	
-	return NULL;
+	Py_INCREF(Py_None);
+	return (PyFunctionObject *) Py_None;
 	
 }
 
@@ -181,6 +182,14 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 
 }
 
+int ant_set_directive(py_ant * self, PyObject * value, void * closure)
+{
+
+	return 0;
+
+}
+
+
 /* END SETTERS */
 
 PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
@@ -227,7 +236,7 @@ PyGetSetDef ant_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
 	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
-	{"directive", (getter) NULL, (setter) NULL, "directive function called every pass by the grid", NULL}, 
+	{"directive", (getter) ant_get_directive, (setter) ant_set_directive, "directive function called every pass by the grid", NULL}, 
 	{NULL}
 
 };
