@@ -10,6 +10,8 @@
 #include "anttype.h"
 #include "antalgo.h"
 
+#define py_ant_check(obj) PyObject_TypeCheck(obj, &py_ant_type)
+
 typedef struct
 {
 
