@@ -2,6 +2,7 @@ Grid:
 	3D in general
 	Adding cells to scan list
 	Dictionary of cells -- to quadtree eventually?
+		For now, check out https://github.com/mystborn/GenericMap
 	Count of uniquely visited cells
 	Count of total moves so far
 
