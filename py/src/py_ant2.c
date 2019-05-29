@@ -11,7 +11,7 @@ PyLongObject * ant2_get_x(py_ant * self, void * closure)
 	puts(DEBUG("Getting Ant position x value..."));
 	#endif
 
-	PyObject * x = PyLong_FromLong(self->ant->position[0]);
+	PyObject * x = position_as_py_long(self->ant, 0);
 	Py_INCREF(x);
 	return (PyLongObject *) x;
 
@@ -24,7 +24,7 @@ PyLongObject * ant2_get_y(py_ant * self, void * closure)
 	puts(DEBUG("Getting Ant position y value..."));
 	#endif
 
-	PyObject * y = PyLong_FromLong(self->ant->position[1]);
+	PyObject * y = position_as_py_long(self->ant, 1);
 	Py_INCREF(y);
 	return (PyLongObject *) y;
 
@@ -46,7 +46,7 @@ int ant2_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
-		self->ant = zero_ant_position(self->ant, 2);
+		zero_ant_position(self->ant);
 		return 0;
 		
 	}

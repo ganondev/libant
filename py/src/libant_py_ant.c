@@ -2,6 +2,19 @@
 #include "libant_py_ant.h"
 #include "antmacro.h"
 
+/* GENERAL METHODS */
+
+PyObject * position_as_py_long(ant_t * ant, int index)
+{
+	
+	return PyLong_FromLongLong(ant->position[index]);
+	
+}
+
+
+
+/* END GENERALS */
+
 /* GETTERS */
 PyTupleObject * ant_get_position(py_ant * self, void * closure)
 {
@@ -19,7 +32,7 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 			
 		PyTuple_SetItem(position_tuple,
 						i,
-						PyLong_FromLongLong(self->ant->position[i]));
+						position_as_py_long(self->ant, i));
 		
 	}
 	Py_INCREF(position_tuple);
@@ -59,7 +72,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
-		self->ant = zero_ant_position(self->ant, stored_tuple_size);
+		zero_ant_position(self->ant);
 		return 0;
 		
 	}
@@ -106,7 +119,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
 		#endif
 		
-		self->ant = zero_ant_position(self->ant, incoming_tuple_size);
+		self->ant = resize_ant_position(self->ant, incoming_tuple_size);
 		
 	}
 
