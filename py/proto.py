@@ -42,7 +42,7 @@ for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 x_pos = y_pos = int(STAGE_SIZE / 2)
 cell = cells[grid_to_screen(x_pos, y_pos)]
 flip_cell(cell)
-ant = libant.Ant()
+ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
 
 pause = True
@@ -63,6 +63,7 @@ while True:
 		new_angle = rotate_ant(cell[1], ant)
 		flip_cell(cell)
 		ant.orientation = new_angle
-		ant.position = (ant.position[0] + DIRECTIONS[new_angle][0], ant.position[1] + DIRECTIONS[new_angle][1])
+		#ant.position = (ant.position[0] + DIRECTIONS[new_angle][0], ant.position[1] + DIRECTIONS[new_angle][1])
+		ant.directive(ant)
 		pygame.draw.rect(screen, (255, 0, 0), cells[grid_to_screen(ant.position[0], ant.position[1])][0])
 	pygame.display.flip()
