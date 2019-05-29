@@ -227,12 +227,43 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 {
 
-	if (value == langtons_ant_directive_func)
+	Py_INCREF(self);
+	
+	Py_DECREF(self->py_directive);
+	if (value == NULL || value == Py_None)
 	{
 
-		//TODO set backend directive to langton's default C version
+		#ifdef LIBANT_DEBUG
+		puts(DEBUG("Resetting directive references..."));
+		#endif
+
+		self->ant->directive = NULL;
+		self->py_directive = Py_None;
+		Py_INCREF(Py_None);
+		return 0;
 
 	}
+	else if (value == langtons_ant_directive_func)
+	{
+
+		#ifdef LIBANT_DEBUG
+		puts(DEBUG("Detected default directive for langton's ant algorithm. Propogating to backend."));
+		#endif
+
+		//TODO set backend directive to langton's default C version
+		self->ant->directive = langtons_ant_default_directive;
+
+	}
+	// If other default directives are defined, conditions go here
+	else
+	{
+
+		//TODO self->ant->directive = somefunctiontocallfrontend;
+
+	}
+
+	self->py_directive = value;
+	Py_DECREF(self);
 
 	return 0;
 
