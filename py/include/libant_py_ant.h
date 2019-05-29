@@ -27,11 +27,13 @@ PyTupleObject * ant_get_position(py_ant *, void *);
 
 PyLongObject * ant_get_orientation(py_ant *, void *);
 
-// PyFunctionObject * ant_get_directive(py_ant *, void *);
+PyFunctionObject * ant_get_directive(py_ant *, void *);
 
 int ant_set_position(py_ant *, PyTupleObject *, void *);
 
 int ant_set_orientation(py_ant *, PyObject *, void *);
+
+int ant_set_directive(py_ant *, PyObject *, void *);
 
 PyObject * ant_new(PyTypeObject *, PyObject *, PyObject *);
 
