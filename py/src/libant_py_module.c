@@ -1,5 +1,6 @@
 #include "libant_py_module.h"
 #include "py_ant2.h"
+#include "py_langtons_ant.h"
 #include "py_ant3.h"
 
 #define ADD_OBJ_TO_MODULE(module, name, obj) Py_INCREF(obj); PyModule_AddObject(module, name, (PyObject *) obj);
@@ -13,6 +14,8 @@ PyMODINIT_FUNC PyInit_libant(void)
 	if (PyType_Ready(&py_ant_type) < 0) return NULL;
 	py_ant2_type.tp_base = &py_ant_type;
 	if (PyType_Ready(&py_ant2_type) < 0) return NULL;
+	py_langtons_ant_type.tp_base = &py_ant2_type;
+	if (PyType_Ready(&py_langtons_ant_type) < 0) return NULL;
 	py_ant3_type.tp_base = &py_ant2_type;
 	if (PyType_Ready(&py_ant3_type) < 0) return NULL;
 
@@ -34,6 +37,7 @@ PyMODINIT_FUNC PyInit_libant(void)
 	//Class Definitions
 	ADD_OBJ_TO_MODULE(m, "Ant", &py_ant_type);
 	ADD_OBJ_TO_MODULE(m, "Ant2", &py_ant2_type);
+	ADD_OBJ_TO_MODULE(m, "LangtonsAnt", &py_langtons_ant_type);
 	ADD_OBJ_TO_MODULE(m, "Ant3", &py_ant3_type);
 	
     return m;
