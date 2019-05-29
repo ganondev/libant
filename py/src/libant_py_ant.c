@@ -91,9 +91,8 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 PyObject * ant_get_directive(py_ant * self, void * closure)
 {
 
-	PyObject * directive = PyCFunction_New(&langtons_ant_directive, NULL);
-	Py_INCREF(directive);
-	return directive;
+	Py_INCREF(self->py_directive);
+	return self->py_directive;
 	if(self->ant->directive == NULL)
 	{
 
@@ -228,7 +227,12 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 {
 
-	printf("%d\n", PyCFunction_Check(value));
+	if (value == langtons_ant_directive_func)
+	{
+
+		//TODO set backend directive to langton's default C version
+
+	}
 
 	return 0;
 
@@ -262,6 +266,8 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
 	
 	self->ant = create_ant(2);
+	self->py_directive = (PyObject *) Py_None;
+	Py_INCREF(Py_None);
 	
     return 0;
 
