@@ -248,10 +248,27 @@ PyTypeObject py_ant_type = {
 
 PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg)
 {
-	
+
+	if (!py_ant_check(arg))
+	{
+
+		PyErr_SetString(PyExc_TypeError, "Argument should be an instance of the Ant class or a subclass thereof.");
+		return NULL;
+
+	}
+
 	Py_INCREF(arg);
 	
 	py_ant * ant = (py_ant *) arg;
+	if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
+	{
+
+		PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
+		Py_DECREF(arg);
+		return NULL;
+
+	}
+
 	langtons_ant_default_directive(ant->ant);
 	
 	Py_DECREF(arg);
