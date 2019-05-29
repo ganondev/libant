@@ -99,7 +99,13 @@ int ant3_init(py_ant * self, PyObject * args, PyObject * kwargs)
     //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
 	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
 	
-	self->ant = create_ant(3);
+//	self->ant = create_ant(3);
+//	self->py_directive = Py_None;
+//	Py_INCREF(Py_None);
+
+	ant_init(self, args, kwargs);
+	self->ant = resize_ant_position(self->ant, 3);
+	self->ant->position[2] = 0;
 	
     return 0;
 
