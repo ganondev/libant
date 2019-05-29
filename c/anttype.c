@@ -6,6 +6,7 @@ ant_t * create_ant(size_t position_size)
 
 	ant_t * ant = resize_ant_position(NULL, position_size);
 	zero_ant_position(ant);
+	ant->directive = NULL;
 	ant->orientation = 0;
 	return ant;
 
