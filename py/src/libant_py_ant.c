@@ -53,6 +53,13 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 
 }
 
+PyFunctionObject * ant_get_directive(py_ant * self, void * closure)
+{
+	
+	return NULL;
+	
+}
+
 /* END GETTERS */
 
 /* SETTERS */
@@ -238,3 +245,17 @@ PyTypeObject py_ant_type = {
         .tp_dealloc = (destructor) ant_dealloc,
 		
 };
+
+PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg)
+{
+	
+	Py_INCREF(arg);
+	
+	py_ant * ant = (py_ant *) arg;
+	langtons_ant_default_directive(ant->ant);
+	
+	Py_DECREF(arg);
+	
+	Py_RETURN_NONE;
+	
+}
