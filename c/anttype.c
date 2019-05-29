@@ -4,19 +4,23 @@
 ant_t * create_ant(size_t position_size)
 {
 
-	size_t block_size = sizeof(ant_t) + position_size * sizeof(long long int); 
-	ant_t * ant = malloc(block_size);
-	memset(ant, 0, block_size);
-	ant->tuple_size = position_size;
+	ant_t * ant = resize_ant_position(NULL, position_size);
+	zero_ant_position(ant);
 	return ant;
 
 }
 
-ant_t * zero_ant_position(ant_t * ant, size_t size)
+void zero_ant_position(ant_t * ant)
+{
+	
+	memset(ant->position, 0, ant->tuple_size * sizeof(long long int));
+	
+}
+
+ant_t * resize_ant_position(ant_t * ant, size_t size)
 {
 	
 	ant = realloc(ant, sizeof(ant_t) + size * sizeof(long long int));
-	memset(ant->position, 0, size * sizeof(long long int));
 	ant->tuple_size = size;
 	
 	return ant;

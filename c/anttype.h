@@ -40,9 +40,11 @@ struct ant_grid_t
 
 };
 
-ant_t * create_ant(size_t);
+inline ant_t * create_ant(size_t);
 
-ant_t * zero_ant_position(ant_t *, size_t);
+inline void zero_ant_position(ant_t *);
+
+inline ant_t * resize_ant_position(ant_t *, size_t);
 
 ant_grid_t new_grid(ant_cell_t * origin);
 
