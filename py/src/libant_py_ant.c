@@ -55,9 +55,15 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 
 PyFunctionObject * ant_get_directive(py_ant * self, void * closure)
 {
+
+	if(self->ant->directive == NULL)
+	{
+
+		Py_INCREF(Py_None);
+		return (PyFunctionObject *) Py_None;
+
+	}
 	
-	Py_INCREF(Py_None);
-	return (PyFunctionObject *) Py_None;
 	
 }
 
