@@ -5,14 +5,13 @@
 
 #include "libant_py_ant.h"
 
-static PyMethodDef module_methods[] = {
-	
-	{"langtons_ant_directive", (PyCFunction) langtons_ant_default_directive_wrapper, METH_O, "Default directive for langton's ant." },
+PyMethodDef module_methods[] = {
+
 	{NULL, NULL, 0, NULL}
 	
 };
 
-static PyModuleDef libant = {
+PyModuleDef libant = {
 	
         PyModuleDef_HEAD_INIT,
         .m_name = "libant",

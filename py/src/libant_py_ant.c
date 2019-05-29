@@ -13,6 +13,41 @@ PyObject * position_as_py_long(ant_t * ant, int index)
 
 //TODO general position checker
 
+PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg)
+{
+
+	if (!py_ant_check(arg))
+	{
+
+		PyErr_SetString(PyExc_TypeError, "Argument should be an instance of the Ant class or a subclass thereof.");
+		return NULL;
+
+	}
+
+	Py_INCREF(arg);
+	
+	py_ant * ant = (py_ant *) arg;
+	if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
+	{
+
+		PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
+		Py_DECREF(arg);
+		return NULL;
+
+	}
+
+	langtons_ant_default_directive(ant->ant);
+	
+	Py_DECREF(arg);
+	
+	Py_RETURN_NONE;
+	
+}
+
+PyMethodDef langtons_ant_directive = {"langtons_ant_directive", (PyCFunction) langtons_ant_default_directive_wrapper, METH_O, "Default directive for langton's ant." };
+
+PyObject * langtons_ant_directive_func = NULL;
+
 /* END GENERALS */
 
 /* GETTERS */
@@ -53,17 +88,19 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 
 }
 
-PyFunctionObject * ant_get_directive(py_ant * self, void * closure)
+PyObject * ant_get_directive(py_ant * self, void * closure)
 {
 
+	PyObject * directive = PyCFunction_New(&langtons_ant_directive, NULL);
+	Py_INCREF(directive);
+	return directive;
 	if(self->ant->directive == NULL)
 	{
 
 		Py_INCREF(Py_None);
-		return (PyFunctionObject *) Py_None;
+		return Py_None;
 
-	}
-	
+	}	
 	
 }
 
@@ -191,6 +228,8 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 {
 
+	printf("%d\n", PyCFunction_Check(value));
+
 	return 0;
 
 }
@@ -261,33 +300,3 @@ PyTypeObject py_ant_type = {
 		
 };
 
-PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg)
-{
-
-	if (!py_ant_check(arg))
-	{
-
-		PyErr_SetString(PyExc_TypeError, "Argument should be an instance of the Ant class or a subclass thereof.");
-		return NULL;
-
-	}
-
-	Py_INCREF(arg);
-	
-	py_ant * ant = (py_ant *) arg;
-	if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
-	{
-
-		PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
-		Py_DECREF(arg);
-		return NULL;
-
-	}
-
-	langtons_ant_default_directive(ant->ant);
-	
-	Py_DECREF(arg);
-	
-	Py_RETURN_NONE;
-	
-}

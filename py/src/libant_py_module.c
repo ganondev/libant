@@ -18,7 +18,7 @@ PyMODINIT_FUNC PyInit_libant(void)
 
     m = PyModule_Create(&libant);
     if (m == NULL) return NULL;
-	
+
 	//Constants
 	PyObject * north_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(NORTH_2D[0]), PyLong_FromLong(NORTH_2D[1]));
 	ADD_OBJ_TO_MODULE(m, "NORTH_2D", north_2d_tuple);
@@ -28,6 +28,8 @@ PyMODINIT_FUNC PyInit_libant(void)
 	ADD_OBJ_TO_MODULE(m, "WEST_2D", west_2d_tuple);
 	PyObject * east_2d_tuple = PyTuple_Pack(2, PyLong_FromLong(EAST_2D[0]), PyLong_FromLong(EAST_2D[1]));
 	ADD_OBJ_TO_MODULE(m, "EAST_2D", east_2d_tuple);
+	langtons_ant_directive_func = PyCFunction_New(&langtons_ant_directive, NULL);
+	ADD_OBJ_TO_MODULE(m, "langtons_ant_directive", langtons_ant_directive_func);
 	
 	//Class Definitions
 	ADD_OBJ_TO_MODULE(m, "Ant", &py_ant_type);

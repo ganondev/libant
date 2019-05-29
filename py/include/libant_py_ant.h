@@ -23,11 +23,17 @@ typedef struct
 
 inline PyObject * position_as_py_long(ant_t *, int);
 
+PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg);
+
+PyMethodDef langtons_ant_directive;
+
+extern PyObject * langtons_ant_directive_func;
+
 PyTupleObject * ant_get_position(py_ant *, void *);
 
 PyLongObject * ant_get_orientation(py_ant *, void *);
 
-PyFunctionObject * ant_get_directive(py_ant *, void *);
+PyObject * ant_get_directive(py_ant *, void *);
 
 int ant_set_position(py_ant *, PyTupleObject *, void *);
 
@@ -49,5 +55,7 @@ PyGetSetDef ant_getsetters[];
 PyTypeObject py_ant_type;
 
 PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg);
+
+PyMethodDef langtons_ant_directive;
 
 #endif
