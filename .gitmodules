@@ -1,0 +1,3 @@
+[submodule "GenericMap"]
+	path = GenericMap
+	url = https://github.com/mystborn/GenericMap
