@@ -1,3 +1,3 @@
 debug:
-	mkdir -p ../build
-	gcc -I. anttype.c libant_test.c -o ../build/result.out
+	mkdir -p build
+	c99 -Iinclude src/anttype.c src/antalgo.c -o build/libant.so
