@@ -1,3 +1,6 @@
 [submodule "libdict"]
 	path = dependencies/libdict
 	url = https://github.com/fmela/libdict
+[submodule "cunit"]
+	path = dependencies/cunit
+	url = https://gitlab.com/cunity/cunit
