@@ -1,3 +1,3 @@
 debug:
 	mkdir -p build
-	c99 -Iinclude src/anttype.c src/antalgo.c -o build/libant.so
+	c99 -fPIC -fgnu89-inline -shared -Iinclude src/*.c -o build/libant.so
