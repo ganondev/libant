@@ -1,6 +1,9 @@
-version 0.2
+version: 0.2
 
 phases:
   build:
     commands:
-      - cl /LD c\src\antalgo.c c\src\anttype.c -Ic\include
+      - ls 'C:\Program Files (x86)\Microsoft Visual Studio\'
+      - ls 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\'
+      - ls 'C:\Program Files (x86)\Microsoft Visual C++ Build Tools\'
+      - # cl /LD c\src\antalgo.c c\src\anttype.c -Ic\include
