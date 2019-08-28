@@ -1,0 +1,6 @@
+version 0.2
+
+phases:
+  build:
+    commands:
+      - cl /LD c\src\antalgo.c c\src\anttype.c -Ic\include
