@@ -34,14 +34,14 @@ screen = pygame.display.get_surface()
 
 sizeof_rect = int(SCREEN_SIZE / STAGE_SIZE)
 bezel = int((SCREEN_SIZE - (STAGE_SIZE * sizeof_rect)) / 2)
-cells = {}
+cells = {} #TODO needs to come from C library
 for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 	for y in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 		draw_bordered_square(x, y, False, sizeof_rect)
 
 x_pos = y_pos = int(STAGE_SIZE / 2)
 cell = cells[grid_to_screen(x_pos, y_pos)]
-flip_cell(cell)
+flip_cell(cell) #TODO needs to be function member of cell type (for python api)
 ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
 
@@ -63,7 +63,8 @@ while True:
 		new_angle = rotate_ant(cell[1], ant)
 		flip_cell(cell)
 		ant.orientation = new_angle
-		#ant.position = (ant.position[0] + DIRECTIONS[new_angle][0], ant.position[1] + DIRECTIONS[new_angle][1])
 		ant.directive(ant)
-		pygame.draw.rect(screen, (255, 0, 0), cells[grid_to_screen(ant.position[0], ant.position[1])][0])
+		ant.x %= STAGE_SIZE 
+		ant.y %= STAGE_SIZE
+		pygame.draw.rect(screen, (255, 0, 0), cells[grid_to_screen(ant.x, ant.y)][0])
 	pygame.display.flip()
