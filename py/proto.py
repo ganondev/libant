@@ -8,9 +8,7 @@ DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
 
 def draw_bordered_square(x, y, filled, size):
-	cell = quadtree.Node(x,y)
-	cell.value = pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
-	cells.insert(cell) 
+	pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
 	if not filled:
 		pygame.draw.rect(screen, (255, 255, 255), (x + 1, y + 1, size - 2, size - 2))
 
@@ -18,10 +16,20 @@ def draw_bordered_square(x, y, filled, size):
 def grid_to_screen(x, y):
 	return x * sizeof_rect + bezel, y * sizeof_rect + bezel
 
+	
+def get_or_new(x, y):
+	print("here")
+	cell = cells.get(x, y)
+	if cell is None:
+		cell = quadtree.Node(x, y)
+		cell.value = False
+		cells.insert(cell)
+	return cell
+	
 
 def flip_cell(cell):
-	print(cell)
-	draw_bordered_square(cell.value[0].x, cell.value[0].y, not cell.value[1], sizeof_rect)
+	cell.value = not cell.value
+	draw_bordered_square(*grid_to_screen(cell.x, cell.y), cell.value, sizeof_rect)
 
 
 def rotate_ant(color, ant):
@@ -44,11 +52,14 @@ for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 		draw_bordered_square(x, y, False, sizeof_rect)
 
 x_pos = y_pos = int(STAGE_SIZE / 2)
-#cell = cells[grid_to_screen(x_pos, y_pos)]
-cell = cells.get(*grid_to_screen(x_pos, y_pos))
+cells.insert(quadtree.Node(x_pos, y_pos))
+cell = cells.get(x_pos, y_pos)
+cell.value = False
+cells.root.value = False
 flip_cell(cell) #TODO needs to be function member of cell type (for python api)
 ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
+
 
 pause = True
 while True:
@@ -59,17 +70,17 @@ while True:
 			x, y = pygame.mouse.get_pos()
 			x = int(x / int(SCREEN_SIZE / STAGE_SIZE))
 			y = int(y / int(SCREEN_SIZE / STAGE_SIZE))
-			flip_cell(cells.get(*grid_to_screen(x, y)).value)
+			flip_cell(cells.get(*grid_to_screen(x, y)))
 			print(x, y)
 		if event.type == pygame.QUIT:
 			exit(0)
 	if not pause:
-		cell = cells.get(*grid_to_screen(*ant.position))
-		new_angle = rotate_ant(cell[1], ant)
+		cell = get_or_new(*ant.position)
+		new_angle = rotate_ant(cell.value, ant)
 		flip_cell(cell)
 		ant.orientation = new_angle
 		ant.directive(ant)
 		ant.x %= STAGE_SIZE 
 		ant.y %= STAGE_SIZE
-		pygame.draw.rect(screen, (255, 0, 0), cells.get(*grid_to_screen(ant.x, ant.y)).value[0])
+		pygame.draw.rect(screen, (255, 0, 0), (*map(lambda i: i, grid_to_screen(ant.x, ant.y)), sizeof_rect - 1, sizeof_rect - 1))
 	pygame.display.flip()

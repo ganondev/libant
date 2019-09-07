@@ -19,7 +19,9 @@ class Node(object):
 		return not self.children
 
 	def put_child(self, node, quadrant):
-		if not self.is_leaf:
+		if quadrant == -1:
+			self.value = node.value
+		elif not self.is_leaf:
 			existing_child = self.children[quadrant]
 			if existing_child:
 				existing_child.put_child(node, existing_child % node)
@@ -40,7 +42,9 @@ class Node(object):
 
 	def __eq__(self, other):
 		t = type(other)
-		if t is tuple:
+		if t is type(None):
+			return False
+		elif t is tuple:
 			x, y = other
 		elif t is Node:
 			x, y = other.x, other.y
@@ -79,12 +83,13 @@ class QTree(object):
 	# TODO this static method should return the location of the child by reference
 	@staticmethod
 	def _find(node, x, y) -> Node:
+		print(node, x, y)
 		if type(x) is int and type(y) is int:
 			compare = node % (x, y)
 			if compare == -1:
 				return node
 			else:
-				if node.is_leaf:
+				if node.is_leaf or node[compare] is None:
 					return None
 				return QTree._find(node[compare], x, y)
 		else:
