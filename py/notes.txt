@@ -22,7 +22,6 @@ All node types
 	
 All cell types
 
-	int * x, y
-		// ? figure this out
+	node *
 	value
 	directive
