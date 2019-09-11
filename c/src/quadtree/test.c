@@ -26,4 +26,8 @@ int main()
 
 	printf("%d\n", qt_node_compare(node, other));
 
+	printf("%d\n", EQ);
+
+	qt_node_get_child(other, SE)->is_leaf = false;
+
 }
