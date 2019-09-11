@@ -65,8 +65,8 @@ static inline qt_node_comparison_result_t qt_node_point_compare(qt_node_t * refe
 
 	if (reference->y == y && reference->x == x) return EQ;
 	
-	bool vertical = reference->y > target->y;
-	bool horizontal = reference->x > target->x;
+	bool vertical = reference->y > y;
+	bool horizontal = reference->x > x;
 
 	return (vertical * 2) | horizontal;
 
