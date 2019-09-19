@@ -16,7 +16,7 @@ struct qt_node_t
 	INT x;
 	INT y;
 	bool is_leaf;
-	qt_node_t * children;
+	qt_node_t ** children;
 	void * value;	
 
 };
@@ -40,6 +40,7 @@ static inline qt_node_t * qt_node_create(INT x, INT y, void * value)
 	node->x = x;
 	node->y = y;
 	node->is_leaf = true;
+	node->value = value;
 	
 	return node;
 
@@ -52,7 +53,7 @@ static inline qt_node_t * qt_node_get_child(qt_node_t * parent, qt_node_comparis
 	if (parent->is_leaf) printf("Attempted to get child at %d from leaf node at (%lld, %lld)!\n", quadrant, parent->x, parent->y);
 	if (quadrant == EQ) printf("qt_node_get_child passed quadrant -1 for parent node at (%lld, %lld).\n", parent->x, parent->y);
 	#endif
-	return &parent->children[quadrant];
+	return parent->children[quadrant];
 
 }
 
@@ -60,7 +61,7 @@ static inline qt_node_comparison_result_t qt_node_point_compare(qt_node_t * refe
 {
 
 	#ifdef TREEBUG
-	printf("Comparing point (%lld, %lld) to reference node at (%lld, %lld).\n", target->x, target->y, reference->x, reference->y);
+	printf("Comparing point (%lld, %lld) to reference node at (%lld, %lld).\n", x, y, reference->x, reference->y);
 	#endif
 
 	if (reference->y == y && reference->x == x) return EQ;
@@ -87,15 +88,14 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 {
 
 	qt_node_t * current_parent = parent;
-	qt_node_t * current_child = child;
 	while (true)
 	{
 
-		qt_node_comparison_result_t quadrant = qt_node_compare(current_parent, current_child);
+		qt_node_comparison_result_t quadrant = qt_node_point_compare(current_parent, x, y);
 		if (quadrant == EQ)
 		{
 
-			current_parent->value = current_child->value;
+			current_parent->value = value;
 			return;
 
 		}
@@ -107,6 +107,15 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 		}
 
 	}
+
+}
+
+static inline void qt_node_split(qt_node_t * node)
+{
+
+	node->children = malloc(4 * sizeof(qt_node_t *));
+
+	node->is_leaf = false;
 
 }
 #endif

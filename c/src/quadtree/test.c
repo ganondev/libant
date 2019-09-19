@@ -26,8 +26,14 @@ int main()
 
 	printf("%d\n", qt_node_compare(node, other));
 
-	printf("%d\n", EQ);
+	printf("other is leaf: %d\n", other->is_leaf);
+	qt_node_split(other);
+	printf("other is leaf: %d\n", other->is_leaf);
 
-	qt_node_get_child(other, SE)->is_leaf = false;
+	other->children[0] = qt_node_create(100, 100, NULL);
+	
+	qt_node_t * child = qt_node_get_child(other, NE);
+
+	printf("child (%lld, %lld)\n", child->x, child->y);	
 
 }
