@@ -4,9 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 
-int main()
+int test1()
 {
-
 	qt_node_t test;
 	test.x = test.y = 1;
 	
@@ -46,4 +45,12 @@ int main()
 	int c = q->is_leaf;
 	puts("4");
 	printf("child (%lld, %lld) is leaf: %d\n", child->children[3]->x, child->children[3]->y, child->children[3]->is_leaf);
+
+}
+
+int main()
+{
+	
+	test1();
+
 }
