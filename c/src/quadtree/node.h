@@ -123,6 +123,8 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 		else
 		{
 
+			current_parent = qt_node_get_child(current_parent, quadrant);
+
 		}
 
 	}
