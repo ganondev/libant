@@ -34,6 +34,16 @@ int main()
 	
 	qt_node_t * child = qt_node_get_child(other, NE);
 
-	printf("child (%lld, %lld)\n", child->x, child->y);	
-
+	printf("child (%lld, %lld) is leaf: %d\n", child->x, child->y, child->is_leaf);
+	qt_node_put_child(child, 9, 9, NULL);
+	printf("child (%lld, %lld) is leaf: %d\n", child->x, child->y, child->is_leaf);
+	qt_node_t * q = child->children[3];
+	puts("1");
+	INT a = q->x;
+	puts("2");
+	INT b = q->y;
+	puts("3");
+	int c = q->is_leaf;
+	puts("4");
+	printf("child (%lld, %lld) is leaf: %d\n", child->children[3]->x, child->children[3]->y, child->children[3]->is_leaf);
 }
