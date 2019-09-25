@@ -92,13 +92,18 @@ static inline qt_node_comparison_result_t qt_node_compare(qt_node_t * reference,
 static inline void qt_node_split(qt_node_t * node)
 {
 
-	node->children = malloc(4 * sizeof(qt_node_t *));
+	//node->children = malloc(4 * sizeof(qt_node_t *));
+	node->children = calloc(4, sizeof(qt_node_t *));
 	node->is_leaf = false;
 
 }
 
 static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * value)
 {
+
+	#ifdef TREEBUG
+	printf("Inserting node into (%lld, %lld).\n", x, y);
+	#endif
 
 	qt_node_t * current_parent = parent;
 	while (true)
@@ -107,7 +112,10 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 		qt_node_comparison_result_t quadrant = qt_node_point_compare(current_parent, x, y);
 		if (quadrant == EQ)
 		{
-
+			
+			#ifdef TREEBUG
+			printf("Replacing existing value at (%lld, %lld).\n", x, y);
+			#endif
 			current_parent->value = value;
 			return;
 
@@ -115,6 +123,9 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 		else if (current_parent->is_leaf)
 		{
 
+			#ifdef TREEBUG
+			printf("Encountered leaf node at (%lld, %lld). Splitting and inserting at (%lld, %lld).\n", current_parent->x, current_parent->y, x, y);
+			#endif
 			qt_node_split(current_parent);
 			current_parent->children[quadrant] = qt_node_create(x, y, value);
 			return;
@@ -123,7 +134,22 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 		else
 		{
 
-			current_parent = qt_node_get_child(current_parent, quadrant);
+			#ifdef TREEBUG
+			printf("Continuing to dig for insert location for (%lld, %lld) from (%lld, %lld) to quadrant %d.\n", x, y, current_parent->x, current_parent->y, quadrant);
+			#endif
+			qt_node_t * child_ptr = qt_node_get_child(current_parent, quadrant);
+			if (child_ptr == NULL)
+			{
+
+				#ifdef TREEBUG
+				printf("Terminating insert for (%lld, %lld) to NULL pointer in quadrant %d.\n", x, y, quadrant);
+				#endif
+
+				current_parent->children[quadrant] = qt_node_create(x, y, value);
+				return;
+
+			}
+			current_parent = child_ptr;
 
 		}
 

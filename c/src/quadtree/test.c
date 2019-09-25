@@ -85,7 +85,7 @@ int test2()
 	qt_node_put_child(test, 2, 2, NULL);
 	check_node(test, (qdrnt[]){NE}, 1, 1, 1, false);
 	check_node(test, (qdrnt[]){NE, NE}, 2, 2, 2, true);
-	qt_node_put_child(test, -6, 8, NULL); //SEGFAULT in qt_node_point_compare()
+	qt_node_put_child(test, -6, 8, NULL);
 	check_node(test, (qdrnt[]){NW}, 1, -6, 8, true);
 	
 }
