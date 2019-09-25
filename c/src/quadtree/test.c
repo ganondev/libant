@@ -3,6 +3,31 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
+
+const char * quadrants[] = { "NE", "NW", "SW", "SE" };
+
+int check_node(qt_node_t * root, qt_node_comparison_result_t * path, size_t path_size, INT x, INT y, bool is_leaf)
+{
+	
+	printf("\nSearching for (%lld, %lld). Starting at node (%lld, %lld)\n", x, y, root->x, root->y);
+	
+	for (size_t i = 0; i < path_size; i++)
+	{
+		
+		root = root->children[path[i]];
+		printf("\tto quadrant %s for node at (%lld, %lld)\n", quadrants[path[i]], root->x, root->y);
+		
+	}
+	
+	printf("Reached expected node at (%lld, %lld) - is_leaf: %d\n\n", root->x, root->y, root->is_leaf);
+	
+	assert(root != NULL);
+	assert(x != -1 && root->x == x);
+	assert(y != -1 && root->y == y);
+	assert(root->is_leaf == is_leaf);
+	
+}
 
 int test1()
 {
@@ -48,9 +73,27 @@ int test1()
 
 }
 
+typedef qt_node_comparison_result_t qdrnt;
+
+//deep put_child tests
+int test2()
+{
+	
+	qt_node_t * test = qt_node_create(0, 0, NULL);
+	qt_node_put_child(test, 1, 1, NULL);
+	check_node(test, (qdrnt[]){NE}, 1, 1, 1, true);
+	qt_node_put_child(test, 2, 2, NULL);
+	check_node(test, (qdrnt[]){NE}, 1, 1, 1, false);
+	check_node(test, (qdrnt[]){NE, NE}, 2, 2, 2, true);
+	qt_node_put_child(test, -6, 8, NULL); //SEGFAULT in qt_node_point_compare()
+	check_node(test, (qdrnt[]){NW}, 1, -6, 8, true);
+	
+}
+
 int main()
 {
 	
 	test1();
+	test2();
 
 }
