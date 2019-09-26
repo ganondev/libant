@@ -116,6 +116,8 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 			#ifdef TREEBUG
 			printf("Replacing existing value at (%lld, %lld).\n", x, y);
 			#endif
+			void * old_value;
+			if (!(old_value = current_parent->value)) free(old_value);
 			current_parent->value = value;
 			return;
 

@@ -4,10 +4,11 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <mcheck.h>
 
-const char * quadrants[] = { "NE", "NW", "SW", "SE" };
+const char * quadrants[] = { "NE", "NW", "SE", "SW" };
 
-int check_node(qt_node_t * root, qt_node_comparison_result_t * path, size_t path_size, INT x, INT y, bool is_leaf)
+qt_node_t * check_node(qt_node_t * root, qt_node_comparison_result_t * path, size_t path_size, INT x, INT y, bool is_leaf)
 {
 	
 	printf("\nSearching for (%lld, %lld). Starting at node (%lld, %lld)\n", x, y, root->x, root->y);
@@ -20,12 +21,14 @@ int check_node(qt_node_t * root, qt_node_comparison_result_t * path, size_t path
 		
 	}
 	
-	printf("Reached expected node at (%lld, %lld) - is_leaf: %d\n\n", root->x, root->y, root->is_leaf);
+	printf("\tReached expected node at (%lld, %lld) - is_leaf: %d\n\n", root->x, root->y, root->is_leaf);
 	
 	assert(root != NULL);
-	assert(x != -1 && root->x == x);
-	assert(y != -1 && root->y == y);
+	assert(root->x == x);
+	assert(root->y == y);
 	assert(root->is_leaf == is_leaf);
+
+	return root;
 	
 }
 
@@ -75,10 +78,14 @@ int test1()
 
 typedef qt_node_comparison_result_t qdrnt;
 
+void no_op(enum mcheck_status status) { }
+
 //deep put_child tests
 int test2()
 {
 	
+	mcheck(&no_op);
+
 	qt_node_t * test = qt_node_create(0, 0, NULL);
 	qt_node_put_child(test, 1, 1, NULL);
 	check_node(test, (qdrnt[]){NE}, 1, 1, 1, true);
@@ -87,7 +94,24 @@ int test2()
 	check_node(test, (qdrnt[]){NE, NE}, 2, 2, 2, true);
 	qt_node_put_child(test, -6, 8, NULL);
 	check_node(test, (qdrnt[]){NW}, 1, -6, 8, true);
-	
+	qt_node_put_child(test, -2, -1, NULL);
+	check_node(test, (qdrnt[]){SW}, 1, -2, -1, true);
+	qt_node_put_child(test, 5, -6, NULL);
+	check_node(test, (qdrnt[]){SE}, 1, 5, -6, true);
+
+	qt_node_put_child(test, 2, -1, NULL);
+	check_node(test, (qdrnt[]){SE, NW}, 2, 2, -1, true);
+	//check that replacement works correctly
+	qt_node_put_child(test, 2, -1, NULL);
+	qt_node_t * cnode = check_node(test, (qdrnt[]){SE, NW}, 2, 2, -1, true);
+	//check that replacement actually inserts value
+	qt_node_put_child(test, 2, -1, "abc");
+	printf("%s\n", cnode->value);
+	printf("%d\n", mprobe(cnode->value));
+	printf("%d\n", mprobe("test"));
+	void * value = cnode->value;
+	assert(mprobe(value) == MCHECK_OK);
+
 }
 
 int main()
