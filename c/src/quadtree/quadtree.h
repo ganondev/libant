@@ -9,7 +9,7 @@
 #include <standards.h>
 #include <antmacro.h>
 
-#include <node.h>
+#include "node.h"
 
 #include <stdlib.h>
 #include <stdbool.h>

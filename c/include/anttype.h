@@ -1,6 +1,8 @@
 #ifndef LIBANT_ANTTYPE_H
 #define LIBANT_ANTTYPE_H
 
+#include "../src/quadtree/quadtree.h"
+
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -21,7 +23,7 @@ struct ant_t
 
 };
 
-struct ant_cell_t
+struct ant_cell_t //TODO merge with data structure cells
 {
 
 	//TODO Same as ant_t: C99 VLA? 
@@ -31,8 +33,10 @@ struct ant_cell_t
 
 };
 
-struct ant_grid_t
+struct ant_grid_t // eventually other data structures should be inlined castable extensions of this
 {
+
+	libant_quadtree_t * tree; //TODO will need to be heavily generalized
 
 	ant_t * ants;
 	ant_cell_t * origin;
@@ -50,7 +54,5 @@ inline void zero_ant_position(ant_t *);
 inline ant_t * resize_ant_position(ant_t *, size_t);
 
 ant_grid_t new_grid(ant_cell_t * origin);
-
-ant_cell_t new_cell_empty();
 
 #endif
