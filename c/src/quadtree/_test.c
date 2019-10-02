@@ -8,7 +8,32 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+
+#define t(a) assert( a )
+
+#ifndef _WIN32
 #include <mcheck.h>
+
+void no_op(enum mcheck_status status) { }
+
+void probe(qt_node_t * node)
+{
+
+	printf(DEBUG("Probing node @ (%lld, %lld)...\n"), node->x, node->y);
+	printf("\tmprobe result: %d\n", mprobe(node));
+
+}
+
+#define mprobe_assert(val) assert( mprobe( val ) == MCHECK_OK )
+
+#define probe(node) probe(node)
+
+#else
+
+#define mprobe_assert(val)
+#define probe(node)
+
+#endif
 
 const char * quadrants[] = { "NE", "NW", "SE", "SW" };
 
@@ -39,7 +64,7 @@ qt_node_t * check_node(qt_node_t * root, qt_node_comparison_result_t * path, siz
 int test1()
 {
 
-	puts(DEBUG("Starting test 1."));
+	puts(TRACE("Starting test 1."));
 
 	qt_node_t test;
 	test.x = test.y = 1;
@@ -81,28 +106,21 @@ int test1()
 	puts("4");
 	printf("child (%lld, %lld) is leaf: %d\n", child->children[3]->x, child->children[3]->y, child->children[3]->is_leaf);
 
+	puts(IO_OK("Passed test 1!"));
+
+	return 1;
+
 }
 
 typedef qt_node_comparison_result_t qdrnt;
 
-void no_op(enum mcheck_status status) { }
-
-void probe(qt_node_t * node)
-{
-
-	printf(DEBUG("Probing node @ (%lld, %lld)...\n"), node->x, node->y);
-	printf("\tmprobe result: %d\n", mprobe(node));
-
-}
 
 //deep put_child tests
 int test2()
 {
 
-	puts(DEBUG("Starting test 2."));
+	puts(TRACE("Starting test 2."));
 	
-	mcheck(&no_op);
-
 	qt_node_t * test = qt_node_create(0, 0, NULL);
 	qt_node_put_child(test, 1, 1, NULL);
 	check_node(test, (qdrnt[]){NE}, 1, 1, 1, true);
@@ -124,13 +142,16 @@ int test2()
 	//check that replacement actually inserts value
 	qt_node_put_child(test, 2, -1, malloc(1));
 	void * value = cnode->value;
-	assert(mprobe(value) == MCHECK_OK);
+	mprobe_assert(value);
 
 	//do search tests
 	assert(qt_node_find(test, 0, 0) == test);
 	assert(qt_node_find(test, 2, -1) == cnode);
 	assert(qt_node_find(test, 100, 100) == NULL);
+
 	puts(IO_OK("Passed test 2!"));
+
+	return 1;
 
 }
 
@@ -138,7 +159,7 @@ int test2()
 int test3()
 {
 
-	puts(DEBUG("Starting test 3."));
+	puts(TRACE("Starting test 3."));
 
 	libant_quadtree_t * tree = libant_quadtree_create();
 	qt_insert(tree, 0, 0, malloc(1));
@@ -152,17 +173,24 @@ int test3()
 	probe(qt_get(tree, 5, 5)); // iterative child find works
 	assert(qt_get(tree, -1, -1) == NULL); // doesn't exist - null node
 	assert(qt_get(tree, 3, 3) == NULL); // doesn't exist - parent is leaf
+
 	puts(IO_OK("Passed test 3!"));
+
+	return 1;
 
 }
 
 int main()
 {
+
+	puts(TRACE("\nBeginning quadtree tests.\n"));
 	
 	test1();
 	puts("");
 	test2();
 	puts("");
 	test3();
+
+	puts(IO_OK("\nQuadtree tests complete!\n"));
 
 }
