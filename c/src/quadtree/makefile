@@ -1,2 +1,2 @@
 all:
-	c99 -DTREEBUG -I. -I../../include test.c -lmcheck
+	c99 -DTREEBUG -I. -I../../include quadtree.c test.c -lmcheck

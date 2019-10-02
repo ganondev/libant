@@ -5,7 +5,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #ifdef TREEBUG
+#define LIBANT_DEBUG
 #include <stdio.h>
+#include <antmacro.h>
 #endif
 
 typedef struct qt_node_t qt_node_t;
@@ -33,7 +35,17 @@ enum qt_node_comparison_result_t {
 
 };
 
-static inline qt_node_t * qt_node_create(INT x, INT y, void * value)
+#ifdef TREEBUG
+static char * stringify_result(qt_node_comparison_result_t quadrant)
+{
+
+	static char * quadrants[] = { "NE", "NW", "SE", "SW" };
+	return quadrant == EQ ? "EQ" : quadrants[quadrant];
+
+}
+#endif
+
+static inline qt_node_t * qt_node_create(INT x, INT y, void * value) //TODO valueless version?
 {
 
 	qt_node_t * node = malloc(sizeof(qt_node_t));
@@ -51,8 +63,8 @@ static inline qt_node_t * qt_node_get_child(qt_node_t * parent, qt_node_comparis
 
 	#ifdef TREEBUG
 	printf("Get quadrant: %d\n", quadrant);
-	if (parent->is_leaf) printf("Attempted to get child at %d from leaf node at (%lld, %lld)!\n", quadrant, parent->x, parent->y);
-	if (quadrant == EQ) printf("qt_node_get_child passed quadrant -1 for parent node at (%lld, %lld).\n", parent->x, parent->y);
+	if (parent->is_leaf) printf(ERROR("Attempted to get child at %d from leaf node at (%lld, %lld)!\n"), quadrant, parent->x, parent->y);
+	if (quadrant == EQ) printf(ERROR("qt_node_get_child passed quadrant -1 for parent node at (%lld, %lld).\n"), parent->x, parent->y);
 	#endif
 	return parent->children[quadrant];
 
@@ -152,6 +164,78 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 
 			}
 			current_parent = child_ptr;
+
+		}
+
+	}
+
+}
+
+static inline qt_node_t * qt_node_find(qt_node_t * root, INT x, INT y)
+{
+
+	#ifdef TREEBUG
+	printf(TRACE("Searching for node at (%lld, %lld).\n"), x, y);
+	#endif
+
+	qt_node_comparison_result_t quadrant = qt_node_point_compare(root, x, y);
+	if (quadrant == EQ)
+	{
+		
+		#ifdef TREEBUG
+		puts(DEBUG("Target is root"));
+		#endif
+		return root;
+
+	}
+	else
+	{
+
+		#ifdef TREEBUG
+		printf(DEBUG("Going from (%lld, %lld)...\n"), root->x, root->y);
+		#endif
+
+		qt_node_t * current_parent = root;
+		while (true)
+		{
+
+			if (current_parent->is_leaf)
+			{
+
+				#ifdef TREEBUG
+				printf(DEBUG("\tDead end :( -- Leaf node at %s child.\n"), stringify_result(quadrant));
+				#endif
+				return NULL;
+			
+			}
+			else
+			{
+
+				current_parent = qt_node_get_child(current_parent, quadrant);
+				if (current_parent == NULL)
+				{
+					#ifdef TREEBUG
+					printf(DEBUG("\tDead end :( -- NULL node at %s child.\n"), stringify_result(quadrant));
+					#endif
+					return NULL;
+				
+				}
+
+				#ifdef TREEBUG
+				printf(DEBUG("\tto %s child at (%lld, %lld)...\n"), stringify_result(quadrant), current_parent->x, current_parent->y);
+				#endif
+				quadrant = qt_node_point_compare(current_parent, x, y);
+				if (quadrant == EQ)
+				{
+					
+					#ifdef TREEBUG
+					puts(DEBUG("\tfound it :)"));
+					#endif
+					return current_parent;
+
+				}
+
+			}
 
 		}
 

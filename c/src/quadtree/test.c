@@ -1,6 +1,10 @@
+#define LIBANT_DEBUG
+
 #include <node.h>
+#include <antmacro.h>
 #include <standards.h>
-#include <stdarg.h>
+#include <quadtree.h>
+
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
@@ -34,6 +38,9 @@ qt_node_t * check_node(qt_node_t * root, qt_node_comparison_result_t * path, siz
 
 int test1()
 {
+
+	puts(DEBUG("Starting test 1."));
+
 	qt_node_t test;
 	test.x = test.y = 1;
 	
@@ -80,9 +87,19 @@ typedef qt_node_comparison_result_t qdrnt;
 
 void no_op(enum mcheck_status status) { }
 
+void probe(qt_node_t * node)
+{
+
+	printf(DEBUG("Probing node @ (%lld, %lld)...\n"), node->x, node->y);
+	printf("\tmprobe result: %d\n", mprobe(node));
+
+}
+
 //deep put_child tests
 int test2()
 {
+
+	puts(DEBUG("Starting test 2."));
 	
 	mcheck(&no_op);
 
@@ -105,12 +122,37 @@ int test2()
 	qt_node_put_child(test, 2, -1, NULL);
 	qt_node_t * cnode = check_node(test, (qdrnt[]){SE, NW}, 2, 2, -1, true);
 	//check that replacement actually inserts value
-	qt_node_put_child(test, 2, -1, "abc");
-	printf("%s\n", cnode->value);
-	printf("%d\n", mprobe(cnode->value));
-	printf("%d\n", mprobe("test"));
+	qt_node_put_child(test, 2, -1, malloc(1));
 	void * value = cnode->value;
 	assert(mprobe(value) == MCHECK_OK);
+
+	//do search tests
+	assert(qt_node_find(test, 0, 0) == test);
+	assert(qt_node_find(test, 2, -1) == cnode);
+	assert(qt_node_find(test, 100, 100) == NULL);
+	puts(IO_OK("Passed test 2!"));
+
+}
+
+//test the quadtree structure
+int test3()
+{
+
+	puts(DEBUG("Starting test 3."));
+
+	libant_quadtree_t * tree = libant_quadtree_create();
+	qt_insert(tree, 0, 0, malloc(1));
+	probe(tree->root);
+	qt_insert(tree, 1, 1, malloc(500));
+	qt_insert(tree, 5, 5, NULL);
+	probe(tree->root->children[0]);
+
+	assert(qt_get(tree, 0, 0) == tree->root); // root comparison works
+	assert(qt_get(tree, 1, 1) == tree->root->children[0]); // child find works
+	probe(qt_get(tree, 5, 5)); // iterative child find works
+	assert(qt_get(tree, -1, -1) == NULL); // doesn't exist - null node
+	assert(qt_get(tree, 3, 3) == NULL); // doesn't exist - parent is leaf
+	puts(IO_OK("Passed test 3!"));
 
 }
 
@@ -118,6 +160,9 @@ int main()
 {
 	
 	test1();
+	puts("");
 	test2();
+	puts("");
+	test3();
 
 }
