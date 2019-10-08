@@ -2,6 +2,8 @@ import pygame
 from random import randint
 from time import sleep
 
+import data
+
 SCREEN_SIZE = 700
 STAGE_SIZE = 175  # 175 is largest size without bezels for 700 x 700 window
 sizeof_rect = int(SCREEN_SIZE / STAGE_SIZE)
@@ -59,9 +61,10 @@ pygame.init()
 
 screen = pygame.display.get_surface()
 
-cells = [ [ randint(0,1) for y in range(175) ] for x in range(175) ]
+cells = data.grid
 
 pause = True
+round = 0
 while True:
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -74,7 +77,7 @@ while True:
 			print(x, y)
 		if event.type == pygame.QUIT:
 			exit(0)
-	if not pause:
+	if not pause and round < 50:
 		new_cells = []
 		for x in range(STAGE_SIZE):
 			new_row = []
@@ -90,4 +93,5 @@ while True:
 			new_cells.append(new_row)
 		cells = new_cells
 		draw_cells()
+		round += 1
 	pygame.display.flip()

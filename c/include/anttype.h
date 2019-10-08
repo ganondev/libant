@@ -38,11 +38,27 @@ struct ant_grid_t // eventually other data structures should be inlined castable
 
 	libant_quadtree_t * tree; //TODO will need to be heavily generalized
 
+	//TODO void * (* get)(INT x, INT y)
+	//TODO void (* insert)(INT x, INT y, void * value)
+
 	ant_t * ants;
-	ant_cell_t * origin;
 	ant_cell_t * scan_list;
 
 };
+
+inline void * get(ant_grid_t * grid, INT x, INT y)
+{
+
+	return qt_get(grid->tree, x, y);
+
+}
+
+inline void insert(ant_grid_t * grid, INT x, INT y, void * value)
+{
+
+	qt_insert(grid->tree, x, y, value);
+
+}
 
 #ifndef _WIN32
 inline
@@ -53,6 +69,6 @@ inline void zero_ant_position(ant_t *);
 
 inline ant_t * resize_ant_position(ant_t *, size_t);
 
-ant_grid_t new_grid(ant_cell_t * origin);
+ant_grid_t * new_grid(/*ant_cell_t * origin*/); //TODO bring it back but make it generic
 
 #endif

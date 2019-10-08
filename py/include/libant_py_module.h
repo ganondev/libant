@@ -3,7 +3,7 @@
 
 #include <Python.h>
 
-#include "libant_py_ant.h"
+#include <libant_py_ant.h>
 
 PyMethodDef module_methods[] = {
 

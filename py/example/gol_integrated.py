@@ -3,6 +3,7 @@ import libant
 import itertools
 from random import randint
 from time import sleep
+import data
 
 SCREEN_SIZE = 700
 STAGE_SIZE = 175  # 175 is largest size without bezels for 700 x 700 window
@@ -65,13 +66,19 @@ pygame.init()
 screen = pygame.display.get_surface()
 
 cells = { }
-for pair in itertools.product([ z for z in range(STAGE_SIZE)], [ z for z in range(STAGE_SIZE)]):
-	v = randint(0, 1)
-	if v:
-		insert(cells, pair)
+# for pair in itertools.product([ z for z in range(STAGE_SIZE)], [ z for z in range(STAGE_SIZE)]):
+	# v = randint(0, 1)
+	# if v:
+		# insert(cells, pair)
+		
+for x in range(len(data.grid)):
+	for y in range(len(data.grid[x])):
+		if data.grid[x][y]:
+			insert(cells, (x, y))
 draw_cells()
 
 pause = True
+round = 0
 while True:
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -84,7 +91,7 @@ while True:
 			print(x, y)
 		if event.type == pygame.QUIT:
 			exit(0)
-	if not pause:
+	if not pause and round < 50:
 		new_cells = {}
 		for cell in cells:
 			neighbours = len(list(filter(lambda n: (n in cells) and cells[n], neighbours_of(*cell))))
@@ -92,4 +99,5 @@ while True:
 				insert(new_cells, cell)
 		cells = new_cells
 		draw_cells()
+		round += 1
 	pygame.display.flip()

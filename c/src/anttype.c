@@ -1,5 +1,6 @@
-#include "anttype.h"
-#include "string.h"
+#include <anttype.h>
+#include "quadtree/quadtree.h"
+#include <string.h>
 
 ant_t * create_ant(size_t position_size)
 {
@@ -29,19 +30,11 @@ ant_t * resize_ant_position(ant_t * ant, size_t size)
 	
 }
 
-ant_grid_t new_grid(ant_cell_t * origin)
+ant_grid_t * new_grid()
 {
 
 	ant_grid_t * grid = grid = calloc(1, sizeof(ant_grid_t));
-	grid->origin = origin;
-	return * grid;
-
-}
-
-ant_cell_t new_cell_empty()
-{
-
-	ant_cell_t * cell = calloc(1, sizeof(ant_cell_t));
-	return * cell;
+	grid->tree = libant_quadtree_create();
+	return grid;
 
 }
