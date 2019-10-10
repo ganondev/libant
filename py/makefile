@@ -21,3 +21,9 @@ anttype:
 	c99 -Wall -c ../c/anttype.c -o anttype.o
 
 # todo antalgo and anttype should be moved to c/ makefile
+
+py: clean
+	python3 setup.py build
+
+clean:
+	rm -rf build

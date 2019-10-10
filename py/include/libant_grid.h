@@ -4,7 +4,7 @@
 #include <Python.h>
 #include <structmember.h>
 
-#include <anttype.h>
+#include <grid.h>
 
 typedef struct py_grid py_grid;
 
@@ -15,8 +15,6 @@ struct py_grid
 	ant_grid_t * grid;
 
 };
-
-PyGetSetDef grid_getsetters[];
 
 PyTypeObject py_grid_type;
 

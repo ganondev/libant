@@ -23,6 +23,7 @@ int grid_init(py_grid * self, PyObject * args, PyObject * kwargs)
 
 	self->grid = new_grid();
 	Py_INCREF(Py_None);
+	return 0;
 
 }
 
@@ -33,7 +34,7 @@ void grid_dealloc(py_grid * self)
 
 }
 
-PyGetSetDef grid_getsetters[] = {
+static PyGetSetDef grid_getsetters[] = {
 
 	{NULL}
 
