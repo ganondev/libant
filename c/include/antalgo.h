@@ -1,7 +1,8 @@
 #ifndef LIBANT_ANTALGO_H
 #define LIBANT_ANTALGO_H
 
-#include "anttype.h"
+#include "ant.h"
+#include "grid.h"
 
 const int NORTH_2D[2];
 const int EAST_2D[2];
