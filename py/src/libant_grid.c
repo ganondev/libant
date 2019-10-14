@@ -78,6 +78,24 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 
 }
 
+static PyObject * py_grid_insert(PyObject * self, PyObject * args)
+{
+
+	long long int x, y;
+	PyObject * value;
+
+	if(PyArg_ParseTuple(args, "LLO:Grid.insert", &x, &y, &value))
+	{
+		puts("test");
+		#ifdef LIBANT_DEBUG
+		printf(TRACE("Insert to (%lld, %lld) successfull."), x, y);
+		#endif
+
+	}
+	else return NULL;
+
+}
+
 static PyObject * grid_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 {
 
@@ -117,7 +135,8 @@ static PyGetSetDef grid_getsetters[] = {
 
 static PyMethodDef grid_methods[] = {
 
-	{"get", (PyCFunction) py_grid_get, METH_VARARGS, "Get the "},
+	{"get", (PyCFunction) py_grid_get, METH_VARARGS, "Retreive the value stored in the cell at the given location. Accepts a single 2-tuple of ints or 2 ints."},
+	{"insert", (PyCFunction) py_grid_insert, METH_VARARGS, "Insert the given value at the specified location."},
 	{NULL}
 
 };
