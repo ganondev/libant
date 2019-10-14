@@ -23,7 +23,8 @@ anttype:
 # todo antalgo and anttype should be moved to c/ makefile
 
 py: clean
-	python3 setup.py build
+	python3.7 setup.py build
+	python3.7 setup.py install
 
 clean:
 	rm -rf build

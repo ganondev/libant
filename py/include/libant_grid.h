@@ -18,6 +18,4 @@ struct py_grid
 
 PyTypeObject py_grid_type;
 
-void grid_dealloc(py_grid *);
-
 #endif
