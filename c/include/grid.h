@@ -21,10 +21,20 @@ struct ant_grid_t // eventually other data structures should be inlined castable
 	// TODO ^ perhaps the generalization should occur here and this member should be a value instead of a pointer
 };
 
-inline void * grid_get(ant_grid_t * grid, INT x, INT y)
+inline void * grid_get(ant_grid_t * grid, INT x, INT y) //TODO should probably be an int
 {
 
-	return qt_get(grid->tree, x, y);
+	qt_node_t * node = qt_get(grid->tree, x, y);
+	if (node) return node->value;
+	else
+	{
+
+		#ifdef TREEBUG
+		puts(DEBUG("Node is NULL (none was found). Returning NULL value"));
+		#endif
+		return NULL;
+
+	}
 
 }
 

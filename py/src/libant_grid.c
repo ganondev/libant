@@ -74,6 +74,8 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 	puts(ERROR("Argument parsing failed."));
 	#endif
 
+	if (!PyErr_Occurred()) PyErr_SetString(PyExc_Exception, "Arguments could not be parsed."); //TODO this needs to be specified
+
 	return NULL;
 
 }
@@ -86,13 +88,19 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args)
 
 	if(PyArg_ParseTuple(args, "LLO:Grid.insert", &x, &y, &value))
 	{
-		puts("test");
+
+		Py_INCREF(value);
+		grid_insert(((py_grid *)self)->grid, x, y, value);
+		//TODO removed records need to be DECREF'd
+
 		#ifdef LIBANT_DEBUG
-		printf(TRACE("Insert to (%lld, %lld) successfull."), x, y);
+		printf(TRACE("Insert to (%lld, %lld) successfull.\n"), x, y);
 		#endif
 
 	}
 	else return NULL;
+
+	Py_RETURN_NONE;
 
 }
 

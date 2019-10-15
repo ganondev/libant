@@ -25,6 +25,6 @@ void qt_insert(libant_quadtree_t * tree, INT x, INT y, void * value)
 qt_node_t * qt_get(libant_quadtree_t * tree, INT x, INT y)
 {
 
-	return qt_node_find(tree->root, x, y)->value;
+	return qt_node_find(tree->root, x, y);
 
 }
