@@ -1,6 +1,5 @@
 import pygame
 import libant
-import quadtree
 
 SCREEN_SIZE = 700
 STAGE_SIZE = 175  # 175 is largest size without bezels for 700 x 700 window
@@ -27,9 +26,9 @@ def get_or_new(x, y):
 	return cell
 	
 
-def flip_cell(cell):
-	cell.value = not cell.value
-	draw_bordered_square(*grid_to_screen(cell.x, cell.y), cell.value, sizeof_rect)
+def flip_cell(x, y, value):
+	cells.insert(x, y, not value)
+	draw_bordered_square(*grid_to_screen(x, y), not value, sizeof_rect)
 
 
 def rotate_ant(color, ant):
@@ -46,17 +45,13 @@ screen = pygame.display.get_surface()
 
 sizeof_rect = int(SCREEN_SIZE / STAGE_SIZE)
 bezel = int((SCREEN_SIZE - (STAGE_SIZE * sizeof_rect)) / 2)
-cells = quadtree.QTree()
+cells = libant.Grid()
 for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 	for y in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 		draw_bordered_square(x, y, False, sizeof_rect)
 
 x_pos = y_pos = int(STAGE_SIZE / 2)
-cells.insert(quadtree.Node(x_pos, y_pos))
-cell = cells.get(x_pos, y_pos)
-cell.value = False
-cells.root.value = False
-flip_cell(cell) #TODO needs to be function member of cell type (for python api)
+cells.insert(x_pos, y_pos, False)
 ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
 
@@ -75,9 +70,11 @@ while True:
 		if event.type == pygame.QUIT:
 			exit(0)
 	if not pause:
-		cell = get_or_new(*ant.position)
-		new_angle = rotate_ant(cell.value, ant)
-		flip_cell(cell)
+		cell_value = cells.get(ant.x, ant.y)
+		if cell_value is None:
+			cell_value = False
+		flip_cell(ant.x, ant.y, cell_value)
+		new_angle = rotate_ant(cell_value, ant)
 		ant.orientation = new_angle
 		ant.directive(ant)
 		ant.x %= STAGE_SIZE 

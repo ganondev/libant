@@ -108,13 +108,14 @@ static PyObject * grid_new(PyTypeObject * type, PyObject * args, PyObject * kwar
 {
 
 	py_grid * self = (py_grid *) type->tp_alloc(type, 0);
+	#ifdef LIBANT_DEBUG
 	if (self != NULL)
 	{
 
 		puts(DEBUG("Got a new Grid!"));
 
 	}
-
+	#endif
 	return (PyObject *) self;
 
 }
