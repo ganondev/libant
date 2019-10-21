@@ -1,9 +1,12 @@
 #ifndef __libant_quadtree_node
 #define __libant_quadtree_node
 
-#include <standards.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
+#include <standards.h>
+#include <cell.h>
+
 #ifdef TREEBUG
 #define LIBANT_DEBUG
 #include <stdio.h>
@@ -15,11 +18,11 @@ typedef struct qt_node_t qt_node_t;
 struct qt_node_t
 {
 
+	ant_cell_t cell_head;
 	INT x;
 	INT y;
 	bool is_leaf;
 	qt_node_t ** children;
-	void * value;	
 
 };
 
@@ -52,7 +55,7 @@ static inline qt_node_t * qt_node_create(INT x, INT y, void * value) //TODO valu
 	node->x = x;
 	node->y = y;
 	node->is_leaf = true;
-	node->value = value;
+	node->cell_head.value = value;
 	
 	return node;
 
