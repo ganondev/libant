@@ -31,7 +31,7 @@ inline void * grid_get(ant_grid_t * grid, INT x, INT y) //TODO should probably b
 {
 
 	qt_node_t * node = qt_get(grid->tree, x, y);
-	if (node) return node->value;
+	if (node) return node->cell_head.value;
 	else
 	{
 
@@ -60,6 +60,27 @@ inline void grid_scan_list_clear(ant_grid_t * grid)
 
 }
 
+inline void grid_scan_list_add(ant_grid_t * grid, ant_cell_t * cell)
+{
+
+	grid->scan_list = realloc(grid->scan_list, sizeof(ant_cell_t *) * grid->scan_list_size); // TODO find alternative, this is unsafe
+	grid->scan_list[grid->scan_list_size++] = cell;
+
+}
+
 ant_grid_t * new_grid(/*ant_cell_t * origin*/); // TODO bring it back but make it generic
+
+inline void grid_tick(ant_grid_t * grid)
+{
+
+	for (int i = 0; i < grid->scan_list_size; i++)
+	{
+
+		ant_cell_t * cell = grid->scan_list[i];
+		cell->rule(cell);
+
+	}
+
+}
 
 #endif

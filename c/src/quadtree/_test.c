@@ -141,7 +141,7 @@ int test2()
 	qt_node_t * cnode = check_node(test, (qdrnt[]){SE, NW}, 2, 2, -1, true);
 	//check that replacement actually inserts value
 	qt_node_put_child(test, 2, -1, malloc(1));
-	void * value = cnode->value;
+	void * value = cnode->cell_head.value;
 	mprobe_assert(value);
 
 	//do search tests

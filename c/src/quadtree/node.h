@@ -107,7 +107,6 @@ static inline qt_node_comparison_result_t qt_node_compare(qt_node_t * reference,
 static inline void qt_node_split(qt_node_t * node)
 {
 
-	//node->children = malloc(4 * sizeof(qt_node_t *));
 	node->children = calloc(4, sizeof(qt_node_t *));
 	node->is_leaf = false;
 
@@ -132,8 +131,8 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 			printf("Replacing existing value at (%lld, %lld).\n", x, y);
 			#endif
 			void * old_value;
-			if (!(old_value = current_parent->value)) free(old_value);
-			current_parent->value = value;
+			if (!(old_value = current_parent->cell_head.value)) free(old_value);
+			current_parent->cell_head.value = value;
 			return;
 
 		}

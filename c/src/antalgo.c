@@ -1,4 +1,4 @@
-#include "antalgo.h"
+#include <antalgo.h>
 
 const int NORTH_2D[2] = {0, -1};
 const int EAST_2D[2] = {1, 0};
@@ -22,4 +22,9 @@ ant_t * create_langtons_ant(void)
 	ant->directive = langtons_ant_default_directive;
 	return ant;
 	
+}
+
+void langtons_ant_default_rule(ant_cell_t * cell)
+{
+
 }
