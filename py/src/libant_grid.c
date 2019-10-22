@@ -80,7 +80,7 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 
 }
 
-static PyObject * py_grid_insert(PyObject * self, PyObject * args)
+static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could return true/false
 {
 
 	long long int x, y;

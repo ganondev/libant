@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "libant_py_ant.h"
-#include "antmacro.h"
+
+#include <antmacro.h>
+#include <libant_py_ant.h>
 
 /* GENERAL METHODS */
 

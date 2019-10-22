@@ -6,7 +6,7 @@
       "includePath": [
         "${workspaceRoot}\\c\\include", // It doesn't work without both of these for some reason
         "c/include",                    //
-        "c/src/quadtree",
+        "c/src",
         "py/include",
         "${env.py_include}\\",
         "${env.VCToolsInstallDir}\\include",
