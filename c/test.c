@@ -23,6 +23,6 @@ int main()
 
 	puts(TRACE("\nBeginning tests for libant core library.\n"));
 	test1();
-	puts(IO_OK("\nCompleted all tests for libant core libraru.\n"));
+	puts(IO_OK("\nCompleted all tests for libant core library.\n"));
 
 }
