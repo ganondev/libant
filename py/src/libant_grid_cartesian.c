@@ -3,9 +3,7 @@
 int grid_cartesian_init(py_grid * self, PyObject * args, PyObject * kwargs)
 {
 
-	ant_init(self, args, kwargs);
-	self->ant->directive = langtons_ant_default_directive;
-	self->py_directive = langtons_ant_directive_func;
+	self->grid = new_grid();
 	
     return 0;
 

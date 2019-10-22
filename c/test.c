@@ -2,7 +2,7 @@
 
 #include "include/standards.h"
 #include "include/antmacro.h"
-#include "include/anttype.h"
+#include "include/grid.h"
 #include <stdio.h>
 
 int test1()
