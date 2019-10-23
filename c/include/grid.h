@@ -73,8 +73,16 @@ ant_grid_t * new_grid(/*ant_cell_t * origin*/); // TODO bring it back but make i
 inline void grid_tick(ant_grid_t * grid)
 {
 
+	#ifdef LIBANT_DEBUG
+	printf(TRACE("Performing state tick on ant_grid with scan list of size %zu.\n"), grid->scan_list_size);
+	#endif
+
 	for (int i = 0; i < grid->scan_list_size; i++)
 	{
+
+		#ifdef LIBANT_DEBUG
+		printf(DEBUG("Updating cell at index %d with it's rule."), i);
+		#endif
 
 		ant_cell_t * cell = grid->scan_list[i];
 		cell->rule(cell);

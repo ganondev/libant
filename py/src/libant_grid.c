@@ -104,6 +104,17 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could 
 
 }
 
+static PyObject * py_grid_tick(PyObject * self)
+{
+
+	#ifdef LIBANT_DEBUG
+	puts(TRACE("Performing state tick on py_grid..."));
+	#endif
+	grid_tick(((py_grid *)self)->grid);
+	Py_RETURN_NONE;
+
+}
+
 static PyObject * grid_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 {
 
@@ -145,6 +156,7 @@ static PyMethodDef grid_methods[] = {
 
 	{"get", (PyCFunction) py_grid_get, METH_VARARGS, "Retreive the value stored in the cell at the given location. Accepts a single 2-tuple of ints or 2 ints."},
 	{"insert", (PyCFunction) py_grid_insert, METH_VARARGS, "Insert the given value at the specified location."},
+	{"tick", (PyCFunction) py_grid_tick, METH_NOARGS, "Updates the state of the world based on the rules of each cell in the grid's scan list."},
 	{NULL}
 
 };
