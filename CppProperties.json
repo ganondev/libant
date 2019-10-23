@@ -10,7 +10,7 @@
         "py/include",
         "${env.py_include}\\",
         "${env.VCToolsInstallDir}\\include",
-        "${env.VSINSTALLDIR}\\SDK\\ScopeCppSDK\\SDK\\include\\ucrt"
+        "${env.crt_include}\\"
       ],
       "defines": [
         "LIBANT_DEBUG"
