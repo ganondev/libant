@@ -45,7 +45,7 @@ static PyObject * grid_cartesian_get(PyObject * self, PyObject * args)
 
 		if ((x_coord == -1 || y_coord == -1) && PyErr_Occurred()) return NULL;
 
-		INT value = grid_get(((py_grid *) self)->grid, x_coord, y_coord);
+		INT value = (INT)grid_get_value(((py_grid *) self)->grid, x_coord, y_coord);
 		#ifdef LIBANT_DEBUG
 		printf(DEBUG("Found integer value: %lld\n"), value);
 		#endif
@@ -74,7 +74,7 @@ static PyObject* grid_cartesian_insert(PyObject* self, PyObject* args)
 	if (PyArg_ParseTuple(args, "LLL:CartesianGrid.insert", &x, &y, &value))
 	{
 
-		grid_insert(((py_grid *)self)->grid, x, y, value);
+		grid_insert(((py_grid *)self)->grid, x, y, (void *)value);
 
 		#ifdef LIBANT_DEBUG
 		printf(TRACE("Insert of %lld to (%lld, %lld) successfull.\n"), value, x, y);

@@ -2,6 +2,7 @@
 
 #include <antmacro.h>
 #include <libant_py_ant.h>
+#include <libant_grid.h>
 
 /* GENERAL METHODS */
 
@@ -252,7 +253,7 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 		#endif
 
 		//TODO set backend directive to langton's default C version
-		self->ant->directive = langtons_ant_default_directive;
+		self->ant->directive = (directivefn)langtons_ant_default_directive;
 
 	}
 	// If other default directives are defined, conditions go here
@@ -280,24 +281,24 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     if (self != NULL)
     {
 
-	#ifdef LIBANT_DEBUG
+		#ifdef LIBANT_DEBUG
         puts(DEBUG("Got a new Ant!"));
-	#endif
+		#endif
 
     }
 
-    return (PyObject *) self;
+    return (PyObject *) self; //TODO is NULL when None is passed to constructor
 
 }
 
 int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-    //static char * kwlist[] = {"test", NULL};
-    //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
-	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
-	
-	self->ant = create_ant(2);
+	PyObject * arg;
+
+	if(!PyArg_UnpackTuple(args, "Ant.__init__", 1, 1, &arg) || !py_grid_check(arg)) return -1;
+
+	self->ant = create_ant(2, ((py_grid *)arg)->grid);
 	self->py_directive = (PyObject *) Py_None;
 	Py_INCREF(Py_None);
 	

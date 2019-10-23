@@ -18,7 +18,7 @@ setup(name='libant',
 		ext_modules=[Extension('libant',
 							sources,
 							include_dirs=includes,
-							extra_compile_args=["-DLIBANT_DEBUG", "-DPY_SSIZE_T_CLEAN", "-DTREEBUG"]
+							extra_compile_args=["-DPY_SSIZE_T_CLEAN", "-DLIBANT_DEBUG", "-DTREEBUG"]
 							)
 				]
 	)

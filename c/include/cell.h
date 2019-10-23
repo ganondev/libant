@@ -2,13 +2,12 @@
 #define LIBANT_CELL_H
 
 #include "standards.h"
-#include "ant.h"
 
 typedef struct ant_cell_t ant_cell_t;
 
 typedef void (* rulefn)(ant_cell_t *, ...);
 
-struct ant_cell_t // TODO merge with data structure cells
+struct ant_cell_t
 {
 
 	rulefn rule;

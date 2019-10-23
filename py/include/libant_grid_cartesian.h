@@ -6,6 +6,8 @@
 
 #include "libant_grid.h"
 
+#define py_grid_cartesian_check(obj) PyObject_TypeCheck(obj, &py_grid_cartesian_type)
+
 PyTypeObject py_grid_cartesian_type;
 
 #endif

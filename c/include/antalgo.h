@@ -12,13 +12,12 @@ const int WEST_2D[2];
 const int * CARDINAL_2D[4];
 
 // general functions for this library's automaton
-void turmite_update(ant_t * ant);
-void next_state_create(ant_grid_t * grid);
+void next_state_create(ant_grid_t *);
 
 ant_grid_t langtons_ant(/* TODO initial state */);
 
-void langtons_ant_default_directive(ant_t *, ...);
+void langtons_ant_default_directive(ant_t *);
 
-ant_t * create_langtons_ant(void);
+ant_t * create_langtons_ant(ant_grid_t *);
 
 #endif

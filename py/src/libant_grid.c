@@ -47,7 +47,7 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 
 		if ((x_coord == -1 || y_coord == -1) && PyErr_Occurred()) return NULL;
 
-		PyObject * value = grid_get(((py_grid *) self)->grid, x_coord, y_coord);
+		PyObject * value = grid_get_value(((py_grid *) self)->grid, x_coord, y_coord);
 		if (value == NULL)
 		{
 

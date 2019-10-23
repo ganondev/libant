@@ -45,16 +45,15 @@ screen = pygame.display.get_surface()
 
 sizeof_rect = int(SCREEN_SIZE / STAGE_SIZE)
 bezel = int((SCREEN_SIZE - (STAGE_SIZE * sizeof_rect)) / 2)
-cells = libant.Grid()
+cells = libant.CartesianGrid()
 for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 	for y in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 		draw_bordered_square(x, y, False, sizeof_rect)
 
 x_pos = y_pos = int(STAGE_SIZE / 2)
 cells.insert(x_pos, y_pos, False)
-ant = libant.LangtonsAnt()
+ant = libant.LangtonsAnt(cells)
 ant.position = (x_pos, y_pos)
-
 
 pause = True
 while True:
@@ -71,11 +70,10 @@ while True:
 			exit(0)
 	if not pause:
 		cell_value = cells.get(ant.x, ant.y)
-		if cell_value is None:
-			cell_value = False
 		flip_cell(ant.x, ant.y, cell_value)
-		new_angle = rotate_ant(cell_value, ant)
-		ant.orientation = new_angle
+		#new_angle = rotate_ant(cell_value, ant) # TODO from tick
+		#ant.orientation = new_angle #TODO from tick
+		cells.tick()
 		ant.directive(ant)
 		ant.x %= STAGE_SIZE 
 		ant.y %= STAGE_SIZE

@@ -56,6 +56,7 @@ static inline qt_node_t * qt_node_create(INT x, INT y, void * value) //TODO valu
 	node->y = y;
 	node->is_leaf = true;
 	node->cell_head.value = value;
+	node->cell_head.rule = NULL;
 	
 	return node;
 
