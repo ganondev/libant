@@ -71,9 +71,9 @@ while True:
 	if not pause:
 		cell_value = cells.get(ant.x, ant.y)
 		flip_cell(ant.x, ant.y, cell_value)
-		#new_angle = rotate_ant(cell_value, ant) # TODO from tick
-		#ant.orientation = new_angle #TODO from tick
-		cells.tick()
+		new_angle = rotate_ant(cell_value, ant) # TODO from tick
+		ant.orientation = new_angle #TODO from tick
+		#cells.tick()
 		ant.directive(ant)
 		ant.x %= STAGE_SIZE 
 		ant.y %= STAGE_SIZE
