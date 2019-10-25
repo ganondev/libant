@@ -45,7 +45,7 @@ static PyObject * grid_cartesian_get(PyObject * self, PyObject * args)
 
 		if ((x_coord == -1 || y_coord == -1) && PyErr_Occurred()) return NULL;
 
-		INT value = (INT)grid_get_value(((py_grid *) self)->grid, x_coord, y_coord);
+		INT value = (INT)grid_get_value(grid_slice((py_grid *)self), x_coord, y_coord);
 		#ifdef LIBANT_DEBUG
 		printf(DEBUG("Found integer value: %lld\n"), value);
 		#endif
@@ -74,8 +74,8 @@ static PyObject* grid_cartesian_insert(PyObject* self, PyObject* args)
 	if (PyArg_ParseTuple(args, "LLL:CartesianGrid.insert", &x, &y, &value))
 	{
 
-		grid_insert(((py_grid *)self)->grid, x, y, (void *)value);
-
+		ant_grid_t * grid = grid_slice((py_grid *)self);
+		grid->insert(grid, NULL, x, y, (void *)value);
 		#ifdef LIBANT_DEBUG
 		printf(TRACE("Insert of %lld to (%lld, %lld) successfull.\n"), value, x, y);
 		#endif
@@ -90,8 +90,7 @@ static PyObject* grid_cartesian_insert(PyObject* self, PyObject* args)
 int grid_cartesian_init(py_grid * self, PyObject * args, PyObject * kwargs)
 {
 
-	ant_grid_t * grid = new_grid(); // QT is currently created by default but it should change.
-	self->grid = grid;
+	self->grid = *((ant_grid_t *)libant_quadtree_create()); //TODO this probably won't work, may need to track core grid as a pointer
     return 0;
 
 }

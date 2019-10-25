@@ -21,7 +21,7 @@ struct py_grid
 inline ant_grid_t * grid_slice(py_grid * py_grid)
 {
 
-	return py_grid + sizeof(PyObject);
+	return (ant_grid_t *)(py_grid + sizeof(PyObject));
 
 }
 

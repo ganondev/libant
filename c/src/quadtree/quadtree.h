@@ -29,7 +29,7 @@ struct libant_quadtree_t
 
 libant_quadtree_t * libant_quadtree_create();
 
-void qt_insert(libant_quadtree_t *, INT, INT, void *);
+void qt_insert(libant_quadtree_t *, INT, INT, void *, cell_rulefn);
 
 qt_node_t * qt_get(libant_quadtree_t *, INT, INT);
 

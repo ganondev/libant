@@ -1,9 +1,8 @@
 #define LIBANT_DEBUG
 
-#include <node.h>
-#include <antmacro.h>
-#include <standards.h>
-#include <quadtree.h>
+#include "quadtree.h"
+#include "node.h"
+#include <grid.h>
 
 #include <string.h>
 #include <stdio.h>
@@ -75,11 +74,11 @@ int test1()
 
 	printf("%d\n", qt_node_compare(&test, &testt));
 
-	qt_node_t * node = qt_node_create(80, 9, NULL);
+	qt_node_t * node = qt_node_create(80, 9, NULL, NULL);
 
 	printf("%lld %lld\n", node->x, node->y);
 	
-	qt_node_t * other = qt_node_create(80, 9, NULL);
+	qt_node_t * other = qt_node_create(80, 9, NULL, NULL);
 
 	printf("%lld %lld\n", node->x, node->y);
 
@@ -89,12 +88,12 @@ int test1()
 	qt_node_split(other);
 	printf("other is leaf: %d\n", other->is_leaf);
 
-	other->children[0] = qt_node_create(100, 100, NULL);
+	other->children[0] = qt_node_create(100, 100, NULL, NULL);
 	
 	qt_node_t * child = qt_node_get_child(other, NE);
 
 	printf("child (%lld, %lld) is leaf: %d\n", child->x, child->y, child->is_leaf);
-	qt_node_put_child(child, 9, 9, NULL);
+	qt_node_put_child(child, 9, 9, NULL, NULL);
 	printf("child (%lld, %lld) is leaf: %d\n", child->x, child->y, child->is_leaf);
 	qt_node_t * q = child->children[3];
 	puts("1");
@@ -121,26 +120,26 @@ int test2()
 
 	puts(TRACE("Starting test 2."));
 	
-	qt_node_t * test = qt_node_create(0, 0, NULL);
-	qt_node_put_child(test, 1, 1, NULL);
+	qt_node_t * test = qt_node_create(0, 0, NULL, NULL);
+	qt_node_put_child(test, 1, 1, NULL, NULL);
 	check_node(test, (qdrnt[]){NE}, 1, 1, 1, true);
-	qt_node_put_child(test, 2, 2, NULL);
+	qt_node_put_child(test, 2, 2, NULL, NULL);
 	check_node(test, (qdrnt[]){NE}, 1, 1, 1, false);
 	check_node(test, (qdrnt[]){NE, NE}, 2, 2, 2, true);
-	qt_node_put_child(test, -6, 8, NULL);
+	qt_node_put_child(test, -6, 8, NULL, NULL);
 	check_node(test, (qdrnt[]){NW}, 1, -6, 8, true);
-	qt_node_put_child(test, -2, -1, NULL);
+	qt_node_put_child(test, -2, -1, NULL, NULL);
 	check_node(test, (qdrnt[]){SW}, 1, -2, -1, true);
-	qt_node_put_child(test, 5, -6, NULL);
+	qt_node_put_child(test, 5, -6, NULL, NULL);
 	check_node(test, (qdrnt[]){SE}, 1, 5, -6, true);
 
-	qt_node_put_child(test, 2, -1, NULL);
+	qt_node_put_child(test, 2, -1, NULL, NULL);
 	check_node(test, (qdrnt[]){SE, NW}, 2, 2, -1, true);
 	//check that replacement works correctly
-	qt_node_put_child(test, 2, -1, NULL);
+	qt_node_put_child(test, 2, -1, NULL, NULL);
 	qt_node_t * cnode = check_node(test, (qdrnt[]){SE, NW}, 2, 2, -1, true);
 	//check that replacement actually inserts value
-	qt_node_put_child(test, 2, -1, malloc(1));
+	qt_node_put_child(test, 2, -1, malloc(1), NULL);
 	void * value = cnode->cell_head.value;
 	mprobe_assert(value);
 
@@ -162,10 +161,10 @@ int test3()
 	puts(TRACE("Starting test 3."));
 
 	libant_quadtree_t * tree = libant_quadtree_create();
-	qt_insert(tree, 0, 0, malloc(1));
+	qt_insert(tree, 0, 0, malloc(1), NULL);
 	probe(tree->root);
-	qt_insert(tree, 1, 1, malloc(500));
-	qt_insert(tree, 5, 5, NULL);
+	qt_insert(tree, 1, 1, malloc(500), NULL);
+	qt_insert(tree, 5, 5, NULL, NULL);
 	probe(tree->root->children[0]);
 
 	assert(qt_get(tree, 0, 0) == tree->root); // root comparison works
