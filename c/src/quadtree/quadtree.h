@@ -19,6 +19,7 @@ typedef struct libant_quadtree_t libant_quadtree_t;
 struct libant_quadtree_t
 {
 
+	ant_grid_t grid_head;
 	qt_node_t * root;
 	//TODO what else to do with this
 

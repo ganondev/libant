@@ -11,25 +11,24 @@ struct ant_grid_t;
 
 typedef struct ant_grid_t ant_grid_t;
 
+typedef ant_cell_t * (* grid_getfn)(ant_grid_t *, INT, INT, ...);
+typedef void (* grid_insertfn)(ant_grid_t *, cell_rulefn, INT, INT, void *, ...);
+
 struct ant_grid_t // eventually other data structures should be inlined castable extensions of this
 {
 
-	//TODO void * (* get)(INT x, INT y);
-	//TODO void (* insert)(INT x, INT y, void * value);
+	grid_getfn get;
+	grid_insertfn insert;
 
 	size_t scan_list_size;
-
 	ant_cell_t ** scan_list; //TODO consider linked list
-
-	libant_quadtree_t * tree; // TODO will need to be heavily generalized
-	// TODO ^ perhaps the generalization should occur here and this member should be a value instead of a pointer
 
 };
 
 inline ant_cell_t * grid_get_cell(ant_grid_t * grid, INT x, INT y)
 {
 
-	return (ant_cell_t *)qt_get(grid->tree, x, y);
+	return grid->get(grid, x, y);
 
 }
 
@@ -47,13 +46,6 @@ inline void * grid_get_value(ant_grid_t * grid, INT x, INT y) //TODO should prob
 		return NULL;
 
 	}
-
-}
-
-inline void grid_insert(ant_grid_t * grid, INT x, INT y, void * value)
-{
-
-	qt_insert(grid->tree, x, y, value);
 
 }
 
@@ -81,7 +73,7 @@ inline void grid_scan_list_add(ant_grid_t * grid, INT x, INT y)
 
 }
 
-ant_grid_t * new_grid(/*ant_cell_t * origin*/); // TODO bring it back but make it generic
+ant_grid_t new_grid(grid_getfn, grid_insertfn); // TODO bring it back but make it generic
 
 inline void grid_tick(ant_grid_t * grid)
 {

@@ -1,5 +1,5 @@
-#ifndef __libant_quadtree_node
-#define __libant_quadtree_node
+#ifndef LIBANT_QUADTREE_NODE_H
+#define LIBANT_QUADTREE_NODE_H
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -48,7 +48,7 @@ static char * stringify_result(qt_node_comparison_result_t quadrant)
 }
 #endif
 
-static inline qt_node_t * qt_node_create(INT x, INT y, void * value) //TODO valueless version?
+static inline qt_node_t * qt_node_create(INT x, INT y, void * value, cell_rulefn rule) //TODO valueless version?
 {
 
 	qt_node_t * node = malloc(sizeof(qt_node_t));
@@ -56,7 +56,7 @@ static inline qt_node_t * qt_node_create(INT x, INT y, void * value) //TODO valu
 	node->y = y;
 	node->is_leaf = true;
 	node->cell_head.value = value;
-	node->cell_head.rule = NULL;
+	node->cell_head.rule = rule;
 	
 	return node;
 
@@ -113,7 +113,7 @@ static inline void qt_node_split(qt_node_t * node)
 
 }
 
-static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * value)
+static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * value, cell_rulefn rule)
 {
 
 	#ifdef TREEBUG
@@ -134,6 +134,7 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 			void * old_value;
 			if (!(old_value = current_parent->cell_head.value)) free(old_value);
 			current_parent->cell_head.value = value;
+			if (rule) current_parent->cell_head.rule = rule;
 			return;
 
 		}
@@ -144,7 +145,7 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 			printf("Encountered leaf node at (%lld, %lld). Splitting and inserting at (%lld, %lld).\n", current_parent->x, current_parent->y, x, y);
 			#endif
 			qt_node_split(current_parent);
-			current_parent->children[quadrant] = qt_node_create(x, y, value);
+			current_parent->children[quadrant] = qt_node_create(x, y, value, rule);
 			return;
 
 		}
@@ -162,7 +163,7 @@ static inline void qt_node_put_child(qt_node_t * parent, INT x, INT y, void * va
 				printf("Terminating insert for (%lld, %lld) to NULL pointer in quadrant %d.\n", x, y, quadrant);
 				#endif
 
-				current_parent->children[quadrant] = qt_node_create(x, y, value);
+				current_parent->children[quadrant] = qt_node_create(x, y, value, rule);
 				return;
 
 			}

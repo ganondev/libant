@@ -5,14 +5,15 @@
 
 typedef struct ant_cell_t ant_cell_t;
 
-typedef void (* rulefn)(ant_cell_t *, ...);
+typedef void (* cell_rulefn)(ant_cell_t *, ...);
+typedef ant_cell_t * (* grid_generatorfn)(); // TODO Might not need this
 
 struct ant_cell_t
 {
 
-	rulefn rule;
-	int state;
-	void * value; //TODO consider if state is needed
+	cell_rulefn rule;
+	int state; //TODO consider if state is needed
+	void * value; 
 
 };
 
