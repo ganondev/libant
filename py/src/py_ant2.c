@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "py_ant2.h"
-#include "antmacro.h"
+#include <py_ant2.h>
 
 /* GETTERS */
 

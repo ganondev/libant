@@ -4,13 +4,12 @@
 #include <string.h> // for memset
 #include <stdlib.h>
 
-#include "standards.h"
 #include "grid.h"
 
 struct ant_t;
 
 typedef struct ant_t ant_t;
-typedef void (* directivefn)(ant_t *, ...);
+typedef void (* ant_directivefn)(ant_t *, ...);
 
 // represents abstractly an 'active' or 'living' cell in a cellular automaton
 struct ant_t
@@ -19,7 +18,7 @@ struct ant_t
 	unsigned int orientation;
 	size_t tuple_size;
 	ant_grid_t * grid;
-	directivefn directive;
+	ant_directivefn directive;
 	INT position[];
 
 };

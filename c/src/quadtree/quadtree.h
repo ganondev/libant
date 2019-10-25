@@ -6,13 +6,15 @@
 #define LIBANT_DEBUG
 #endif
 
+#include <stdlib.h>
+#include <stdbool.h>
+
 #include <standards.h>
 #include <antmacro.h>
+#include <grid.h>
 
 #include "node.h"
 
-#include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct libant_quadtree_t libant_quadtree_t;
 

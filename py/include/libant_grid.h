@@ -4,7 +4,7 @@
 #include <Python.h>
 #include <structmember.h>
 
-#include <grid.h>
+#include <libant.h>
 
 #define py_grid_check(obj) PyObject_TypeCheck(obj, &py_grid_type)
 

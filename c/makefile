@@ -1,6 +1,6 @@
 debug:
 	mkdir -p build
-	c99 -Wall -fPIC -shared -Iinclude -Isrc src/*.c -o build/libant.so
+	c99 -Wall -fPIC -shared -Iinclude -Isrc src/*.c -o build/libant.so -D LIBANT_DEBUG
 
 test: anttype #test_quadtree
 	c99 -Wall -Iinclude test.c anttype.o quadtree.o -o tests

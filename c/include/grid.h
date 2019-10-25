@@ -1,13 +1,14 @@
 #ifndef LIBANT_GRID_H
 #define LIBANT_GRID_H
 
-#include <stdlib.h>
+#ifdef LIBANT_DEBUG
+#include <stdio.h>
+#include <antmacro.h>
+#endif
 
-#include <quadtree/quadtree.h>
+#include <stdlib.h>
 #include "standards.h"
 #include "cell.h"
-
-struct ant_grid_t;
 
 typedef struct ant_grid_t ant_grid_t;
 

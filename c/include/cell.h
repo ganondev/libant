@@ -1,8 +1,6 @@
 #ifndef LIBANT_CELL_H
 #define LIBANT_CELL_H
 
-#include "standards.h"
-
 typedef struct ant_cell_t ant_cell_t;
 
 typedef void (* cell_rulefn)(ant_cell_t *, ...);

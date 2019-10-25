@@ -26,7 +26,7 @@ ant_t * create_langtons_ant(ant_grid_t * grid)
 {
 	
 	ant_t * ant = create_ant(2, grid);
-	ant->directive = (directivefn)langtons_ant_default_directive;
+	ant->directive = (ant_directivefn)langtons_ant_default_directive;
 	return ant;
 	
 }

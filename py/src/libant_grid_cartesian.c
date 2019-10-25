@@ -1,5 +1,5 @@
 #include <libant_grid_cartesian.h>
-#include <quadtree/quadtree.h>
+#include <libant.h>
 
 static PyObject * grid_cartesian_get(PyObject * self, PyObject * args)
 {

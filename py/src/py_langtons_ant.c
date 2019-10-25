@@ -1,8 +1,6 @@
 #include <stdio.h>
-#include "py_langtons_ant.h"
-#include "antmacro.h"
+#include <py_langtons_ant.h>
 #include <libant_grid.h>
-#include <libant_grid_cartesian.h>
 
 int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {

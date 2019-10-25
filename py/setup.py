@@ -1,13 +1,13 @@
 from distutils.core import setup, Extension
 
-sources = [	r'./src/libant_py_ant.c',
+sources = [	r'../c/src/grid.c',
+			r'./src/libant_py_ant.c',
 			r'./src/libant_py_module.c',
 			r'./src/py_ant2.c',
 			r'./src/py_ant3.c',
 			r'./src/py_langtons_ant.c',
 			r'./src/libant_grid.c',
 			r'./src/libant_grid_cartesian.c',
-			r'../c/src/grid.c',
 			r'../c/src/antalgo.c',
 			r'../c/src/quadtree/quadtree.c']
 

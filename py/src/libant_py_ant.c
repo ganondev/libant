@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include <antmacro.h>
 #include <libant_py_ant.h>
 #include <libant_grid.h>
 
@@ -253,7 +252,7 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 		#endif
 
 		//TODO set backend directive to langton's default C version
-		self->ant->directive = (directivefn)langtons_ant_default_directive;
+		self->ant->directive = (ant_directivefn)langtons_ant_default_directive;
 
 	}
 	// If other default directives are defined, conditions go here

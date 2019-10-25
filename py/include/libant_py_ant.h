@@ -7,8 +7,7 @@
 #include <Python.h>
 #include <structmember.h>
 
-#include <ant.h>
-#include <antalgo.h>
+#include <libant.h>
 
 #define py_ant_check(obj) PyObject_TypeCheck(obj, &py_ant_type)
 

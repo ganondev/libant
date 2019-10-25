@@ -1,5 +1,4 @@
 #include <grid.h>
-#include "quadtree/quadtree.h"
 
 ant_grid_t new_grid(grid_getfn getfn, grid_insertfn insertfn)
 {

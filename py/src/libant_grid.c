@@ -1,8 +1,6 @@
 #include <libant_grid.h>
 #include <Python.h>
 
-#include <antmacro.h>
-
 static PyObject * py_grid_get(PyObject * self, PyObject * args)
 {
 
