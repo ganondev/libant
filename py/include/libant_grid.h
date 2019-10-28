@@ -14,16 +14,9 @@ struct py_grid
 {
 
 	PyObject_HEAD
-	ant_grid_t grid;
+	ant_grid_t * grid;
 
 };
-
-inline ant_grid_t * grid_slice(py_grid * py_grid)
-{
-
-	return (ant_grid_t *)(py_grid + sizeof(PyObject));
-
-}
 
 PyTypeObject py_grid_type;
 

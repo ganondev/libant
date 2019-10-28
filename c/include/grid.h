@@ -28,7 +28,10 @@ struct ant_grid_t // eventually other data structures should be inlined castable
 
 inline ant_cell_t * grid_get_cell(ant_grid_t * grid, INT x, INT y)
 {
-
+	
+	#ifdef LIBANT_DEBUG
+	printf(TRACE("Getting grid cell at (%lld, %lld)."), x, y);
+	#endif
 	return grid->get(grid, x, y);
 
 }

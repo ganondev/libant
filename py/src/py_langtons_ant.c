@@ -10,7 +10,7 @@ int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	if (!PyArg_UnpackTuple(args, "Ant.__init__", 1, 1, &arg) || !py_grid_cartesian_check(arg)) return -1;
 
-	self->ant = create_langtons_ant(grid_slice((py_grid *)arg));
+	self->ant = create_langtons_ant(((py_grid *)self)->grid);
 	self->py_directive = (PyObject *)langtons_ant_directive_func;
 	Py_INCREF(Py_None);
 

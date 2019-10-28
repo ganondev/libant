@@ -45,7 +45,7 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 
 		if ((x_coord == -1 || y_coord == -1) && PyErr_Occurred()) return NULL;
 
-		PyObject * value = grid_get_value(grid_slice((py_grid *)self), x_coord, y_coord);
+		PyObject * value = grid_get_value(((py_grid *)self)->grid, x_coord, y_coord);
 		if (value == NULL)
 		{
 
@@ -88,7 +88,7 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could 
 	{
 
 		Py_INCREF(value);
-		ant_grid_t * grid = grid_slice((py_grid *)self);
+		ant_grid_t * grid = ((py_grid *)self)->grid;
 		grid->insert(grid, NULL, x, y, value);
 		//TODO removed records need to be DECREF'd
 
@@ -109,7 +109,7 @@ static PyObject * py_grid_tick(PyObject * self)
 	#ifdef LIBANT_DEBUG
 	puts(TRACE("Performing state tick on py_grid..."));
 	#endif
-	grid_tick(grid_slice((py_grid *)self));
+	grid_tick(((py_grid *)self)->grid);
 	Py_RETURN_NONE;
 
 }
@@ -133,7 +133,8 @@ static PyObject * grid_new(PyTypeObject * type, PyObject * args, PyObject * kwar
 static int grid_init(py_grid * self, PyObject * args, PyObject * kwargs)
 {
 
-	self->grid = new_grid(NULL, NULL);
+	Py_INCREF(Py_None);
+	self->grid = Py_None; //TODO Currently causes segfaults
 	return 0;
 
 }

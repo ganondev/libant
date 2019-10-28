@@ -297,7 +297,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	if(!PyArg_UnpackTuple(args, "Ant.__init__", 1, 1, &arg) || !py_grid_check(arg)) return -1;
 
-	self->ant = create_ant(2, grid_slice((py_grid *)arg));
+	self->ant = create_ant(2, ((py_grid *)self)->grid);
 	self->py_directive = (PyObject *) Py_None;
 	Py_INCREF(Py_None);
 	
