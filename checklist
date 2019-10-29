@@ -14,8 +14,6 @@ Py:
 	Hide directive setters, expose function to set the directive lambda as an instance method -- https://wehart.blogspot.com/2009/01/python-trick-adding-lambda-method-to.html
 	Create grid subclasses for handling langton's ant and GOL C backend
 
-	CartesianGrid insert is mangling coordinates
-
 Misc:
 	Doxygen?
 
