@@ -13,7 +13,7 @@
 typedef struct ant_grid_t ant_grid_t;
 
 typedef ant_cell_t * (* grid_getfn)(ant_grid_t *, INT, INT, ...);
-typedef void (* grid_insertfn)(ant_grid_t *, cell_rulefn, INT, INT, void *, ...);
+typedef void (* grid_insertfn)(ant_grid_t *, INT, INT, void *, cell_rulefn, ...);
 
 struct ant_grid_t // eventually other data structures should be inlined castable extensions of this
 {

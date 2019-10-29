@@ -89,7 +89,7 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could 
 
 		Py_INCREF(value);
 		ant_grid_t * grid = ((py_grid *)self)->grid;
-		grid->insert(grid, NULL, x, y, value);
+		grid->insert(grid, x, y, value, NULL);
 		//TODO removed records need to be DECREF'd
 
 		#ifdef LIBANT_DEBUG
