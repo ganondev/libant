@@ -16,7 +16,7 @@ void next_state_create(ant_grid_t *);
 
 ant_grid_t langtons_ant(/* TODO initial state */);
 
-void langtons_ant_default_directive(ant_t *);
+void langtons_ant_default_directive(ant_t *, ant_grid_t *);
 
 //ant_cell_t langtons_ant_default_generator(INT x, INT y);
 

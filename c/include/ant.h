@@ -4,11 +4,10 @@
 #include <string.h> // for memset
 #include <stdlib.h>
 
-#include "grid.h"
-
-struct ant_t;
+#include "standards.h"
 
 typedef struct ant_t ant_t;
+
 typedef void (* ant_directivefn)(ant_t *, ...);
 
 // represents abstractly an 'active' or 'living' cell in a cellular automaton
@@ -17,7 +16,6 @@ struct ant_t
 
 	unsigned int orientation;
 	size_t tuple_size;
-	ant_grid_t * grid;
 	ant_directivefn directive;
 	INT position[];
 
@@ -40,14 +38,13 @@ inline void zero_ant_position(ant_t * ant)
 
 }
 
-inline ant_t * create_ant(size_t position_size, ant_grid_t * grid)
+inline ant_t * create_ant(size_t position_size)
 {
 
 	ant_t * ant = resize_ant_position(NULL, position_size);
 	zero_ant_position(ant);
 	ant->directive = NULL;
 	ant->orientation = 0;
-	ant->grid = grid;
 	return ant;
 
 }
