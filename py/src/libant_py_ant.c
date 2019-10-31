@@ -329,6 +329,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	}
 
+	// TODO add to scan list
 	self->ant = create_ant(2);
 	self->py_directive = (PyObject *) Py_None;
 	Py_INCREF(Py_None);

@@ -23,11 +23,12 @@ void langtons_ant_default_directive(ant_t * ant, ant_grid_t * grid)
 	
 }
 
-ant_t * create_langtons_ant(ant_grid_t * grid)
+ant_t * create_langtons_ant()
 {
 	
 	ant_t * ant = create_ant(2);
 	ant->directive = (ant_directivefn)langtons_ant_default_directive;
+	printf("ladd: %d %d\n", ant->directive, langtons_ant_default_directive);
 	return ant;
 	
 }

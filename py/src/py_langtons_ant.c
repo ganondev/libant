@@ -8,9 +8,17 @@ int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	PyObject * arg;
 
-	if (!PyArg_UnpackTuple(args, "Ant.__init__", 1, 1, &arg) || !py_grid_cartesian_check(arg)) return -1;
+	if (!PyArg_UnpackTuple(args, "LangtonsAnt.__init__", 0, 1, &arg)) return -1; // TODO can probably just call libant_py_ant::ant_init
+	if (arg != NULL && !py_grid_check(arg))
+	{
 
-	self->ant = create_langtons_ant(((py_grid *)arg)->grid);
+		PyErr_SetString(PyExc_TypeError, "Expected a Grid for single argument Ant constructor.");
+		return -1;
+
+	}
+
+	self->ant = create_langtons_ant();
+	printf("py ant %ud\n", self->ant->directive);
 	self->py_directive = (PyObject *)langtons_ant_directive_func;
 	Py_INCREF(Py_None);
 
