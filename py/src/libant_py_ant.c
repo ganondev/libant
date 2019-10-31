@@ -86,7 +86,7 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	size_t size = self->ant->tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
 	#ifdef LIBANT_DEBUG
-	printf(DEBUG("Size of tuple: %ld")"\n", size);
+	printf(DEBUGLN("Size of tuple: %zu"), size);
 	#endif
 	for (int i = 0; i < size; i++)
 	{
@@ -192,7 +192,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	{
 		
 		#ifdef LIBANT_DEBUG
-		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
+		printf(DEBUGLN("Resizing internal position tuple to size %zu..."), incoming_tuple_size);
 		#endif
 		
 		self->ant = resize_ant_position(self->ant, incoming_tuple_size);

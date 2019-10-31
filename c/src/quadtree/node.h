@@ -207,7 +207,7 @@ static inline qt_node_t * qt_node_find(qt_node_t * root, INT x, INT y)
 			{
 
 				#ifdef TREEBUG
-				printf(DEBUG("\tDead end :( -- Leaf node at %s child.\n"), stringify_result(quadrant));
+				printf(DEBUGLN("\tDead end :( -- Leaf node at %s child."), stringify_result(quadrant));
 				#endif
 				return NULL;
 			
@@ -219,7 +219,7 @@ static inline qt_node_t * qt_node_find(qt_node_t * root, INT x, INT y)
 				if (current_parent == NULL)
 				{
 					#ifdef TREEBUG
-					printf(DEBUG("\tDead end :( -- NULL node at %s child.\n"), stringify_result(quadrant));
+					printf(DEBUGLN("\tDead end :( -- NULL node at %s child."), stringify_result(quadrant));
 					#endif
 					return NULL;
 				

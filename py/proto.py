@@ -1,4 +1,7 @@
-import pygame
+from sys import argv
+gui = not "blind" in argv
+if gui:
+	import pygame
 import libant
 
 SCREEN_SIZE = 700
@@ -7,9 +10,10 @@ DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
 
 def draw_bordered_square(x, y, filled, size):
-	pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
-	if not filled:
-		pygame.draw.rect(screen, (255, 255, 255), (x + 1, y + 1, size - 2, size - 2))
+	if gui:
+		pygame.draw.rect(screen, (0, 0, 0), (x, y, size, size)), filled
+		if not filled:
+			pygame.draw.rect(screen, (255, 255, 255), (x + 1, y + 1, size - 2, size - 2))
 
 
 def grid_to_screen(x, y):
@@ -28,7 +32,8 @@ def get_or_new(x, y):
 
 def flip_cell(x, y, value):
 	cells.insert(x, y, not value)
-	draw_bordered_square(*grid_to_screen(x, y), not value, sizeof_rect)
+	if gui:
+		draw_bordered_square(*grid_to_screen(x, y), not value, sizeof_rect)
 
 
 def rotate_ant(color, ant):
@@ -36,12 +41,12 @@ def rotate_ant(color, ant):
 	# True is left turn
 	return (ant.orientation + (1 if color else -1)) % 4
 
+if gui:
+	pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
+	pygame.display.set_caption("Langton's Ant Demo")
+	pygame.init()
 
-pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
-pygame.display.set_caption("Langton's Ant Demo")
-pygame.init()
-
-screen = pygame.display.get_surface()
+	screen = pygame.display.get_surface()
 
 sizeof_rect = int(SCREEN_SIZE / STAGE_SIZE)
 bezel = int((SCREEN_SIZE - (STAGE_SIZE * sizeof_rect)) / 2)
@@ -58,17 +63,18 @@ cells.add_ant(ant)
 
 pause = True
 while True:
-	for event in pygame.event.get():
-		if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-			pause = not pause
-		if event.type == pygame.MOUSEBUTTONDOWN:
-			x, y = pygame.mouse.get_pos()
-			x = int(x / int(SCREEN_SIZE / STAGE_SIZE))
-			y = int(y / int(SCREEN_SIZE / STAGE_SIZE))
-			flip_cell(cells.get(*grid_to_screen(x, y)))
-			print(x, y)
-		if event.type == pygame.QUIT:
-			exit(0)
+	if gui:
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+				pause = not pause
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				x, y = pygame.mouse.get_pos()
+				x = int(x / int(SCREEN_SIZE / STAGE_SIZE))
+				y = int(y / int(SCREEN_SIZE / STAGE_SIZE))
+				flip_cell(cells.get(*grid_to_screen(x, y)))
+				print(x, y)
+			if event.type == pygame.QUIT:
+				exit(0)
 	if not pause:
 		cell_value = cells.get(ant.x, ant.y)
 		draw_bordered_square(*grid_to_screen(x, y), not cell_value, sizeof_rect)
@@ -78,5 +84,7 @@ while True:
 #		ant.directive(ant)
 		ant.x %= STAGE_SIZE 
 		ant.y %= STAGE_SIZE
-		pygame.draw.rect(screen, (255, 0, 0), (*map(lambda i: i, grid_to_screen(ant.x, ant.y)), sizeof_rect - 1, sizeof_rect - 1))
-	pygame.display.flip()
+		if gui:
+			pygame.draw.rect(screen, (255, 0, 0), (*map(lambda i: i, grid_to_screen(ant.x, ant.y)), sizeof_rect - 1, sizeof_rect - 1))
+	if gui:
+		pygame.display.flip()

@@ -10,7 +10,7 @@ void grid_add_ant(ant_grid_t * grid, ant_t * ant)
 	#ifdef LIBANT_DEBUG
 	printf(DEBUGLN("Scan list new size: %zu."), grid->scan_list_size);
 	#endif
-	grid->scan_list[grid->scan_list_size] = ant;
+	grid->scan_list[grid->scan_list_size - 1] = ant;
 
 }
 

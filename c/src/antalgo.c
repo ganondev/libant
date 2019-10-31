@@ -13,13 +13,18 @@ void langtons_ant_default_directive(ant_t * ant, ant_grid_t * grid)
 	#ifdef LIBANT_DEBUG
 	puts(TRACE("Executing langton's ant default directive."));
 	#endif
+
+
+	ant_cell_t * occupied_cell = grid_get_cell(grid, ant->position[0], ant->position[1]);
+	int * value = occupied_cell->value;
+	*value = !(*value);
+
+	ant->orientation = (ant->orientation + (*value ? 1 : -1)) % 4;
+
 	INT x = ant->position[0] + CARDINAL_2D[ant->orientation][0];
 	INT y = ant->position[1] + CARDINAL_2D[ant->orientation][1];
 	ant->position[0] = x;
 	ant->position[1] = y;
-
-	ant_cell_t * occupied_cell = grid_get_cell(grid, ant->position[0], ant->position[1]);
-	occupied_cell->rule(occupied_cell, ant);
 	
 }
 
@@ -28,7 +33,6 @@ ant_t * create_langtons_ant()
 	
 	ant_t * ant = create_ant(2);
 	ant->directive = (ant_directivefn)langtons_ant_default_directive;
-	printf("ladd: %d %d\n", ant->directive, langtons_ant_default_directive);
 	return ant;
 	
 }

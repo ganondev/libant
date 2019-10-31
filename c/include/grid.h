@@ -89,8 +89,6 @@ inline void grid_tick(ant_grid_t * grid)
 		#endif
 
 		ant_t * ant = grid->scan_list[i];
-		ant_directivefn fn = ant->directive;
-		printf("fn %d\n", fn);
 		ant->directive(ant, grid); //TODO need to make sure rule exists for prototype
 
 	}

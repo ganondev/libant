@@ -6,7 +6,7 @@
 int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-	PyObject * arg;
+	PyObject * arg = NULL;
 
 	if (!PyArg_UnpackTuple(args, "LangtonsAnt.__init__", 0, 1, &arg)) return -1; // TODO can probably just call libant_py_ant::ant_init
 	if (arg != NULL && !py_grid_check(arg))
@@ -18,7 +18,6 @@ int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 	}
 
 	self->ant = create_langtons_ant();
-	printf("py ant %ud\n", self->ant->directive);
 	self->py_directive = (PyObject *)langtons_ant_directive_func;
 	Py_INCREF(Py_None);
 

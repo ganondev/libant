@@ -3,7 +3,7 @@ debug:
 	c99 -Wall -fPIC -shared -Iinclude -Isrc src/*.c -o build/libant.so -D LIBANT_DEBUG
 
 test: grid #test_quadtree
-	c99 -Wall -lmcheck -Iinclude -Isrc test.c grid.o -o tests
+	c99 -Wall -lmcheck -Iinclude -Isrc test.c grid.o -O2 -o tests
 	./tests
 	rm tests *.o
 
