@@ -52,8 +52,9 @@ for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 
 x_pos = y_pos = int(STAGE_SIZE / 2)
 cells.insert(x_pos, y_pos, False)
-ant = libant.LangtonsAnt(cells)
+ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
+cells.add_ant(ant)
 
 pause = True
 while True:

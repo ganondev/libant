@@ -17,12 +17,12 @@ PyObject * position_as_py_long(ant_t * ant, int index)
 PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * args)
 {
 	
-	PyObject * ant, * grid;
+	PyObject * arg_ant, * grid;
 
-	if (PyArg_UnpackTuple(args, "langtons_ant_directive", 2, 2, &ant, &grid))
+	if (PyArg_UnpackTuple(args, "langtons_ant_directive", 2, 2, &arg_ant, &grid))
 	{
 
-		if (!py_ant_check(ant))
+		if (!py_ant_check(arg_ant))
 		{
 
 			PyErr_SetString(PyExc_TypeError, "First argument should be of type Ant.");
@@ -36,10 +36,11 @@ PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * 
 
 		}
 
+		py_ant * ant = (py_ant *)arg_ant;
+
 		Py_INCREF(ant);
 		Py_INCREF(grid);
 
-		py_ant * ant = (py_ant *)ant;
 		if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
 		{
 
@@ -317,9 +318,16 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-	PyObject * arg;
+	PyObject * arg = NULL;
 
-	if(!PyArg_UnpackTuple(args, "Ant.__init__", 1, 1, &arg) || !py_grid_check(arg)) return -1;
+	if (!PyArg_UnpackTuple(args, "Ant.__init__", 0, 1, &arg)) return -1;
+	if (arg != NULL && !py_grid_check(arg))
+	{
+
+		PyErr_SetString(PyExc_TypeError, "Expected a Grid for single argument Ant constructor.");
+		return -1;
+
+	}
 
 	self->ant = create_ant(2);
 	self->py_directive = (PyObject *) Py_None;

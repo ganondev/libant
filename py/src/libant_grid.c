@@ -1,6 +1,29 @@
 #include <libant_grid.h>
 #include <Python.h>
 
+#include <libant_py_ant.h>
+
+static PyObject * py_grid_add_ant(PyObject * self, PyObject * arg)
+{
+
+	#ifdef LIBANT_DEBUG
+	puts(TRACE("Inserting ant named %s into grid named %s.")); //TODO printf interpolation once debug names are implemented fully
+	#endif
+
+	if (!py_ant_check(arg))
+	{
+
+		PyErr_SetString(PyExc_TypeError, "Expected Ant instance for argument.");
+		return NULL;
+
+	}
+
+
+
+	Py_RETURN_NONE;
+
+}
+
 static PyObject * py_grid_get(PyObject * self, PyObject * args)
 {
 
@@ -154,6 +177,7 @@ static PyGetSetDef grid_getsetters[] = {
 
 static PyMethodDef grid_methods[] = {
 
+	{"add_ant", (PyCFunction) py_grid_add_ant, METH_O, "Add an ant instance to the grid's internal scan list such that it's directive is executed with every tick of the tracking grid."},
 	{"get", (PyCFunction) py_grid_get, METH_VARARGS, "Retreive the value stored in the cell at the given location. Accepts a single 2-tuple of ints or 2 ints."},
 	{"insert", (PyCFunction) py_grid_insert, METH_VARARGS, "Insert the given value at the specified location."},
 	{"tick", (PyCFunction) py_grid_tick, METH_NOARGS, "Updates the state of the world based on the rules of each cell in the grid's scan list."},

@@ -19,6 +19,10 @@ typedef void (* grid_insertfn)(ant_grid_t *, INT, INT, void *, cell_rulefn, ...)
 struct ant_grid_t // eventually other data structures should be inlined castable extensions of this
 {
 
+	#ifdef LIBANT_DEBUG
+	char * __name;
+	#endif
+
 	grid_getfn get;
 	grid_insertfn insert;
 
@@ -85,7 +89,7 @@ inline void grid_tick(ant_grid_t * grid)
 		#endif
 
 		ant_t * ant = grid->scan_list[i];
-		ant->directive(ant); //TODO need to make sure rule exists for prototype
+		ant->directive(ant, grid); //TODO need to make sure rule exists for prototype
 
 	}
 
