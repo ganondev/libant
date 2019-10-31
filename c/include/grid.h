@@ -85,7 +85,7 @@ inline void grid_tick(ant_grid_t * grid)
 	{
 
 		#ifdef LIBANT_DEBUG
-		printf(DEBUG("Updating ant_t at index %d with it's rule."), i);
+		printf(DEBUGLN("Updating ant_t at index %d with it's directive."), i);
 		#endif
 
 		ant_t * ant = grid->scan_list[i];

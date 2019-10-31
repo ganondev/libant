@@ -27,7 +27,7 @@ ant_grid_t new_grid(grid_getfn getfn, grid_insertfn insertfn)
 		.get = getfn,
 		.insert = insertfn,
 		.scan_list_size = 0,
-		.scan_list = malloc(sizeof(ant_cell_t *))
+		.scan_list = NULL
 
 	};
 	return grid;

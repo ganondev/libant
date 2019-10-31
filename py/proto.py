@@ -28,12 +28,6 @@ def get_or_new(x, y):
 		cell.value = False
 		cells.insert(cell)
 	return cell
-	
-
-def flip_cell(x, y, value):
-	cells.insert(x, y, not value)
-	if gui:
-		draw_bordered_square(*grid_to_screen(x, y), not value, sizeof_rect)
 
 
 def rotate_ant(color, ant):
@@ -56,12 +50,14 @@ for x in range(bezel, STAGE_SIZE * sizeof_rect + bezel, sizeof_rect):
 		draw_bordered_square(x, y, False, sizeof_rect)
 
 x_pos = y_pos = int(STAGE_SIZE / 2)
-cells.insert(x_pos, y_pos, False)
+cells.insert(x_pos, y_pos, True)
 ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
 cells.add_ant(ant)
 
-pause = True
+pause = gui
+if not pause:
+	input("Press enter to start simulation")
 while True:
 	if gui:
 		for event in pygame.event.get():
@@ -77,11 +73,8 @@ while True:
 				exit(0)
 	if not pause:
 		cell_value = cells.get(ant.x, ant.y)
-		draw_bordered_square(*grid_to_screen(x, y), not cell_value, sizeof_rect)
-#		new_angle = rotate_ant(cell_value, ant) # TODO from tick
-#		ant.orientation = new_angle #TODO from tick
+		draw_bordered_square(*grid_to_screen(ant.x, ant.y), not cell_value, sizeof_rect)
 		cells.tick()
-#		ant.directive(ant)
 		ant.x %= STAGE_SIZE 
 		ant.y %= STAGE_SIZE
 		if gui:

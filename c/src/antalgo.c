@@ -16,8 +16,22 @@ void langtons_ant_default_directive(ant_t * ant, ant_grid_t * grid)
 
 
 	ant_cell_t * occupied_cell = grid_get_cell(grid, ant->position[0], ant->position[1]);
-	int * value = occupied_cell->value;
-	*value = !(*value);
+	int * value = NULL;
+	if (occupied_cell == NULL)
+	{
+
+		grid->insert(grid, ant->position[0], ant->position[1], (void *)1, NULL);
+		int temp_value = 1;
+		value = &temp_value;
+
+	}
+	else
+	{
+
+		value = (void *)&(occupied_cell->value);
+		*value = !(*value);
+
+	}
 
 	ant->orientation = (ant->orientation + (*value ? 1 : -1)) % 4;
 

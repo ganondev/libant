@@ -1,3 +1,13 @@
+from sys import argv
+
+if not "release" in argv:
+	flags = ["-DLIBANT_DEBUG", "-DTREEBUG"]
+else:
+	argv.remove("release")
+	flags = []
+
+print("Flags:", flags)
+
 from distutils.core import setup, Extension
 
 sources = [	r'../c/src/grid.c',
@@ -18,7 +28,7 @@ setup(name='libant',
 		ext_modules=[Extension('libant',
 							sources,
 							include_dirs=includes,
-							extra_compile_args=["-DPY_SSIZE_T_CLEAN", "-DLIBANT_DEBUG", "-DTREEBUG"]
+							extra_compile_args=["-DPY_SSIZE_T_CLEAN", *flags]
 							)
 				]
 	)
