@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "libant_py_ant.h"
-#include "antmacro.h"
+
+#include <libant_py_ant.h>
+#include <libant_grid.h>
 
 /* GENERAL METHODS */
 
@@ -13,38 +14,63 @@ PyObject * position_as_py_long(ant_t * ant, int index)
 
 //TODO general position checker
 
-PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg)
+PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * args)
 {
+	
+	PyObject * arg_ant, * grid;
 
-	if (!py_ant_check(arg))
+	if (PyArg_UnpackTuple(args, "langtons_ant_directive", 2, 2, &arg_ant, &grid))
 	{
 
-		PyErr_SetString(PyExc_TypeError, "Argument should be an instance of the Ant class or a subclass thereof.");
-		return NULL;
+		if (!py_ant_check(arg_ant))
+		{
+
+			PyErr_SetString(PyExc_TypeError, "First argument should be of type Ant.");
+			return NULL;
+
+		}
+		if (!py_grid_check(grid))
+		{
+			
+			PyErr_SetString(PyExc_TypeError, "Second argument should be of type Grid.");
+
+		}
+
+		py_ant * ant = (py_ant *)arg_ant;
+
+		Py_INCREF(ant);
+		Py_INCREF(grid);
+
+		if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
+		{
+
+			PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
+			Py_DECREF(ant);
+			Py_DECREF(grid);
+			return NULL;
+
+		}
+
+		langtons_ant_default_directive(ant->ant, ((py_grid *)grid)->grid);
+
+		Py_DECREF(ant);
+		Py_DECREF(grid);
+
+		Py_RETURN_NONE;
 
 	}
 
-	Py_INCREF(arg);
-	
-	py_ant * ant = (py_ant *) arg;
-	if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
-	{
+	#ifdef LIBANT_DEBUG
+	puts(ERROR("Argument parsing failed."));
+	#endif
 
-		PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
-		Py_DECREF(arg);
-		return NULL;
+	if (!PyErr_Occurred()) PyErr_SetString(PyExc_Exception, "Arguments could not be parsed."); //TODO this needs to be specified
 
-	}
-
-	langtons_ant_default_directive(ant->ant);
-	
-	Py_DECREF(arg);
-	
-	Py_RETURN_NONE;
+	return NULL;
 	
 }
 
-PyMethodDef langtons_ant_directive = {"langtons_ant_directive", (PyCFunction) langtons_ant_default_directive_wrapper, METH_O, "Default directive for langton's ant." };
+PyMethodDef langtons_ant_directive = {"langtons_ant_directive", (PyCFunction) langtons_ant_default_directive_wrapper, METH_VARARGS, "Default directive for langton's ant." };
 
 PyObject * langtons_ant_directive_func = NULL;
 
@@ -60,7 +86,7 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	size_t size = self->ant->tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
 	#ifdef LIBANT_DEBUG
-	printf(DEBUG("Size of tuple: %ld")"\n", size);
+	printf(DEBUGLN("Size of tuple: %zu"), size);
 	#endif
 	for (int i = 0; i < size; i++)
 	{
@@ -166,7 +192,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	{
 		
 		#ifdef LIBANT_DEBUG
-		printf(DEBUG("Resizing internal position tuple to size %ld...")"\n", incoming_tuple_size);
+		printf(DEBUGLN("Resizing internal position tuple to size %zu..."), incoming_tuple_size);
 		#endif
 		
 		self->ant = resize_ant_position(self->ant, incoming_tuple_size);
@@ -251,7 +277,7 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 		#endif
 
 		//TODO set backend directive to langton's default C version
-		self->ant->directive = langtons_ant_default_directive;
+		self->ant->directive = (ant_directivefn)langtons_ant_default_directive;
 
 	}
 	// If other default directives are defined, conditions go here
@@ -279,23 +305,31 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     if (self != NULL)
     {
 
-	#ifdef LIBANT_DEBUG
+		#ifdef LIBANT_DEBUG
         puts(DEBUG("Got a new Ant!"));
-	#endif
+		#endif
 
     }
 
-    return (PyObject *) self;
+    return (PyObject *) self; //TODO is NULL when None is passed to constructor
 
 }
 
 int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-    //static char * kwlist[] = {"test", NULL};
-    //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
-	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
-	
+	PyObject * arg = NULL;
+
+	if (!PyArg_UnpackTuple(args, "Ant.__init__", 0, 1, &arg)) return -1;
+	if (arg != NULL && !py_grid_check(arg))
+	{
+
+		PyErr_SetString(PyExc_TypeError, "Expected a Grid for single argument Ant constructor.");
+		return -1;
+
+	}
+
+	// TODO add to scan list
 	self->ant = create_ant(2);
 	self->py_directive = (PyObject *) Py_None;
 	Py_INCREF(Py_None);

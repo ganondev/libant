@@ -7,9 +7,6 @@
 #include <Python.h>
 #include <structmember.h>
 
-#include "anttype.h"
-#include "antalgo.h"
-
 #include "libant_py_ant.h"
 
 int ant3_set_position(py_ant *, PyTupleObject *, void *);

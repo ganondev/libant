@@ -1,5 +1,7 @@
 .idea/
+.vs/
 build/
+**/__pycache__/
 *.out
 *.so
 *.dll

@@ -7,8 +7,7 @@
 #include <Python.h>
 #include <structmember.h>
 
-#include "anttype.h"
-#include "antalgo.h"
+#include <libant.h>
 
 #define py_ant_check(obj) PyObject_TypeCheck(obj, &py_ant_type)
 
@@ -21,7 +20,7 @@ typedef struct
 
 } py_ant;
 
-inline PyObject * position_as_py_long(ant_t *, int);
+PyObject * position_as_py_long(ant_t *, int); //todo inline
 
 PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * arg);
 

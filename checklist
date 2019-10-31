@@ -1,17 +1,20 @@
 Grid:
 	3D in general
 	Adding cells to scan list
-	Dictionary of cells -- to quadtree eventually?
-		For now, check out https://github.com/mystborn/GenericMap
 	Count of uniquely visited cells
 	Count of total moves so far
 
 Ant
-	Ant2DCartesian -- Limit position tuple size to 2
-		LangtonsAnt -- Comes with a default directive
 	Rework position setter to be more OO friendly
 
 Alg:
 	Highway Detection
+
+Py:
+	Hide directive setters, expose function to set the directive lambda as an instance method -- https://wehart.blogspot.com/2009/01/python-trick-adding-lambda-method-to.html
+	Create grid subclasses for handling langton's ant and GOL C backend
+
+Misc:
+	Doxygen?
 
 Going with enumerated orientation for now.
