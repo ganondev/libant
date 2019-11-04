@@ -35,7 +35,7 @@ inline ant_cell_t * grid_get_cell(ant_grid_t * grid, INT x, INT y)
 {
 	
 	#ifdef LIBANT_DEBUG
-	printf(TRACE("Getting grid cell at (%lld, %lld)."), x, y);
+	printf(TRACELN("Getting grid cell at (%lld, %lld)."), x, y);
 	#endif
 	return grid->get(grid, x, y);
 
@@ -70,7 +70,7 @@ inline void grid_scan_list_clear(ant_grid_t * grid)
 
 }
 
-ant_grid_t new_grid(grid_getfn, grid_insertfn); // TODO bring it back but make it generic
+void new_grid(ant_grid_t *, grid_getfn, grid_insertfn); // TODO bring it back but make it generic
 
 void grid_add_ant(ant_grid_t *, ant_t *);
 
