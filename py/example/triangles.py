@@ -6,8 +6,58 @@ if gui:
 import libant
 
 SCREEN_SIZE = 700
-STAGE_SIZE_X = 174
-STAGE_SIZE_Y = ceil(STAGE_SIZE_X / 2)
+STAGE_SIZE_X = 30
+STAGE_SIZE_Y = ceil(STAGE_SIZE_X / 2) - 1
+
+orientation = "UP"
+allow_point_transition = False
+
+def next_orientation(value, up):
+	global orientation
+	if (not allow_point_transition) and ((up and orientation == "DOWN") or ((not up) and orientation == "UP")):
+		print("UP:", up, "ORIENTATION:", orientation)
+		exit(1)
+	if up:
+		if value:
+			if orientation == "UP":
+				orientation = "RIGHT"
+			elif orientation == "RIGHT":
+				orientation = "DOWN"
+			elif orientation == "LEFT":
+				orientation = "RIGHT"
+			elif orientation == "DOWN":
+				orientation = "LEFT"
+		else:
+			if orientation == "UP":
+				orientation = "LEFT"
+			elif orientation == "RIGHT":
+				orientation = "LEFT"
+			elif orientation == "LEFT":
+				orientation = "DOWN"
+			elif orientation == "DOWN":
+				orientation = "RIGHT"
+	else:
+		if value:
+			if orientation == "DOWN":
+				orientation = "LEFT"
+			elif orientation == "RIGHT":
+				orientation = "LEFT"
+			elif orientation == "LEFT":
+				orientation = "UP"
+		else:
+			if orientation == "DOWN":
+				orientation = "RIGHT"
+			elif orientation == "RIGHT":
+				orientation = "UP"
+			elif orientation == "LEFT":
+				orientation = "RIGHT"
+
+dirs = {
+	"UP": (0, -1),
+	"LEFT": (-1, 0),
+	"RIGHT": (1, 0),
+	"DOWN": (0, 1)
+}
 
 def draw_bordered_triangle(x, y, filled, size, color=None):
 	if gui:
@@ -25,6 +75,7 @@ def draw_bordered_triangle(x, y, filled, size, color=None):
 def grid_to_screen(x, y):
 	return x * sizeof_rect + bezel, y * sizeof_rect + bezel
 
+
 if gui:
 	pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
 	pygame.display.set_caption("Langton's Ant Demo")
@@ -40,10 +91,10 @@ for x in range(STAGE_SIZE_X):
 
 x_pos = int(STAGE_SIZE_X / 2)
 y_pos = int(STAGE_SIZE_Y / 2)
-cells.insert(x_pos, y_pos, True)
 ant = libant.LangtonsAnt()
 ant.position = (x_pos, y_pos)
 cells.add_ant(ant)
+draw_bordered_triangle(ant.x, ant.y, True, sizeof_rect, (255, 0, 0))
 
 pause = gui
 if not pause:
@@ -62,12 +113,19 @@ while True:
 			if event.type == pygame.QUIT:
 				exit(0)
 	if not pause:
-		cell_value = cells.get(ant.x, ant.y)
-		draw_bordered_triangle(ant.x, ant.y, not cell_value, sizeof_rect)
-		cells.tick()
+		up = not (ant.x % 2) ^ (ant.y % 2)
+		cell_value = not cells.get(ant.x, ant.y)
+		cells.insert(ant.x, ant.y, cell_value)
+		next_orientation(cell_value, up)
+		draw_bordered_triangle(ant.x, ant.y, cell_value, sizeof_rect)
+		direction = dirs[orientation]
+		ant.x += direction[0]
+		ant.y += direction[1]
 		ant.x %= STAGE_SIZE_X 
 		ant.y %= STAGE_SIZE_Y
 		if gui:
 			draw_bordered_triangle(ant.x, ant.y, True, sizeof_rect, (255, 0, 0))
 	if gui:
 		pygame.display.flip()
+
+# has value turn right
