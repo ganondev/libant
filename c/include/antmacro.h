@@ -21,6 +21,18 @@
 #define DEBUGLN(tok) DEBUG(tok) ENDL
 #define IO_OKLN(tok) IO_OK(tok) ENDL
 
+#define set_name(obj, id) obj->__debug_head.name = id
+#define nameof(obj) obj->__debug_head.name
+
+typedef struct __debug_head __debug_head;
+
+struct __debug_head
+{
+
+	char * name;
+
+};
+
 #endif
 
 #define str(x) #x

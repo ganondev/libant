@@ -20,7 +20,7 @@ struct ant_grid_t // eventually other data structures should be inlined castable
 {
 
 	#ifdef LIBANT_DEBUG
-	char * __name;
+	__debug_head __dbg;
 	#endif
 
 	grid_getfn get;
