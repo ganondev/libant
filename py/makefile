@@ -26,5 +26,9 @@ py: clean
 	py setup.py build
 	py setup.py install
 
+pyr: clean
+	py setup.py build release
+	py setup.py install
+
 clean:
 	rm -rf build
