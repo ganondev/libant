@@ -18,7 +18,7 @@ int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 	}
 
 	self->ant = create_langtons_ant();
-	self->py_directive = (PyObject *)langtons_ant_directive_func;
+	self->py_directive = langtons_ant_directive_func;
 	Py_INCREF(Py_None);
 
 	return 0;

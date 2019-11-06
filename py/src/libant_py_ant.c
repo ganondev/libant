@@ -5,14 +5,12 @@
 
 /* GENERAL METHODS */
 
-PyObject * position_as_py_long(ant_t * ant, int index)
-{
-	
-	return PyLong_FromLongLong(ant->position[index]);
-	
-}
-
 //TODO general position checker
+
+void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
+{
+
+}
 
 PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * args)
 {
@@ -72,7 +70,7 @@ PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * 
 
 PyMethodDef langtons_ant_directive = {"langtons_ant_directive", (PyCFunction) langtons_ant_default_directive_wrapper, METH_VARARGS, "Default directive for langton's ant." };
 
-PyObject * langtons_ant_directive_func = NULL;
+PyFunctionObject * langtons_ant_directive_func = NULL;
 
 /* END GENERALS */
 
@@ -114,18 +112,10 @@ PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 
 }
 
-PyObject * ant_get_directive(py_ant * self, void * closure)
+PyFunctionObject * ant_get_directive(py_ant * self, void * closure) //TODO PyMethodObject
 {
 
-	Py_INCREF(self->py_directive);
 	return self->py_directive;
-	if(self->ant->directive == NULL)
-	{
-
-		Py_INCREF(Py_None);
-		return Py_None;
-
-	}	
 	
 }
 
@@ -253,8 +243,12 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 {
 
+	#ifdef LIBANT_DEBUG
+	puts(TRACE("Setting ant directive..."));
+	#endif
+
 	Py_INCREF(self);
-	
+
 	Py_DECREF(self->py_directive);
 	if (value == NULL || value == Py_None)
 	{
@@ -263,33 +257,33 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 		puts(DEBUG("Resetting directive references..."));
 		#endif
 
-		self->ant->directive = NULL;
-		self->py_directive = Py_None;
+		self->py_directive = (PyFunctionObject *)Py_None;
 		Py_INCREF(Py_None);
-		return 0;
 
 	}
-	else if (value == langtons_ant_directive_func)
+	else if (PyFunction_Check(value) || PyCFunction_Check(value))
 	{
 
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Detected default directive for langton's ant algorithm. Propogating to backend."));
-		#endif
-
-		//TODO set backend directive to langton's default C version
-		self->ant->directive = (ant_directivefn)langtons_ant_default_directive;
+		// TODO PyMethod_New for implicit self reference
+		// https://docs.python.org/3.7/c-api/method.html#method-objects
+		Py_INCREF(value);
+		self->py_directive = (PyFunctionObject *)value;
 
 	}
-	// If other default directives are defined, conditions go here
 	else
 	{
 
-		//TODO self->ant->directive = somefunctiontocallfrontend;
+		PyErr_SetString(PyExc_TypeError, "Expected a function value for Ant.directive");
+		Py_DECREF(self);
+		return -1;
 
 	}
 
-	self->py_directive = value;
 	Py_DECREF(self);
+
+	#ifdef LIBANT_DEBUG
+	puts(DEBUG("Successfully updated directive."));
+	#endif
 
 	return 0;
 
@@ -331,7 +325,8 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	// TODO add to scan list
 	self->ant = create_ant(2);
-	self->py_directive = (PyObject *) Py_None;
+	self->ant->directive = (ant_directivefn) ant_t_directive_wrapper;
+	self->py_directive = (PyFunctionObject *) Py_None;
 	Py_INCREF(Py_None);
 	
     return 0;
@@ -345,10 +340,7 @@ void ant_dealloc(py_ant * self)
 
 }
 
-#ifndef _WIN32
-static
-#endif
-PyGetSetDef ant_getsetters[] = {
+static PyGetSetDef ant_getsetters[] = {
 
 	{"position", (getter) ant_get_position, (setter) ant_set_position, "ant position", NULL},
 	{"orientation", (getter) ant_get_orientation, (setter) ant_set_orientation, "ant orientation", NULL},  
