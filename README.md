@@ -32,3 +32,8 @@ Wonderful because:
 * A minimal amount of boilerplate is involved
 * Tracking the state of the `Ant` separately from the world makes simple rule modifications very simple
 * The library is cheaper than a Mathematica license (free as in beer)
+
+## Support Libant
+I'll use this money to buy expensive coffee and gifts for my wife. This may indirectly improve code quality.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/eddyja)
