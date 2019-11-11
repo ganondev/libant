@@ -1,3 +1,0 @@
-[submodule "libdict"]
-	path = dependencies/libdict
-	url = https://github.com/fmela/libdict
