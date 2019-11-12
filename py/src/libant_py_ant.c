@@ -1,5 +1,8 @@
+#ifdef LIBANT_DEBUG
 #include <stdio.h>
+#endif
 
+#include <antmacro.h>
 #include <libant_py_ant.h>
 #include <libant_grid.h>
 
@@ -9,6 +12,10 @@
 
 void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
 {
+
+	LOG(puts("Attempting to exeucte wrapped python directive for ant %s."));
+
+	// Expect ant to be embedded into a py_ant strucutre
 
 }
 
@@ -81,7 +88,7 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 	#ifdef LIBANT_DEBUG
 	puts(DEBUG("Getting Ant position..."));
 	#endif
-	size_t size = self->ant->tuple_size;
+	size_t size = self->ant.tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
 	#ifdef LIBANT_DEBUG
 	printf(DEBUGLN("Size of tuple: %zu"), size);
