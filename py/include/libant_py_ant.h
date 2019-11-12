@@ -11,12 +11,14 @@
 
 #define py_ant_check(obj) PyObject_TypeCheck(obj, &py_ant_type)
 
+#define core_ant(obj) ((ant_t *)&(((py_ant *)obj)->ant))
+
 typedef struct
 {
 
 	PyObject_HEAD
-	ant_t * ant;
 	PyFunctionObject * py_directive; //TODO PyMethodObject
+	ant_t ant;
 
 } py_ant;
 

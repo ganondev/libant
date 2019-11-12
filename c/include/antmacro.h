@@ -42,4 +42,6 @@ struct __debug_head
 #define str(x) #x
 #define xstr(x) str(x)
 
+#define container_of (ptr, type, member) ((type *) ((char *)(ptr) - offsetof(type, member)))
+
 #endif

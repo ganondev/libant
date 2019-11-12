@@ -1,5 +1,8 @@
+#ifdef LIBANT_DEBUG
 #include <stdio.h>
+#endif
 
+#include <antmacro.h>
 #include <libant_py_ant.h>
 #include <libant_grid.h>
 
@@ -9,6 +12,10 @@
 
 void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
 {
+
+	LOG(puts("Attempting to exeucte wrapped python directive for ant %s."));
+
+	// Expect ant to be embedded into a py_ant strucutre
 
 }
 
@@ -39,7 +46,7 @@ PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * 
 		Py_INCREF(ant);
 		Py_INCREF(grid);
 
-		if (ant->ant->orientation < 0 || ant->ant->orientation > 3)
+		if (core_ant(ant)->orientation < 0 || core_ant(ant)->orientation > 3)
 		{
 
 			PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
@@ -49,7 +56,7 @@ PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * 
 
 		}
 
-		langtons_ant_default_directive(ant->ant, ((py_grid *)grid)->grid);
+		langtons_ant_default_directive(core_ant(ant), ((py_grid *)grid)->grid);
 
 		Py_DECREF(ant);
 		Py_DECREF(grid);
@@ -78,20 +85,19 @@ PyFunctionObject * langtons_ant_directive_func = NULL;
 PyTupleObject * ant_get_position(py_ant * self, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Getting Ant position..."));
-	#endif
-	size_t size = self->ant->tuple_size;
+	LOG(puts(DEBUG("Getting Ant position...")));
+
+	size_t size = self->ant.tuple_size;
 	PyObject * position_tuple = PyTuple_New(size);
-	#ifdef LIBANT_DEBUG
-	printf(DEBUGLN("Size of tuple: %zu"), size);
-	#endif
+
+	LOG(printf(DEBUGLN("Size of tuple: %zu"), size));
+
 	for (int i = 0; i < size; i++)
 	{
 			
 		PyTuple_SetItem(position_tuple,
 						i,
-						position_as_py_long(self->ant, i));
+						position_as_py_long(core_ant(self), i));
 		
 	}
 	Py_INCREF(position_tuple);
@@ -102,11 +108,9 @@ PyTupleObject * ant_get_position(py_ant * self, void * closure)
 PyLongObject * ant_get_orientation(py_ant * self, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Getting Ant orientation..."));
-	#endif
+	LOG(puts(DEBUG("Getting Ant orientation...")));
 
-	PyObject * orientation = PyLong_FromUnsignedLong(self->ant->orientation);
+	PyObject * orientation = PyLong_FromUnsignedLong(core_ant(self)->orientation);
 	Py_INCREF(orientation);
 	return (PyLongObject *) orientation;
 
@@ -126,19 +130,15 @@ PyFunctionObject * ant_get_directive(py_ant * self, void * closure) //TODO PyMet
 int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Setting Ant position..."));
-	#endif
+	LOG(puts(DEBUG("Setting Ant position...")));
 	
-	size_t stored_tuple_size = self->ant->tuple_size;
+	size_t stored_tuple_size = core_ant(self)->tuple_size;
 	if (value == NULL)
 	{
 		
 		//zero-fill the tuple and maintain its size
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Attempting to zero internal position array..."));
-		#endif
-		zero_ant_position(self->ant);
+		LOG(puts(DEBUG("Attempting to zero internal position array...")));
+		zero_ant_position(core_ant(self));
 		return 0;
 		
 	}
@@ -181,11 +181,10 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 	if (incoming_tuple_size != stored_tuple_size)
 	{
 		
-		#ifdef LIBANT_DEBUG
-		printf(DEBUGLN("Resizing internal position tuple to size %zu..."), incoming_tuple_size);
-		#endif
+		LOG(printf(DEBUGLN("Resizing internal position tuple to size %zu..."), incoming_tuple_size));
+		LOG(puts(ERRORLN("TODO resizing the ant position requires resizing the entire ant, which is currently broken because the core ant has been inlined")));
 		
-		self->ant = resize_ant_position(self->ant, incoming_tuple_size);
+		//self->ant = resize_ant_position(self->ant, incoming_tuple_size);
 		
 	}
 
@@ -194,7 +193,7 @@ int ant_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		
 		//Evaluate long long int value of tuple member
 		long long int int_value = PyLong_AsLongLong(tuple_values[i]);
-		self->ant->position[i] = int_value;
+		core_ant(self)->position[i] = int_value;
 
 	}
 
@@ -220,20 +219,16 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 	if (long_value == -1 || long_value > 4294967295) //TODO this bound is really weird and not acting right, also using same value is overflow on windows
 	{
 
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Error in getting unsigned long from orientation value."));
-		#endif
+		LOG(puts(DEBUG("Error in getting unsigned long from orientation value.")));
 		
 		PyErr_SetString(PyExc_ValueError, "Invalid value for orientation. Value should be unsigned and less than or equal to 4294967295."); // ULONG_MAX aka " xstr(UINT_MAX) ".");
 		return -1;
 
 	}
 
-	#ifdef LIBANT_DEBUG
-	printf(DEBUG("Setting Ant position with unsigned long value of %ld...")"\n", long_value);
-	#endif
+	LOG(printf(DEBUG("Setting Ant position with unsigned long value of %ld...")"\n", long_value));
 
-	self->ant->orientation = long_value;
+	core_ant(self)->orientation = long_value;
 
 
 	return 0;
@@ -243,9 +238,7 @@ int ant_set_orientation(py_ant * self, PyObject * value, void * closure)
 int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Setting ant directive..."));
-	#endif
+	LOG(puts(TRACE("Setting ant directive...")));
 
 	Py_INCREF(self);
 
@@ -253,9 +246,7 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 	if (value == NULL || value == Py_None)
 	{
 
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Resetting directive references..."));
-		#endif
+		LOG(puts(DEBUG("Resetting directive references...")));
 
 		self->py_directive = (PyFunctionObject *)Py_None;
 		Py_INCREF(Py_None);
@@ -281,9 +272,7 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 
 	Py_DECREF(self);
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Successfully updated directive."));
-	#endif
+	LOG(puts(DEBUG("Successfully updated directive.")));
 
 	return 0;
 
@@ -299,11 +288,9 @@ PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
     if (self != NULL)
     {
 
-		#ifdef LIBANT_DEBUG
-        puts(DEBUG("Got a new Ant!"));
-		#endif
+		LOG(puts(DEBUG("Got a new Ant!")));
 
-    }
+	}
 
     return (PyObject *) self; //TODO is NULL when None is passed to constructor
 
@@ -325,7 +312,7 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	// TODO add to scan list
 	self->ant = create_ant(2);
-	self->ant->directive = (ant_directivefn) ant_t_directive_wrapper;
+	core_ant(self)->directive = (ant_directivefn) ant_t_directive_wrapper;
 	self->py_directive = (PyFunctionObject *) Py_None;
 	Py_INCREF(Py_None);
 	

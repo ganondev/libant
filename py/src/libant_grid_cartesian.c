@@ -4,10 +4,8 @@
 
 static PyObject * grid_cartesian_get(PyObject * self, PyObject * args)
 {
-
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Beginning retreival of py_grid_cartesian value..."));
-	#endif
+	
+	LOG(puts(TRACE("Beginning retreival of py_grid_cartesian value...")));
 
 	PyObject * x_or_coord_tuple;
 	PyObject * y = NULL;
