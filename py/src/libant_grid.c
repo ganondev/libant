@@ -6,9 +6,7 @@
 static PyObject * py_grid_add_ant(PyObject * self, PyObject * arg)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Inserting ant named %s into grid named %s.")); //TODO printf interpolation once debug names are implemented fully
-	#endif
+	LOG(puts(TRACE("Inserting ant named %s into grid named %s."))); //TODO printf interpolation once debug names are implemented fully
 
 	if (!py_ant_check(arg))
 	{
@@ -27,9 +25,7 @@ static PyObject * py_grid_add_ant(PyObject * self, PyObject * arg)
 static PyObject * py_grid_get(PyObject * self, PyObject * args)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Beginning retreival of grid value..."));
-	#endif
+	LOG(puts(TRACE("Beginning retreival of grid value...")));
 
 	PyObject * x_or_coord_tuple;
 	PyObject * y = NULL;
@@ -72,18 +68,14 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 		if (value == NULL)
 		{
 
-			#ifdef LIBANT_DEBUG
-			puts(TRACE("No value found in grid."));
-			#endif
+			LOG(puts(TRACE("No value found in grid.")));
 			Py_RETURN_NONE;
 
 		}
 		else
 		{
 
-			#ifdef LIBANT_DEBUG
-			puts(TRACE("Value found."));
-			#endif
+			LOG(puts(TRACE("Value found.")));
 			Py_INCREF(value);
 			return value;
 
@@ -91,9 +83,7 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 
 	}
 
-	#ifdef LIBANT_DEBUG
-	puts(ERROR("Argument parsing failed."));
-	#endif
+	LOG(puts(ERROR("Argument parsing failed.")));
 
 	if (!PyErr_Occurred()) PyErr_SetString(PyExc_Exception, "Arguments could not be parsed."); //TODO this needs to be specified
 
@@ -115,9 +105,7 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could 
 		grid->insert(grid, x, y, value, NULL);
 		//TODO removed records need to be DECREF'd
 
-		#ifdef LIBANT_DEBUG
-		printf(TRACE("Insert to (%lld, %lld) successfull.\n"), x, y);
-		#endif
+		LOG(printf(TRACE("Insert to (%lld, %lld) successfull.\n"), x, y));
 
 	}
 	else return NULL;
@@ -129,9 +117,7 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could 
 static PyObject * py_grid_tick(PyObject * self)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Performing state tick on py_grid..."));
-	#endif
+	LOG(puts(TRACE("Performing state tick on py_grid...")));
 	grid_tick(((py_grid *)self)->grid);
 	Py_RETURN_NONE;
 
@@ -141,14 +127,12 @@ static PyObject * grid_new(PyTypeObject * type, PyObject * args, PyObject * kwar
 {
 
 	py_grid * self = (py_grid *) type->tp_alloc(type, 0);
-	#ifdef LIBANT_DEBUG
-	if (self != NULL)
+	IF_DEBUG( if (self != NULL)
 	{
 
 		puts(DEBUG("Got a new Grid!"));
 
-	}
-	#endif
+	})
 	return (PyObject *) self;
 
 }

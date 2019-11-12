@@ -10,9 +10,7 @@ const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
 void langtons_ant_default_directive(ant_t * ant, ant_grid_t * grid)
 {
 	
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Executing langton's ant default directive."));
-	#endif
+	LOG(puts(TRACE("Executing langton's ant default directive.")));
 
 
 	ant_cell_t * occupied_cell = grid_get_cell(grid, ant->position[0], ant->position[1]);
@@ -55,9 +53,7 @@ ant_t * create_langtons_ant()
 void langtons_ant_default_rule(ant_cell_t * cell, ant_t * ant)
 {
 
-	#ifdef LIBANT_DEBUG
-	printf(TRACELN("Executing langton's ant default rule for cell occupied by ant at (%lld, %lld)."), ant->position[0], ant->position[1]);
-	#endif
+	LOG(printf(TRACELN("Executing langton's ant default rule for cell occupied by ant at (%lld, %lld)."), ant->position[0], ant->position[1]));
 	int * value = cell->value;
 	*value = !(*value); //TODO this should be a rotation, langton's ant states can have limitless enumerable states
 

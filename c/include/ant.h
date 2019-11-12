@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "standards.h"
+#include "antmacro.h"
 
 typedef struct ant_t ant_t;
 
@@ -14,9 +15,9 @@ typedef void (* ant_directivefn)(ant_t *, ...); //TODO figure out how to require
 struct ant_t
 {
 
-	#ifdef LIBANT_DEBUG
+	IF_DEBUG(
 	char * __name;
-	#endif
+	)
 
 	unsigned int orientation;
 	size_t tuple_size;

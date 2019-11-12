@@ -10,3 +10,5 @@ build/
 *.exp
 *.lib
 *.obj
+*.o
+c/tests

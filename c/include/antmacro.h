@@ -1,8 +1,6 @@
 #ifndef ANTMACRO_H
 #define ANTMACRO_H
 
-#ifdef LIBANT_DEBUG
-
 #define ENDL "\n"
 
 #define ANSI_RED "\033[31;1;4m"
@@ -21,6 +19,7 @@
 #define DEBUGLN(tok) DEBUG(tok) ENDL
 #define IO_OKLN(tok) IO_OK(tok) ENDL
 
+#ifdef LIBANT_DEBUG
 #define set_name(obj, id) obj->__debug_head.name = id
 #define nameof(obj) obj->__debug_head.name
 
@@ -33,7 +32,12 @@ struct __debug_head
 
 };
 
+#define IF_DEBUG(x) x
+#else
+#define IF_DEBUG(x)
 #endif
+
+#define LOG(x) IF_DEBUG(x) // for readability
 
 #define str(x) #x
 #define xstr(x) str(x)
