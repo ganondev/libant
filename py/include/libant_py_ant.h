@@ -11,7 +11,7 @@
 
 #define py_ant_check(obj) PyObject_TypeCheck(obj, &py_ant_type)
 
-#define raw_ant(x)
+#define core_ant(obj) ((ant_t *)&(((py_ant *)obj)->ant))
 
 typedef struct
 {
