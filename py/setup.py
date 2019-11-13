@@ -2,6 +2,8 @@ from sys import argv
 
 if not "release" in argv:
 	flags = ["-DLIBANT_DEBUG", "-DTREEBUG"]
+	import distutils.debug
+	distutils.debug.DEBUG = True
 else:
 	argv.remove("release")
 	flags = []
