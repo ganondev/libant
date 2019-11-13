@@ -13,74 +13,15 @@
 void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
 {
 
-	LOG(puts("Attempting to exeucte wrapped python directive for ant %s."));
+	LOG(puts(TRACE("Attempting to execute wrapped python directive for ant %s.")));
 
-	// Expect ant to be embedded into a py_ant structure
-	py_ant * pyobj = lb_container_of(ant, py_ant, ant);
+	// Expect ant and grid to be embedded into an extended PyObject structure
+	py_ant * ant_obj = lb_container_of(ant, py_ant, ant);
+	py_grid * grid_obj = lb_container_of(grid, py_grid, grid);
 
-	
+	PyObject_CallFunctionObjArgs((PyObject *)ant_obj->py_directive, ant_obj, grid_obj);
 
 }
-
-PyObject * langtons_ant_default_directive_wrapper(PyObject * module, PyObject * args)
-{
-	
-	PyObject * arg_ant, * grid;
-
-	if (PyArg_UnpackTuple(args, "langtons_ant_directive", 2, 2, &arg_ant, &grid))
-	{
-
-		if (!py_ant_check(arg_ant))
-		{
-
-			PyErr_SetString(PyExc_TypeError, "First argument should be of type Ant.");
-			return NULL;
-
-		}
-		if (!py_grid_check(grid))
-		{
-			
-			PyErr_SetString(PyExc_TypeError, "Second argument should be of type Grid.");
-
-		}
-
-		py_ant * ant = (py_ant *)arg_ant;
-
-		Py_INCREF(ant);
-		Py_INCREF(grid);
-
-		if (core_ant(ant)->orientation < 0 || core_ant(ant)->orientation > 3)
-		{
-
-			PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
-			Py_DECREF(ant);
-			Py_DECREF(grid);
-			return NULL;
-
-		}
-
-		langtons_ant_default_directive(core_ant(ant), ((py_grid *)grid)->grid);
-
-		Py_DECREF(ant);
-		Py_DECREF(grid);
-
-		Py_RETURN_NONE;
-
-	}
-
-	#ifdef LIBANT_DEBUG
-	puts(ERROR("Argument parsing failed."));
-	#endif
-
-	if (!PyErr_Occurred()) PyErr_SetString(PyExc_Exception, "Arguments could not be parsed."); //TODO this needs to be specified
-
-	return NULL;
-	
-}
-
-PyMethodDef langtons_ant_directive = {"langtons_ant_directive", (PyCFunction) langtons_ant_default_directive_wrapper, METH_VARARGS, "Default directive for langton's ant." };
-
-PyFunctionObject * langtons_ant_directive_func = NULL;
 
 /* END GENERALS */
 

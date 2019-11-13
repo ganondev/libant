@@ -44,7 +44,7 @@ static PyObject * grid_cartesian_get(PyObject * self, PyObject * args)
 
 		if ((x_coord == -1 || y_coord == -1) && PyErr_Occurred()) return NULL;
 
-		INT value = (INT)grid_get_value(((py_grid *)self)->grid, x_coord, y_coord);
+		INT value = (INT)grid_get_value(core_grid(self), x_coord, y_coord);
 		#ifdef LIBANT_DEBUG
 		printf(DEBUG("Found integer value: %lld")"\n", value);
 		#endif
@@ -73,7 +73,7 @@ static PyObject* grid_cartesian_insert(PyObject* self, PyObject* args)
 	if (PyArg_ParseTuple(args, "LLL:CartesianGrid.insert", &x, &y, &value))
 	{
 
-		ant_grid_t * grid = ((py_grid *)self)->grid;
+		ant_grid_t * grid = core_grid(self);
 		grid->insert(grid, x, y, (void *)value, NULL);
 		#ifdef LIBANT_DEBUG
 		printf(TRACE("Insert of %lld to (%lld, %lld) successfull.\n"), value, x, y);
@@ -92,7 +92,7 @@ int grid_cartesian_init(py_grid * self, PyObject * args, PyObject * kwargs)
 	#ifdef LIBANT_DEBUG
 	puts(TRACE("Initializing libant.CartesianGrid"));
 	#endif
-	self->grid = (ant_grid_t *)libant_quadtree_create();
+	libant_quadtree_create((libant_quadtree_t *)core_grid(self));
     return 0;
 
 }
@@ -110,7 +110,7 @@ PyTypeObject py_grid_cartesian_type = {
 	PyVarObject_HEAD_INIT(NULL, 0)
 	.tp_name = "libant.CartesianGrid",
 	.tp_doc = "Cartesian Grid backed by a quadtree.",
-	.tp_basicsize = sizeof(py_grid),
+	.tp_basicsize = sizeof(py_grid) + sizeof(qt_node_t *), // this is the extension for the quadtree struct
 	.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
 	.tp_methods = grid_cartesian_methods,
 	.tp_init = (initproc) grid_cartesian_init,

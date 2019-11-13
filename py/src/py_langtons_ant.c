@@ -3,6 +3,64 @@
 #include <libant_grid.h>
 #include <libant_grid_cartesian.h>
 
+PyObject* langtons_ant_default_directive_wrapper(PyObject* module, PyObject* args)
+{
+
+	PyObject* arg_ant, * grid;
+
+	if (PyArg_UnpackTuple(args, "langtons_ant_directive", 2, 2, &arg_ant, &grid))
+	{
+
+		if (!py_ant_check(arg_ant))
+		{
+
+			PyErr_SetString(PyExc_TypeError, "First argument should be of type Ant.");
+			return NULL;
+
+		}
+		if (!py_grid_check(grid))
+		{
+
+			PyErr_SetString(PyExc_TypeError, "Second argument should be of type Grid.");
+
+		}
+
+		py_ant* ant = (py_ant*)arg_ant;
+
+		Py_INCREF(ant);
+		Py_INCREF(grid);
+
+		if (core_ant(ant)->orientation < 0 || core_ant(ant)->orientation > 3)
+		{
+
+			PyErr_SetString(PyExc_IndexError, "Langton's ant has only four valid orientations. Orientation field should be valued between 0 and 3.");
+			Py_DECREF(ant);
+			Py_DECREF(grid);
+			return NULL;
+
+		}
+
+		langtons_ant_default_directive(core_ant(ant), core_grid(grid));
+
+		Py_DECREF(ant);
+		Py_DECREF(grid);
+
+		Py_RETURN_NONE;
+
+	}
+
+	LOG(puts(ERROR("Argument parsing failed.")));
+
+	if (!PyErr_Occurred()) PyErr_SetString(PyExc_Exception, "Arguments could not be parsed."); //TODO this needs to be specified
+
+	return NULL;
+
+}
+
+PyMethodDef langtons_ant_directive = { "langtons_ant_directive", (PyCFunction)langtons_ant_default_directive_wrapper, METH_VARARGS, "Default directive for langton's ant." };
+
+PyFunctionObject* langtons_ant_directive_func = NULL;
+
 int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 

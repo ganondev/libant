@@ -1,15 +1,13 @@
 #include "quadtree.h"
 
-libant_quadtree_t * libant_quadtree_create() //TODO may need to pass root cell rule here
+void libant_quadtree_create(libant_quadtree_t * grid) //TODO may need to pass root cell rule here
 {
 	
 	#ifdef TREEBUG
 	puts(TRACE("Creating new quadtree."));
 	#endif
-	libant_quadtree_t * tree = malloc(sizeof(libant_quadtree_t));
-	new_grid((ant_grid_t *)tree, (grid_getfn)qt_get, (grid_insertfn)qt_insert);
-	tree->root = qt_node_create(0, 0, NULL, NULL); //cell rule replaces last NULL
-	return tree;
+	new_grid((ant_grid_t *)grid, (grid_getfn)qt_get, (grid_insertfn)qt_insert);
+	grid->root = qt_node_create(0, 0, NULL, NULL); //cell rule replaces last NULL
 
 }
 

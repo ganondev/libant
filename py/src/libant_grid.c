@@ -16,7 +16,7 @@ static PyObject * py_grid_add_ant(PyObject * self, PyObject * arg)
 
 	}
 
-	grid_add_ant(((py_grid*)self)->grid, core_ant(arg));
+	grid_add_ant(core_grid(self), core_ant(arg));
 
 	Py_RETURN_NONE;
 
@@ -64,7 +64,7 @@ static PyObject * py_grid_get(PyObject * self, PyObject * args)
 
 		if ((x_coord == -1 || y_coord == -1) && PyErr_Occurred()) return NULL;
 
-		PyObject * value = grid_get_value(((py_grid *)self)->grid, x_coord, y_coord);
+		PyObject * value = grid_get_value(core_grid(self), x_coord, y_coord);
 		if (value == NULL)
 		{
 
@@ -101,7 +101,7 @@ static PyObject * py_grid_insert(PyObject * self, PyObject * args) //TODO could 
 	{
 
 		Py_INCREF(value);
-		ant_grid_t * grid = ((py_grid *)self)->grid;
+		ant_grid_t * grid = core_grid(self);
 		grid->insert(grid, x, y, value, NULL);
 		//TODO removed records need to be DECREF'd
 
@@ -118,7 +118,7 @@ static PyObject * py_grid_tick(PyObject * self)
 {
 
 	LOG(puts(TRACE("Performing state tick on py_grid...")));
-	grid_tick(((py_grid *)self)->grid);
+	grid_tick(core_grid(self));
 	Py_RETURN_NONE;
 
 }
@@ -127,12 +127,12 @@ static PyObject * grid_new(PyTypeObject * type, PyObject * args, PyObject * kwar
 {
 
 	py_grid * self = (py_grid *) type->tp_alloc(type, 0);
-	IF_DEBUG( if (self != NULL)
+	if (self != NULL)
 	{
 
 		puts(DEBUG("Got a new Grid!"));
 
-	})
+	}
 	return (PyObject *) self;
 
 }
@@ -141,7 +141,7 @@ static int grid_init(py_grid * self, PyObject * args, PyObject * kwargs)
 {
 
 	Py_INCREF(Py_None);
-	self->grid = Py_None; //TODO Currently causes segfaults
+	new_grid(core_grid(self), NULL, NULL);
 	return 0;
 
 }

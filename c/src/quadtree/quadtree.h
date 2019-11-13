@@ -27,7 +27,7 @@ struct libant_quadtree_t
 
 };
 
-libant_quadtree_t * libant_quadtree_create();
+void libant_quadtree_create(libant_quadtree_t *);
 
 void qt_insert(libant_quadtree_t *, INT, INT, void *, cell_rulefn);
 
