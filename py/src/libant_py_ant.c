@@ -21,6 +21,8 @@ void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
 
 	PyObject_CallFunctionObjArgs((PyObject *)ant_obj->py_directive, ant_obj, grid_obj);
 
+	// TODO this should return a status for error checking
+
 }
 
 /* END GENERALS */

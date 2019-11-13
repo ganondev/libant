@@ -64,19 +64,8 @@ PyFunctionObject* langtons_ant_directive_func = NULL;
 int langtons_ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-	PyObject * arg = NULL;
-
-	if (!PyArg_UnpackTuple(args, "LangtonsAnt.__init__", 0, 1, &arg)) return -1; // TODO can probably just call libant_py_ant::ant_init
-	if (arg != NULL && !py_grid_check(arg))
-	{
-
-		PyErr_SetString(PyExc_TypeError, "Expected a Grid for single argument Ant constructor.");
-		return -1;
-
-	}
-
+	ant_init(self, args, kwargs);
 	self->py_directive = langtons_ant_directive_func;
-	Py_INCREF(Py_None);
 
 	return 0;
 

@@ -75,9 +75,8 @@ static PyObject* grid_cartesian_insert(PyObject* self, PyObject* args)
 
 		ant_grid_t * grid = core_grid(self);
 		grid->insert(grid, x, y, (void *)value, NULL);
-		#ifdef LIBANT_DEBUG
-		printf(TRACE("Insert of %lld to (%lld, %lld) successfull.\n"), value, x, y);
-		#endif
+
+		LOG(printf(TRACE("Insert of %lld to (%lld, %lld) successfull.\n"), value, x, y));
 
 	}
 	else return NULL;
@@ -89,9 +88,8 @@ static PyObject* grid_cartesian_insert(PyObject* self, PyObject* args)
 int grid_cartesian_init(py_grid * self, PyObject * args, PyObject * kwargs)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(TRACE("Initializing libant.CartesianGrid"));
-	#endif
+	LOG(puts(TRACE("Initializing libant.CartesianGrid")));
+
 	libant_quadtree_create((libant_quadtree_t *)core_grid(self));
     return 0;
 
