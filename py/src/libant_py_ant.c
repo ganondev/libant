@@ -16,9 +16,9 @@ void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
 	LOG(puts("Attempting to exeucte wrapped python directive for ant %s."));
 
 	// Expect ant to be embedded into a py_ant structure
-	py_ant * pyobj = container_of(ant, py_ant, ant);
+	py_ant * pyobj = lb_container_of(ant, py_ant, ant);
 
-	// LAST LEFT OFF HERE 11/13/2019 12:25 AM
+	
 
 }
 
