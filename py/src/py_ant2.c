@@ -1,4 +1,6 @@
+#ifdef LIBANT_DEBUG
 #include <stdio.h>
+#endif
 #include <py_ant2.h>
 
 /* GETTERS */
@@ -6,11 +8,9 @@
 PyLongObject * ant2_get_x(py_ant * self, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Getting Ant position x value..."));
-	#endif
+	LOG(puts(DEBUG("Getting Ant position x value...")));
 
-	PyObject * x = position_as_py_long(self->ant, 0);
+	PyObject * x = position_as_py_long(core_ant(self), 0);
 	Py_INCREF(x);
 	return (PyLongObject *) x;
 
@@ -19,11 +19,9 @@ PyLongObject * ant2_get_x(py_ant * self, void * closure)
 PyLongObject * ant2_get_y(py_ant * self, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Getting Ant position y value..."));
-	#endif
+	LOG(puts(DEBUG("Getting Ant position y value...")));
 
-	PyObject * y = position_as_py_long(self->ant, 1);
+	PyObject * y = position_as_py_long(core_ant(self), 1);
 	Py_INCREF(y);
 	return (PyLongObject *) y;
 
@@ -34,18 +32,14 @@ PyLongObject * ant2_get_y(py_ant * self, void * closure)
 int ant2_set_position(py_ant * self, PyTupleObject * value, void * closure)
 {
 
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Setting Ant2 duple position..."));
-	#endif
+	LOG(puts(DEBUG("Setting Ant2 duple position...")));
 	
 	if (value == NULL)
 	{
 		
 		//zero-fill the tuple and maintain its size
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Attempting to zero internal position array..."));
-		#endif
-		zero_ant_position(self->ant);
+		LOG(puts(DEBUG("Attempting to zero internal position array...")));
+		zero_ant_position(core_ant(self));
 		return 0;
 		
 	}
@@ -73,17 +67,14 @@ int ant2_set_position(py_ant * self, PyTupleObject * value, void * closure)
 int ant2_set_x(py_ant * self, PyLongObject * value, void * closure)
 {
 	
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Setting Ant position x value..."));
-	#endif
+	LOG(puts(DEBUG("Setting Ant position x value...")));
 	
 	if (value == NULL)
 	{
 		
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Setting x to zero in lieu of deletion..."));
-		#endif
-		self->ant->position[0] = 0;
+		LOG(puts(DEBUG("Setting x to zero in lieu of deletion...")));
+
+		core_ant(self)->position[0] = 0;
 		return 0;
 		
 	}
@@ -96,7 +87,7 @@ int ant2_set_x(py_ant * self, PyLongObject * value, void * closure)
 		
 	}
 	
-	self->ant->position[0] = PyLong_AsLongLong((PyObject *) value);
+	core_ant(self)->position[0] = PyLong_AsLongLong((PyObject *) value);
 	
 	return 0;
 	
@@ -105,17 +96,14 @@ int ant2_set_x(py_ant * self, PyLongObject * value, void * closure)
 int ant2_set_y(py_ant * self, PyLongObject * value, void * closure)
 {
 	
-	#ifdef LIBANT_DEBUG
-	puts(DEBUG("Setting Ant position y value..."));
-	#endif
+	LOG(puts(DEBUG("Setting Ant position y value...")));
 	
 	if (value == NULL)
 	{
 		
-		#ifdef LIBANT_DEBUG
-		puts(DEBUG("Setting y to zero in lieu of deletion..."));
-		#endif
-		self->ant->position[1] = 0;
+		LOG(puts(DEBUG("Setting y to zero in lieu of deletion...")));
+
+		core_ant(self)->position[1] = 0;
 		return 0;
 		
 	}
@@ -128,7 +116,7 @@ int ant2_set_y(py_ant * self, PyLongObject * value, void * closure)
 		
 	}
 	
-	self->ant->position[1] = PyLong_AsLongLong((PyObject *) value);
+	core_ant(self)->position[1] = PyLong_AsLongLong((PyObject *) value);
 	
 	return 0;
 	

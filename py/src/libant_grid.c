@@ -16,7 +16,7 @@ static PyObject * py_grid_add_ant(PyObject * self, PyObject * arg)
 
 	}
 
-	grid_add_ant(((py_grid*)self)->grid, ((py_ant*)arg)->ant);
+	grid_add_ant(((py_grid*)self)->grid, core_ant(arg));
 
 	Py_RETURN_NONE;
 

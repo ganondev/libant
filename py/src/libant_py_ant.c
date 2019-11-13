@@ -15,7 +15,10 @@ void ant_t_directive_wrapper(ant_t * ant, ant_grid_t * grid)
 
 	LOG(puts("Attempting to exeucte wrapped python directive for ant %s."));
 
-	// Expect ant to be embedded into a py_ant strucutre
+	// Expect ant to be embedded into a py_ant structure
+	py_ant * pyobj = container_of(ant, py_ant, ant);
+
+	// LAST LEFT OFF HERE 11/13/2019 12:25 AM
 
 }
 
@@ -281,10 +284,18 @@ int ant_set_directive(py_ant * self, PyObject * value, void * closure)
 
 /* END SETTERS */
 
+py_ant * ant_alloc(PyTypeObject * type, Py_ssize_t nitems)
+{
+
+	return (py_ant *)type->tp_alloc(type, nitems);
+
+}
+
 PyObject * ant_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
 {
 
-    py_ant * self = (py_ant *) type->tp_alloc(type, 0);
+	// Initially, the position will be an empty tuple
+	py_ant * self = ant_alloc(type, 0);
     if (self != NULL)
     {
 
@@ -310,9 +321,9 @@ int ant_init(py_ant * self, PyObject * args, PyObject * kwargs)
 
 	}
 
-	// TODO add to scan list
-	self->ant = create_ant(2);
-	core_ant(self)->directive = (ant_directivefn) ant_t_directive_wrapper;
+	self->ant.orientation = 0;
+	self->ant.tuple_size = 0;
+	self->ant.directive = (ant_directivefn) ant_t_directive_wrapper;
 	self->py_directive = (PyFunctionObject *) Py_None;
 	Py_INCREF(Py_None);
 	
@@ -342,6 +353,7 @@ PyTypeObject py_ant_type = {
         .tp_name = "libant.Ant",
         .tp_doc = "An ant to move on the grid.",
         .tp_basicsize = sizeof(py_ant),
+		.tp_itemsize = sizeof(INT),
         .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
 		.tp_getset = ant_getsetters,
         .tp_new = ant_new,

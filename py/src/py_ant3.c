@@ -10,7 +10,7 @@ PyLongObject * ant3_get_z(py_ant * self, void * closure)
 	puts(DEBUG("Getting Ant position z value..."));
 	#endif
 
-	PyObject * z = position_as_py_long(self->ant, 2);
+	PyObject * z = position_as_py_long(core_ant(self), 2);
 	Py_INCREF(z);
 	return (PyLongObject *) z;
 
@@ -32,7 +32,7 @@ int ant3_set_position(py_ant * self, PyTupleObject * value, void * closure)
 		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Attempting to zero internal position array..."));
 		#endif
-		zero_ant_position(self->ant);
+		zero_ant_position(core_ant(self));
 		return 0;
 		
 	}
@@ -70,7 +70,7 @@ int ant3_set_z(py_ant * self, PyLongObject * value, void * closure)
 		#ifdef LIBANT_DEBUG
 		puts(DEBUG("Setting z to zero in lieu of deletion..."));
 		#endif
-		self->ant->position[2] = 0;
+		core_ant(self)->position[2] = 0;
 		return 0;
 		
 	}
@@ -83,7 +83,7 @@ int ant3_set_z(py_ant * self, PyLongObject * value, void * closure)
 		
 	}
 	
-	self->ant->position[2] = PyLong_AsLongLong((PyObject *) value);
+	core_ant(self)->position[2] = PyLong_AsLongLong((PyObject *) value);
 	
 	return 0;
 	
@@ -91,20 +91,28 @@ int ant3_set_z(py_ant * self, PyLongObject * value, void * closure)
 
 /* END SETTERS */
 
+PyObject * ant3_new(PyTypeObject * type, PyObject * args, PyObject * kwargs)
+{
+
+	py_ant * self = ant_alloc(type, 3);
+    if (self != NULL)
+    {
+
+		LOG(puts(DEBUG("Got a new 3D Ant!")));
+
+	}
+
+    return (PyObject *) self; //TODO is NULL when None is passed to constructor
+}
+
 int ant3_init(py_ant * self, PyObject * args, PyObject * kwargs)
 {
 
-    //static char * kwlist[] = {"test", NULL};
-    //if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i", kwlist, &self->test)) return -1;
-	//TODO TAKE TUPLE AS POSITION ARGUMENT, DEFAULTS TO (0,0)
-	
-//	self->ant = create_ant(3);
-//	self->py_directive = Py_None;
-//	Py_INCREF(Py_None);
-
 	ant_init(self, args, kwargs);
-	self->ant = resize_ant_position(self->ant, 3);
-	self->ant->position[2] = 0;
+	core_ant(self)->tuple_size = 3;
+	core_ant(self)->position[0] = 0;
+	core_ant(self)->position[1] = 0;
+	core_ant(self)->position[2] = 0;
 	
     return 0;
 
@@ -129,6 +137,7 @@ PyTypeObject py_ant3_type = {
 	.tp_basicsize = sizeof(py_ant),
 	.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
 	.tp_getset = ant3_getsetters,
+	.tp_new = ant3_new,
 	.tp_init = (initproc) ant3_init,
 	
 };

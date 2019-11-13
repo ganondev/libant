@@ -41,6 +41,8 @@ PyTupleObject * ant_get_position(py_ant *, void *);
 
 int ant_set_position(py_ant *, PyTupleObject *, void *);
 
+py_ant * ant_alloc(PyTypeObject *, Py_ssize_t);
+
 int ant_init(py_ant *, PyObject *, PyObject *);
 
 PyTypeObject py_ant_type;
