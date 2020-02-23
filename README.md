@@ -2,6 +2,8 @@
 
 ![AWS CodeBuild](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiaHhyU3BJNmZ0NEE1MkFlQUJ4VFVRWXlLWVh1aURZYWxZR2IvNXJVaFlLaTJwb3p1blZheEk2TERKK002RE93Vk0xdEJOQjRjbGQwY2tWOStNNmxQc0QwPSIsIml2UGFyYW1ldGVyU3BlYyI6Ijl0N3hJWFEweWdOY1JnL2giLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
+(Project is not abandoned. I am focused on graduating.)
+
 ## Cellular Automata from an actor's perspective
 
 Libant makes it easier to prototype, discover, and experiment with different kinds of cellular automata that would otherwise be difficult or tedious to express in the classical way.
