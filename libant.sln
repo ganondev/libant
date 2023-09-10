@@ -4,6 +4,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libant", "libant.vcxproj", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{C6B3A4F9-61BB-4088-A756-E119F8F70C5F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "info", "info", "{685A7CD0-9532-40CA-98AC-B85EAEE2B26B}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		advice.png = advice.png
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
