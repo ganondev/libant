@@ -162,6 +162,9 @@
     <ClInclude Include="quadtree\node.h" />
     <ClInclude Include="quadtree\quadtree.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ant.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
