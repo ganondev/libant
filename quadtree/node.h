@@ -47,10 +47,10 @@ public:
     }
 
     // spaceship operator override that implements the analog to qt_node_compare
-    relative_quadrant operator<=>(const node& other) const
-    {
-        return get_relative_quadrant(other.x, other.y);
-    }
+    // relative_quadrant operator<=>(const node& other) const
+    // {
+    //     return get_relative_quadrant(other.x, other.y);
+    // }
 
     // TODO might just make this a derived property
     void split()
