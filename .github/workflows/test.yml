@@ -40,5 +40,4 @@ jobs:
         
       - name: Run tests
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: dir test && dir Debug && .\Debug\test.exe
-#        run: dir && .\Win32\${{env.BUILD_CONFIGURATION}}\test.exe
+        run: .\Debug\test.exe
