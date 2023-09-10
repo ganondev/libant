@@ -40,4 +40,4 @@ jobs:
         
       - name: Run tests
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: ./x64/${{env.BUILD_CONFIGURATION}}/test.exe
+        run: dir && .\Win32\${{env.BUILD_CONFIGURATION}}\test.exe
