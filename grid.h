@@ -18,7 +18,7 @@ public:
 
     // scan-list to keep track of the active ants in the grid
     // TODO this should be an implementation detail of the grid
-    std::vector<ant> scan_list;
+    std::vector<ant*> scan_list;
 
     // get value from cell
     void * get_value(int64_t x, int64_t y)
@@ -33,10 +33,10 @@ public:
     // method with a similar signature to grid_insertfn
     virtual void insert(int64_t x, int64_t y, void * val) = 0;
 
-    void add_ant(const ant& ant)
+    void add_ant(ant& ant)
     {
         // add ant to scan-list
-        scan_list.push_back(ant);
+        scan_list.push_back(&ant);
     }
 
     void tick()
@@ -46,9 +46,9 @@ public:
         for (auto& ant : scan_list)
         {
             // get cell at ant position
-            cell * cell = get_cell(ant.position[0], ant.position[1]);
+            cell * cell = get_cell(ant->position[0], ant->position[1]);
             // call ant directive
-            ant.directive(*cell);
+            ant->directive(*cell);
         }
     }
     

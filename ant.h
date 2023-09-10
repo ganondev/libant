@@ -63,15 +63,6 @@ struct langtons_ant : ant
     langtons_ant() : ant(2) {}
 
     // based on langtons_ant_default_directive
-    void directive(cell& cell) override
-    {
-        const auto value = cell.value;
-        cell.value = static_cast<void*>(!value);
-
-        orientation = (orientation + (value ? 1 : -1)) % 4;
-
-        position[0] += CARDINAL_2D[orientation][0];
-        position[1] += CARDINAL_2D[orientation][1];
-    }
+    void directive(cell& cell) override;
 
 };

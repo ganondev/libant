@@ -114,6 +114,7 @@ public:
             {
                 current_parent->split();
                 current_parent->children[quadrant] = new node(x, y, in_value);
+                return;
             }
 
             // Destination is relative child node
@@ -121,6 +122,7 @@ public:
             if (!child)
             {
                 current_parent->children[quadrant] = new node(x, y, in_value);
+                return;
             }
 
             // keep searching
