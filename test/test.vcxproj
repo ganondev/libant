@@ -36,6 +36,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="test_langtons_ant.cpp" />
     <ClCompile Include="test_quadtree.cpp" />
   </ItemGroup>
   <ItemGroup>

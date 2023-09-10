@@ -7,20 +7,20 @@ class quadtree : public grid
 {
 public:
 
-    node* root;
+    node * root;
 
     quadtree() : grid(), root(new node(0, 0, nullptr))
     {
     }
 
-    cell * get_cell(int64_t x, int64_t y) override
+    node * get_cell(int64_t x, int64_t y) override
     {
         return node::find(root, x, y);
     }
 
-    void insert(int64_t x, int64_t y, void * val) override
+    node * insert(int64_t x, int64_t y, void * val) override
     {
-        node::put_child(root, x, y, val);
+        return node::put_child(root, x, y, val);
     }
     
 };

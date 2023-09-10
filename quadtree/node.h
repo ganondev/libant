@@ -88,7 +88,7 @@ public:
     }
 
     // put_child
-    static void put_child(node * parent, int64_t x, int64_t y, void * in_value)
+    static node * put_child(node * parent, int64_t x, int64_t y, void * in_value)
     {
 
         node * current_parent = parent;
@@ -105,23 +105,25 @@ public:
                     free(current_parent->value);
                 }
                 current_parent->value = in_value;
-                return;
+                return current_parent;
             }
 
             // Destination is this node
             if (current_parent->is_leaf)
             {
                 current_parent->split();
-                current_parent->children[quadrant] = new node(x, y, in_value);
-                return;
+                const auto new_node = new node(x, y, in_value);
+                current_parent->children[quadrant] = new_node;
+                return new_node;
             }
 
             // Destination is relative child node
             node * child = current_parent->get_child(quadrant);
             if (!child)
             {
-                current_parent->children[quadrant] = new node(x, y, in_value);
-                return;
+                const auto new_node = new node(x, y, in_value);
+                current_parent->children[quadrant] = new_node;
+                return new_node;
             }
 
             // keep searching

@@ -31,7 +31,7 @@ public:
     
 
     // method with a similar signature to grid_insertfn
-    virtual void insert(int64_t x, int64_t y, void * val) = 0;
+    virtual cell * insert(int64_t x, int64_t y, void * val) = 0;
 
     void add_ant(ant& ant)
     {
@@ -47,6 +47,10 @@ public:
         {
             // get cell at ant position
             cell * cell = get_cell(ant->position[0], ant->position[1]);
+            if (!cell)
+            {
+                cell = insert(ant->position[0], ant->position[1], nullptr);
+            }
             // call ant directive
             ant->directive(*cell);
         }

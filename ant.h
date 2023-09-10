@@ -6,13 +6,6 @@
 
 // We will be converting what was in the include/ant.h file to an object oriented design
 
-const int NORTH_2D[2] = {0, -1};
-const int EAST_2D[2] = {1, 0};
-const int SOUTH_2D[2] = {0, 1};
-const int WEST_2D[2] = {-1, 0};
-
-const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
-
 struct ant
 {
 
