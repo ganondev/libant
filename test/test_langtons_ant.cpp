@@ -3,10 +3,12 @@
 
 TEST(langtons_ant, test_langtons_ant)
 {
-
+  
   quadtree qt;
+  ant_automaton automaton(&qt);
+  
   langtons_ant ant;
-  qt.add_ant(ant);
+  automaton.add_ant(ant);
 
   // initially facing "north"
   
@@ -15,7 +17,7 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 0);
   
-  qt.tick();
+  automaton.tick();
 
   // left turn and move forward
 
@@ -24,7 +26,7 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 3);
 
-  qt.tick();
+  automaton.tick();
 
   // left turn and move forward
 
@@ -33,7 +35,7 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant.position[1], 1);
   EXPECT_EQ(ant.orientation, 2);
 
-  qt.tick();
+  automaton.tick();
 
   // left turn and move forward
   
@@ -43,7 +45,7 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant.position[1], 1);
   EXPECT_EQ(ant.orientation, 1);
 
-  qt.tick();
+  automaton.tick();
 
   // left turn and move forward
 
@@ -52,7 +54,7 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 0);
 
-  qt.tick();
+  automaton.tick();
 
   // right turn and move forward, detoggling the first cell
 

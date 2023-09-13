@@ -1,5 +1,11 @@
 ﻿#pragma once
-#include "ant.h"
-#include "cell.h"
-#include "grid.h"
-#include "quadtree/quadtree.h"
+#include "automaton.h"
+
+#include "ant/ant.h"
+#include "ant/ant_automaton.h"
+
+#include "spatial_structure/cell.h"
+#include "spatial_structure/spatial_structure.h"
+
+#include "spatial_structure/quadtree/quadtree.h"
+#include "spatial_structure/quadtree/node.h"

@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "cell.h"
+#include "../spatial_structure/cell.h"
 
 // We will be converting what was in the include/ant.h file to an object oriented design
 

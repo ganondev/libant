@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 #include "node.h"
-#include "../grid.h"
+#include "../spatial_structure.h"
 
-class quadtree : public grid
+class quadtree : public spatial_structure
 {
 public:
 
     node * root;
 
-    quadtree() : grid(), root(new node(0, 0, nullptr))
+    quadtree() : spatial_structure(), root(new node(0, 0, nullptr))
     {
     }
 
