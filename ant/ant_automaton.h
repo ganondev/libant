@@ -28,7 +28,7 @@ public:
             cell * cell = space_->get_cell(ant->position[0], ant->position[1]);
             if (!cell)
             {
-                cell = space_->insert(ant->position[0], ant->position[1], nullptr);
+                cell = space_->insert(ant->position[0], ant->position[1], 0);
             }
             // call ant directive
             ant->directive(*cell);

@@ -9,8 +9,8 @@ const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
 
 void langtons_ant::directive(cell& cell)
 {
-    const auto value = static_cast<bool>(cell.value);
-    cell.value = static_cast<void*>(reinterpret_cast<bool*>(!value));
+    const auto value = cell.value;
+    cell.value = !value;
 
     orientation = (orientation + (value ? 1 : -1)) % 4;
 

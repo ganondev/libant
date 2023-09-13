@@ -12,7 +12,7 @@ TEST(langtons_ant, test_langtons_ant)
 
   // initially facing "north"
   
-  EXPECT_EQ(qt.get_value(0, 0), nullptr);
+  EXPECT_EQ(qt.get_value(0, 0), 0);
   EXPECT_EQ(ant.position[0], 0);
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 0);

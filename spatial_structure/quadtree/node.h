@@ -26,7 +26,7 @@ public:
 
     node* children[4] = {nullptr, nullptr, nullptr, nullptr};
     
-    node(int64_t x, int64_t y, void * in_value) : cell(), x(x), y(y), is_leaf(true)
+    node(int64_t x, int64_t y, int in_value) : cell(), x(x), y(y), is_leaf(true)
     {
         this->value = in_value;
     }
@@ -88,7 +88,7 @@ public:
     }
 
     // put_child
-    static node * put_child(node * parent, int64_t x, int64_t y, void * in_value)
+    static node * put_child(node * parent, int64_t x, int64_t y, int in_value)
     {
 
         node * current_parent = parent;
@@ -100,10 +100,6 @@ public:
             // update current_parent value in place to simulate replacement
             if (quadrant == EQ)
             {
-                if (current_parent->value)
-                {
-                    free(current_parent->value);
-                }
                 current_parent->value = in_value;
                 return current_parent;
             }

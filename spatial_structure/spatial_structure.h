@@ -9,15 +9,15 @@ public:
     virtual cell * get_cell(int64_t x, int64_t y) = 0;
 
     // get value from cell
-    void * get_value(int64_t x, int64_t y)
+    int get_value(int64_t x, int64_t y)
     {
         cell * cell = get_cell(x, y);
         if (cell)
             return cell->value;
-        return nullptr;
+        return 0;
     }
     
 
     // method with a similar signature to grid_insertfn
-    virtual cell * insert(int64_t x, int64_t y, void * val) = 0;
+    virtual cell * insert(int64_t x, int64_t y, int val) = 0;
 };

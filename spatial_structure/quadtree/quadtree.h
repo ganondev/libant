@@ -9,7 +9,7 @@ public:
 
     node * root;
 
-    quadtree() : spatial_structure(), root(new node(0, 0, nullptr))
+    quadtree() : spatial_structure(), root(new node(0, 0, 0))
     {
     }
 
@@ -18,7 +18,7 @@ public:
         return node::find(root, x, y);
     }
 
-    node * insert(int64_t x, int64_t y, void * val) override
+    node * insert(int64_t x, int64_t y, int val) override
     {
         return node::put_child(root, x, y, val);
     }
