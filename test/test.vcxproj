@@ -43,12 +43,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libant.vcxproj">
-      <Project>{1a6fc817-8803-4097-a963-3550c6901dff}</Project>
-      <Name>libant</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\.github\workflows\test.yml" />
   </ItemGroup>
   <ItemDefinitionGroup />
