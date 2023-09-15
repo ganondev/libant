@@ -40,8 +40,8 @@ public:
     {
         if (this->y == rel_y && this->x == rel_x) return EQ;
 
-        const bool vertical = this->y > rel_y;
-        const bool horizontal = this->x > rel_x;
+        const int vertical = this->y > rel_y ? 1 : 0;
+        const int horizontal = this->x > rel_x ? 1 : 0;
 
         return static_cast<relative_quadrant>(vertical * 2 | horizontal);
     }
