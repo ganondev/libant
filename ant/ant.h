@@ -4,7 +4,12 @@
 
 #include "../spatial_structure/cell.h"
 
-// We will be converting what was in the include/ant.h file to an object oriented design
+constexpr int NORTH_2D[2] = {0, -1};
+constexpr int EAST_2D[2] = {1, 0};
+constexpr int SOUTH_2D[2] = {0, 1};
+constexpr int WEST_2D[2] = {-1, 0};
+
+inline const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
 
 struct ant
 {
@@ -56,6 +61,15 @@ struct langtons_ant : ant
     langtons_ant() : ant(2) {}
 
     // based on langtons_ant_default_directive
-    void directive(cell& cell) override;
+    void directive(cell& cell) override
+    {
+        const auto value = cell.value;
+        cell.value = !value;
+
+        orientation = (orientation + (value ? 1 : -1)) % 4;
+
+        position[0] += CARDINAL_2D[orientation][0];
+        position[1] += CARDINAL_2D[orientation][1];
+    }
 
 };
