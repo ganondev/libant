@@ -1,4 +1,5 @@
-﻿#include "gtest/gtest.h"
+﻿#pragma once
+#include "gtest/gtest.h"
 #include "../libant.h"
 
 TEST(langtons_ant, test_langtons_ant)
