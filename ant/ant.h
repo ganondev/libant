@@ -9,7 +9,7 @@ constexpr int EAST_2D[2] = {1, 0};
 constexpr int SOUTH_2D[2] = {0, 1};
 constexpr int WEST_2D[2] = {-1, 0};
 
-inline const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
+const int * CARDINAL_2D[4] = {NORTH_2D, EAST_2D, SOUTH_2D, WEST_2D};
 
 struct ant
 {
