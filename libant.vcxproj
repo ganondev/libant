@@ -164,9 +164,6 @@
     <ClInclude Include="spatial_structure\quadtree\quadtree.h" />
     <ClInclude Include="spatial_structure\spatial_structure.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ant\ant.cpp"/>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
