@@ -12,10 +12,10 @@ public:
 
     ant_automaton(spatial_structure * space) : automaton(space) {}
     
-    void add_ant(ant& ant)
+    void add_ant(ant * ant)
     {
         // add ant to scan-list
-        scan_list.push_back(&ant);
+        scan_list.push_back(ant);
     }
 
     void tick() override

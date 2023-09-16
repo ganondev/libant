@@ -15,5 +15,11 @@ public:
     virtual ~automaton() = default;
 
     virtual void tick() = 0;
+
+    [[nodiscard]]
+    int get_value(int64_t x, int64_t y) const
+    {
+        return space_->get_value(x, y);
+    }
     
 };

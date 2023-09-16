@@ -5,15 +5,14 @@
 TEST(langtons_ant, test_langtons_ant)
 {
   
-  quadtree qt;
-  ant_automaton automaton(&qt);
+  ant_automaton automaton(new quadtree());
   
   langtons_ant ant;
-  automaton.add_ant(ant);
+  automaton.add_ant(&ant);
 
   // initially facing "north"
   
-  EXPECT_EQ(qt.get_value(0, 0), 0);
+  EXPECT_EQ(automaton.get_value(0, 0), 0);
   EXPECT_EQ(ant.position[0], 0);
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 0);
@@ -22,7 +21,7 @@ TEST(langtons_ant, test_langtons_ant)
 
   // left turn and move forward
 
-  EXPECT_TRUE(static_cast<bool>(qt.get_value(0, 0)));
+  EXPECT_TRUE(static_cast<bool>(automaton.get_value(0, 0)));
   EXPECT_EQ(ant.position[0], -1);
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 3);
@@ -31,7 +30,7 @@ TEST(langtons_ant, test_langtons_ant)
 
   // left turn and move forward
 
-  EXPECT_TRUE(static_cast<bool>(qt.get_value(-1, 0)));
+  EXPECT_TRUE(static_cast<bool>(automaton.get_value(-1, 0)));
   EXPECT_EQ(ant.position[0], -1);
   EXPECT_EQ(ant.position[1], 1);
   EXPECT_EQ(ant.orientation, 2);
@@ -41,7 +40,7 @@ TEST(langtons_ant, test_langtons_ant)
   // left turn and move forward
   
 
-  EXPECT_TRUE(static_cast<bool>(qt.get_value(-1, 1)));
+  EXPECT_TRUE(static_cast<bool>(automaton.get_value(-1, 1)));
   EXPECT_EQ(ant.position[0], 0);
   EXPECT_EQ(ant.position[1], 1);
   EXPECT_EQ(ant.orientation, 1);
@@ -50,7 +49,7 @@ TEST(langtons_ant, test_langtons_ant)
 
   // left turn and move forward
 
-  EXPECT_TRUE(static_cast<bool>(qt.get_value(0, 1)));
+  EXPECT_TRUE(static_cast<bool>(automaton.get_value(0, 1)));
   EXPECT_EQ(ant.position[0], 0);
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 0);
@@ -59,7 +58,7 @@ TEST(langtons_ant, test_langtons_ant)
 
   // right turn and move forward, detoggling the first cell
 
-  EXPECT_FALSE(static_cast<bool>(qt.get_value(0, 0)));
+  EXPECT_FALSE(static_cast<bool>(automaton.get_value(0, 0)));
   EXPECT_EQ(ant.position[0], 1);
   EXPECT_EQ(ant.position[1], 0);
   EXPECT_EQ(ant.orientation, 1);
