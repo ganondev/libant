@@ -71,3 +71,16 @@ TEST(quadtree, test_quadtree_get)
   EXPECT_EQ(qt.get_value(-1, 1), 0);
   
 }
+
+TEST(quadtree, test_quadtree_with_bounds)
+{
+
+  quadtree qt({5, 5});
+  
+  qt.insert(5, 5, 26);
+  qt.insert(6, 7, 27);
+  
+  EXPECT_EQ(qt.get_value(10, 10), 26);
+  EXPECT_EQ(qt.get_value(11, 12), 27);
+  
+}

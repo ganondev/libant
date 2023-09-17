@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <cstdint>
-#include <cstdlib>
 
 #include "../cell.h"
 
@@ -18,46 +17,50 @@ enum relative_quadrant {
 class node : public cell 
 {
     
-    int64_t x;
-    int64_t y;
-    bool is_leaf;
+    int64_t x_;
+    int64_t y_;
+    bool is_leaf_;
 
 public:
 
     node* children[4] = {nullptr, nullptr, nullptr, nullptr};
     
-    node(int64_t x, int64_t y, int in_value) : cell(), x(x), y(y), is_leaf(true)
+    node(const int64_t x, const int64_t y, const int in_value) : cell(), x_(x), y_(y), is_leaf_(true)
     {
         this->value = in_value;
     }
 
-    node* get_child(relative_quadrant quadrant)
+    [[nodiscard]]
+    node* get_child(const relative_quadrant quadrant)
     {
         return children[quadrant];
     }
 
-    relative_quadrant get_relative_quadrant(int64_t rel_x, int64_t rel_y) const
+    [[nodiscard]]
+    relative_quadrant get_relative_quadrant(const int64_t rel_x, const int64_t rel_y) const
     {
-        if (this->y == rel_y && this->x == rel_x) return EQ;
+        if (this->y_ == rel_y && this->x_ == rel_x) return EQ;
 
-        const int vertical = this->y > rel_y ? 1 : 0;
-        const int horizontal = this->x > rel_x ? 1 : 0;
+        const int vertical = this->y_ > rel_y ? 1 : 0;
+        const int horizontal = this->x_ > rel_x ? 1 : 0;
 
         return static_cast<relative_quadrant>(vertical * 2 | horizontal);
     }
-    
+
+    [[nodiscard]]
     relative_quadrant compare(const node& other) const
     {
-        return get_relative_quadrant(other.x, other.y);
+        return get_relative_quadrant(other.x_, other.y_);
     }
 
     // TODO might just make this a derived property
     void split()
     {
-        is_leaf = false;
+        is_leaf_ = false;
     }
-    
-    static node * find(node * root, int64_t in_x, int64_t in_y)
+
+    [[nodiscard]]
+    static node * find(node * root, const int64_t in_x, const int64_t in_y)
     {
 
         relative_quadrant quadrant = root->get_relative_quadrant(in_x, in_y);
@@ -68,7 +71,7 @@ public:
         node * current_parent = root;
         while (true)
         {
-            if (current_parent->is_leaf)
+            if (current_parent->is_leaf_)
             {
                 // cell not found - parent has no children
                 return nullptr;
@@ -86,9 +89,8 @@ public:
             }
         }
     }
-
-    // put_child
-    static node * put_child(node * parent, int64_t x, int64_t y, int in_value)
+    
+    static node * put_child(node * parent, const int64_t x, const int64_t y, const int in_value)
     {
 
         node * current_parent = parent;
@@ -105,7 +107,7 @@ public:
             }
 
             // Destination is this node
-            if (current_parent->is_leaf)
+            if (current_parent->is_leaf_)
             {
                 current_parent->split();
                 const auto new_node = new node(x, y, in_value);

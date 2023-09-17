@@ -1,23 +1,57 @@
 ﻿#pragma once
 #include "cell.h"
 
+struct coords
+{
+    int64_t x;
+    int64_t y;
+};
+
+struct bounds
+{
+    int x;
+    int y;
+
+    [[nodiscard]] 
+    auto project(const int64_t in_x, const int64_t in_y) const
+    {
+        const coords s {
+            x == 0 ? in_x : in_x % x,
+            y == 0 ? in_y : in_y % y,
+        };
+        return s;
+    }
+};
+
 class spatial_structure
 {
+    bounds bounds_;
+protected:
+    virtual cell * get_cell_impl(coords coords) = 0;
+    virtual cell * insert_impl(coords coords, int val) = 0;
 public:
+
+    spatial_structure(const bounds bounds={}) : bounds_(bounds) {}
+    
     virtual ~spatial_structure() = default;
-    // method with a similar signature to grid_getfn
-    virtual cell * get_cell(int64_t x, int64_t y) = 0;
+
+    cell * get_cell(const int64_t x, const int64_t y)
+    {
+        return get_cell_impl(bounds_.project(x, y));
+    }
 
     // get value from cell
-    int get_value(int64_t x, int64_t y)
+    int get_value(const int64_t x, const int64_t y)
     {
-        cell * cell = get_cell(x, y);
-        if (cell)
+        if (const cell * cell = get_cell(x, y))
             return cell->value;
         return 0;
     }
     
 
     // method with a similar signature to grid_insertfn
-    virtual cell * insert(int64_t x, int64_t y, int val) = 0;
+    cell * insert(const int64_t x, const int64_t y, const int val)
+    {
+        return insert_impl(bounds_.project(x, y), val);
+    }
 };

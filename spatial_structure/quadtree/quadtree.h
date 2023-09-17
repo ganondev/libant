@@ -5,22 +5,19 @@
 
 class quadtree : public spatial_structure
 {
+protected:
+    node * get_cell_impl(const coords coords) override
+    {
+        return node::find(root, coords.x, coords.y);
+    }
+    node * insert_impl(const coords coords, const int val) override
+    {
+        return node::put_child(root, coords.x, coords.y, val);
+    }
 public:
-
     node * root;
 
-    quadtree() : spatial_structure(), root(new node(0, 0, 0))
+    quadtree(const bounds bounds={}) : spatial_structure(bounds), root(new node(0, 0, 0))
     {
     }
-
-    node * get_cell(int64_t x, int64_t y) override
-    {
-        return node::find(root, x, y);
-    }
-
-    node * insert(int64_t x, int64_t y, int val) override
-    {
-        return node::put_child(root, x, y, val);
-    }
-    
 };
