@@ -36,6 +36,7 @@ public:
         return space_->get_value(x, y);
     }
 
+    [[nodiscard]]
     int get_iteration() const
     {
         return iteration_;
