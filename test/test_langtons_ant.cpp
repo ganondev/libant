@@ -16,7 +16,7 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant->position[1], 0);
   EXPECT_EQ(ant->orientation, 0);
   
-  automaton.tick();
+  auto diffs = automaton.tick();
 
   // left turn and move forward
 
@@ -24,8 +24,13 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant->position[0], -1);
   EXPECT_EQ(ant->position[1], 0);
   EXPECT_EQ(ant->orientation, 3);
+  auto diff = diffs[0];
+  EXPECT_EQ(diff.x, 0);
+  EXPECT_EQ(diff.y, 0);
+  EXPECT_EQ(diff.old_value, 0);
+  EXPECT_EQ(diff.new_value, 1);
 
-  automaton.tick();
+  diffs = automaton.tick();
 
   // left turn and move forward
 
@@ -33,8 +38,13 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant->position[0], -1);
   EXPECT_EQ(ant->position[1], 1);
   EXPECT_EQ(ant->orientation, 2);
+  diff = diffs[0];
+  EXPECT_EQ(diff.x, -1);
+  EXPECT_EQ(diff.y, 0);
+  EXPECT_EQ(diff.old_value, 0);
+  EXPECT_EQ(diff.new_value, 1);
 
-  automaton.tick();
+  diffs = automaton.tick();
 
   // left turn and move forward
   
@@ -43,8 +53,13 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant->position[0], 0);
   EXPECT_EQ(ant->position[1], 1);
   EXPECT_EQ(ant->orientation, 1);
+  diff = diffs[0];
+  EXPECT_EQ(diff.x, -1);
+  EXPECT_EQ(diff.y, 1);
+  EXPECT_EQ(diff.old_value, 0);
+  EXPECT_EQ(diff.new_value, 1);
 
-  automaton.tick();
+  diffs = automaton.tick();
 
   // left turn and move forward
 
@@ -52,8 +67,13 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant->position[0], 0);
   EXPECT_EQ(ant->position[1], 0);
   EXPECT_EQ(ant->orientation, 0);
+  diff = diffs[0];
+  EXPECT_EQ(diff.x, 0);
+  EXPECT_EQ(diff.y, 1);
+  EXPECT_EQ(diff.old_value, 0);
+  EXPECT_EQ(diff.new_value, 1);
 
-  automaton.tick();
+  diffs = automaton.tick();
 
   // right turn and move forward, detoggling the first cell
 
@@ -61,5 +81,10 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(ant->position[0], 1);
   EXPECT_EQ(ant->position[1], 0);
   EXPECT_EQ(ant->orientation, 1);
+  diff = diffs[0];
+  EXPECT_EQ(diff.x, 0);
+  EXPECT_EQ(diff.y, 0);
+  EXPECT_EQ(diff.old_value, 1);
+  EXPECT_EQ(diff.new_value, 0);
 
 }

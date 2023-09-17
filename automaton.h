@@ -3,6 +3,14 @@
 
 // We will be converting what was in the include/grid.h file to an object oriented design
 
+struct positional_diff
+{
+    int64_t x;
+    int64_t y;
+    int64_t old_value;
+    int64_t new_value;
+};
+
 
 class automaton
 {
@@ -14,7 +22,7 @@ public:
     
     virtual ~automaton() = default;
 
-    virtual void tick() = 0;
+    virtual std::vector<positional_diff> tick() = 0;
 
     [[nodiscard]]
     int get_value(int64_t x, int64_t y) const

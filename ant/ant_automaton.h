@@ -24,21 +24,32 @@ public:
         return rawPtr;
     }
 
-    void tick() override
+    std::vector<positional_diff> tick() override
     {
+        std::vector<positional_diff> diffs;
         // iterate through scan-list
         // TODO use polymorphic selector instead of scan-list
-        for (auto& ant : scan_list)
+        for (const auto& ant : scan_list)
         {
+            const auto x = ant->position[0];
+            const auto y = ant->position[1];
+            int old_value;
             // get cell at ant position
-            cell * cell = space_->get_cell(ant->position[0], ant->position[1]);
+            cell * cell = space_->get_cell(x, y);
             if (!cell)
             {
-                cell = space_->insert(ant->position[0], ant->position[1], 0);
+                cell = space_->insert(x, y, 0);
+                old_value = 0;
+            }
+            else
+            {
+                old_value = cell->value;
             }
             // call ant directive
             ant->directive(*cell);
+            diffs.push_back({x, y, old_value, cell->value});
         }
+        return diffs;
     }
     
 };
