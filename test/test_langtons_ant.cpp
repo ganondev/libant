@@ -87,4 +87,6 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(diff.old_value, 1);
   EXPECT_EQ(diff.new_value, 0);
 
+  EXPECT_EQ(automaton.get_iteration(), 5);
+
 }
