@@ -20,7 +20,7 @@ TEST(quadtree, test_quadtree_child_insert)
   qt.insert(0, 0, 0);
   const auto val = 21;
   qt.insert(1, 1, val);
-  const auto child = qt.root->children[NE];
+  const auto child = qt.root->get_child(NE);
 
   ASSERT_NE(child, nullptr);
   ASSERT_EQ(child->value, val);
@@ -36,8 +36,8 @@ TEST(quadtree, test_quadtree_child_insert_non_leaf)
   qt.insert(1, 1, 0);
   const auto val = 22;
   qt.insert(-1, 1, val);
-  const auto first_insert = qt.root->children[NE];
-  const auto second_insert = qt.root->children[NW];
+  const auto first_insert = qt.root->get_child(NE);
+  const auto second_insert = qt.root->get_child(NW);
 
   ASSERT_NE(first_insert, nullptr);
   EXPECT_EQ(first_insert->value, 0);
@@ -57,7 +57,7 @@ TEST(quadtree, test_quadtree_get)
   qt.insert(1, 1, 25);
 
   const auto root_node = qt.root;
-  const auto child_node = qt.root->children[NE];
+  const auto child_node = qt.root->get_child(NE);
 
   const auto root_get = qt.get_value(0, 0);
   const auto child_get = qt.get_value(1, 1);

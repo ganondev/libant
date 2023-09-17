@@ -17,7 +17,7 @@ protected:
 public:
     node * root;
 
-    quadtree(const bounds bounds={}) : spatial_structure(bounds), root(new node(0, 0, 0))
+    quadtree(const coords bounds={}) : spatial_structure(bounds), root(new node(0, 0, 0))
     {
     }
 };

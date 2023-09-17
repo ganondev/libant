@@ -21,9 +21,9 @@ class node : public cell
     int64_t y_;
     bool is_leaf_;
 
-public:
-
     node* children[4] = {nullptr, nullptr, nullptr, nullptr};
+
+public:
     
     node(const int64_t x, const int64_t y, const int in_value) : cell(), x_(x), y_(y), is_leaf_(true)
     {
@@ -31,9 +31,19 @@ public:
     }
 
     [[nodiscard]]
-    node* get_child(const relative_quadrant quadrant)
+    node* get_child(const relative_quadrant quadrant) const
     {
         return children[quadrant];
+    }
+
+    [[nodiscard]]
+    int get_child_count() const
+    {
+        return
+            (get_child(NE) ? 1 : 0)
+            + (get_child(NW) ? 1 : 0)
+            + (get_child(SW) ? 1 : 0)
+            + (get_child(SE) ? 1 : 0);
     }
 
     [[nodiscard]]

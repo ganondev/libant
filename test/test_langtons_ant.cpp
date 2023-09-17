@@ -90,3 +90,33 @@ TEST(langtons_ant, test_langtons_ant)
   EXPECT_EQ(automaton.get_iteration(), 5);
 
 }
+
+TEST(langtons_ant, test_langtons_ant_bounded)
+{
+
+  quadtree qt({1, 1});
+  ant_automaton automaton(&qt);
+  automaton.add_ant<langtons_ant>();
+
+  // ant orientation and position will 'change', but the diff should always report a change at 0, 0
+  
+  auto diffs = automaton.tick();
+  auto diff = diffs[0];
+  EXPECT_EQ(diff.x, 0);
+  EXPECT_EQ(diff.y, 0);
+  EXPECT_EQ(diff.old_value, 0);
+  EXPECT_EQ(diff.new_value, 1);
+  // node value should match diff
+  EXPECT_EQ(qt.root->value, 1);
+
+  diffs = automaton.tick();
+  diff = diffs[0];
+  EXPECT_EQ(diff.x, 0);
+  EXPECT_EQ(diff.y, 0);
+  EXPECT_EQ(diff.old_value, 1);
+  EXPECT_EQ(diff.new_value, 0);
+  EXPECT_EQ(qt.root->value, 0);
+  // node shouldn't have any children
+  EXPECT_EQ(qt.root->get_child_count(), 0);
+  
+}

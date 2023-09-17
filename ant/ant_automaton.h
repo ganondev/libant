@@ -15,8 +15,9 @@ class ant_automaton : public automaton
         // TODO use polymorphic selector instead of scan-list
         for (const auto& ant : scan_list)
         {
-            const auto x = ant->position[0];
-            const auto y = ant->position[1];
+            // TODO it shouldn't be the responsibility of the automaton to
+            // project the ant's position - needs to be handled by the spatial structure
+            const auto [x, y] = space_->project(ant->position[0], ant->position[1]);
             int old_value;
             // get cell at ant position
             cell * cell = space_->get_cell(x, y);
