@@ -6,16 +6,22 @@ class ant_automaton : public automaton
 {
 
     // scan-list to keep track of the active ants in the grid
-    std::vector<ant*> scan_list;
+    std::vector<std::unique_ptr<ant>> scan_list;
     
 public:
 
     ant_automaton(spatial_structure * space) : automaton(space) {}
-    
-    void add_ant(ant * ant)
+
+    // Creates an instance of the ant for tracking by the automaton and returns
+    // a raw non-owning pointer to the ant.
+    template<typename T>
+    T* add_ant()
     {
+        auto ptr = std::make_unique<T>();
+        T* rawPtr = ptr.get();
         // add ant to scan-list
-        scan_list.push_back(ant);
+        scan_list.push_back(std::move(ptr));
+        return rawPtr;
     }
 
     void tick() override
