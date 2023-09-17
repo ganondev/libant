@@ -23,8 +23,8 @@ public:
     auto project(const int64_t in_x, const int64_t in_y) const
     {
         const coords s {
-            bounds_.x == 0 ? in_x : in_x % bounds_.x,
-            bounds_.y == 0 ? in_y : in_y % bounds_.y,
+            bounds_.x == 0 ? in_x : ((in_x % bounds_.x) + bounds_.x) % bounds_.x,
+            bounds_.y == 0 ? in_y : ((in_y % bounds_.y) + bounds_.y) % bounds_.y,
         };
         return s;
     }
