@@ -18,21 +18,20 @@ class ant_automaton : public automaton
             // TODO it shouldn't be the responsibility of the automaton to
             // project the ant's position - needs to be handled by the spatial structure
             const auto [x, y] = space_->project(ant->position[0], ant->position[1]);
-            int old_value;
             // get cell at ant position
-            cell * cell = space_->get_cell(x, y);
-            if (!cell)
-            {
-                cell = space_->insert(x, y, 0);
-                old_value = 0;
+            auto opt_cell = space_->get_cell(x, y);
+
+            // If the cell does not exist, insert one
+            if (!opt_cell.has_value()) {
+                cell& new_cell = space_->insert(x, y, 0);
+                opt_cell = {new_cell};
             }
-            else
-            {
-                old_value = cell->value;
-            }
-            // call ant directive
-            ant->directive(*cell);
-            diffs.push_back({x, y, old_value, cell->value});
+
+            // At this point, opt_cell should have a value.
+            cell& actual_cell = opt_cell.value().get();
+            const int old_value = actual_cell.value;
+            ant->directive(actual_cell);  // call ant directive
+            diffs.push_back({x, y, old_value, actual_cell.value});
         }
         return diffs;
     }

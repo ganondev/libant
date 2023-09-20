@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "info", "info", "{685A7CD0-9
 		advice.png = advice.png
 		LICENSE = LICENSE
 		README.md = README.md
+		.github\workflows\test.yml = .github\workflows\test.yml
+		.gitmodules = .gitmodules
 	EndProjectSection
 EndProject
 Global

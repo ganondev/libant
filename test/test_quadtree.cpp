@@ -1,5 +1,5 @@
 #pragma once
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "../libant.h"
 
 TEST(quadtree, test_quadtree_root_insert)

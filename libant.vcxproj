@@ -163,6 +163,7 @@
     <ClInclude Include="automaton.h" />
     <ClInclude Include="libant.h" />
     <ClInclude Include="spatial_structure\cell.h" />
+    <ClInclude Include="spatial_structure\la_matrix.h" />
     <ClInclude Include="spatial_structure\quadtree\node.h" />
     <ClInclude Include="spatial_structure\quadtree\quadtree.h" />
     <ClInclude Include="spatial_structure\spatial_structure.h" />

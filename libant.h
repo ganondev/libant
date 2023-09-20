@@ -9,3 +9,5 @@
 
 #include "spatial_structure/quadtree/quadtree.h"
 #include "spatial_structure/quadtree/node.h"
+
+#include "spatial_structure/la_matrix.h"

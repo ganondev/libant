@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <optional>
+
 #include "cell.h"
 
 struct coords
@@ -9,10 +11,13 @@ struct coords
 
 class spatial_structure
 {
+
+    using opt_cell = std::optional<std::reference_wrapper<cell>>;
+    
     coords bounds_;
 protected:
-    virtual cell * get_cell_impl(coords coords) = 0;
-    virtual cell * insert_impl(coords coords, int val) = 0;
+    virtual opt_cell get_cell_impl(coords coords) = 0;
+    virtual cell& insert_impl(coords coords, int val) = 0;
 public:
 
     spatial_structure(const coords bounds={}) : bounds_(bounds) {}
@@ -29,21 +34,22 @@ public:
         return s;
     }
 
-    cell * get_cell(const int64_t x, const int64_t y)
+    opt_cell get_cell(const int64_t x, const int64_t y)
     {
         return get_cell_impl(project(x, y));
     }
 
     // get value from cell
+    [[nodiscard]]
     int get_value(const int64_t x, const int64_t y)
     {
-        if (const cell * cell = get_cell(x, y))
-            return cell->value;
+        if (const auto opt_cell = get_cell(x, y); opt_cell)
+            return opt_cell->get().value;
         return 0;
     }
     
     // method with a similar signature to grid_insertfn
-    cell * insert(const int64_t x, const int64_t y, const int val)
+    cell& insert(const int64_t x, const int64_t y, const int val)
     {
         return insert_impl(project(x, y), val);
     }
