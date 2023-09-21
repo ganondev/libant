@@ -1,12 +1,13 @@
 ﻿#pragma once
 
-#include "../automaton.h"
+#include "la_ant.h"
+#include "..\la_automaton.h"
 
-class ant_automaton : public automaton
+class ant_automaton : public la_automaton
 {
 
     // scan-list to keep track of the active ants in the grid
-    std::vector<std::unique_ptr<ant>> scan_list;
+    std::vector<std::unique_ptr<la_ant>> scan_list;
 
     std::vector<positional_diff> do_tick() override
     {
@@ -23,12 +24,12 @@ class ant_automaton : public automaton
 
             // If the cell does not exist, insert one
             if (!opt_cell.has_value()) {
-                cell& new_cell = space_->insert(x, y, 0);
+                la_cell& new_cell = space_->insert(x, y, 0);
                 opt_cell = {new_cell};
             }
 
             // At this point, opt_cell should have a value.
-            cell& actual_cell = opt_cell.value().get();
+            la_cell& actual_cell = opt_cell.value().get();
             const int old_value = actual_cell.value;
             ant->directive(actual_cell);  // call ant directive
             diffs.push_back({x, y, old_value, actual_cell.value});
@@ -38,7 +39,7 @@ class ant_automaton : public automaton
     
 public:
 
-    ant_automaton(spatial_structure * space) : automaton(space) {}
+    ant_automaton(la_spatial_structure * space) : la_automaton(space) {}
 
     // Creates an instance of the ant for tracking by the automaton and returns
     // a raw non-owning pointer to the ant.

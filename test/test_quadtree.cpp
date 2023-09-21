@@ -4,7 +4,7 @@
 
 TEST(quadtree, test_quadtree_root_insert)
 {
-  quadtree qt;
+  la_quadtree qt;
 
   auto val = 20;
   qt.insert(0, 0, val);
@@ -16,7 +16,7 @@ TEST(quadtree, test_quadtree_root_insert)
 TEST(quadtree, test_quadtree_child_insert)
 {
 
-  quadtree qt;
+  la_quadtree qt;
   qt.insert(0, 0, 0);
   const auto val = 21;
   qt.insert(1, 1, val);
@@ -31,7 +31,7 @@ TEST(quadtree, test_quadtree_child_insert)
 TEST(quadtree, test_quadtree_child_insert_non_leaf)
 {
 
-  quadtree qt;
+  la_quadtree qt;
   qt.insert(0, 0, 0);
   qt.insert(1, 1, 0);
   const auto val = 22;
@@ -51,7 +51,7 @@ TEST(quadtree, test_quadtree_child_insert_non_leaf)
 TEST(quadtree, test_quadtree_get)
 {
 
-  quadtree qt;
+  la_quadtree qt;
   
   qt.insert(0, 0, 24);
   qt.insert(1, 1, 25);
@@ -75,7 +75,7 @@ TEST(quadtree, test_quadtree_get)
 TEST(quadtree, test_quadtree_with_bounds)
 {
 
-  quadtree qt({5, 5});
+  la_quadtree qt({5, 5});
   
   qt.insert(5, 5, 26);
   qt.insert(6, 7, 27);

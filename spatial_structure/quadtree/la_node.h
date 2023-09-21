@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <cstdint>
 
-#include "../cell.h"
+#include "../la_cell.h"
 
 enum relative_quadrant {
 
@@ -14,24 +14,24 @@ enum relative_quadrant {
 };
 
 // quadtree node extending cell
-class node : public cell 
+class la_node : public la_cell 
 {
     
     int64_t x_;
     int64_t y_;
     bool is_leaf_;
 
-    node* children[4] = {nullptr, nullptr, nullptr, nullptr};
+    la_node* children[4] = {nullptr, nullptr, nullptr, nullptr};
 
 public:
     
-    node(const int64_t x, const int64_t y, const int in_value) : cell(), x_(x), y_(y), is_leaf_(true)
+    la_node(const int64_t x, const int64_t y, const int in_value) : la_cell(), x_(x), y_(y), is_leaf_(true)
     {
         this->value = in_value;
     }
 
     [[nodiscard]]
-    node* get_child(const relative_quadrant quadrant) const
+    la_node* get_child(const relative_quadrant quadrant) const
     {
         return children[quadrant];
     }
@@ -58,7 +58,7 @@ public:
     }
 
     [[nodiscard]]
-    relative_quadrant compare(const node& other) const
+    relative_quadrant compare(const la_node& other) const
     {
         return get_relative_quadrant(other.x_, other.y_);
     }
@@ -70,7 +70,7 @@ public:
     }
 
     [[nodiscard]]
-    static node * find(node * root, const int64_t in_x, const int64_t in_y)
+    static la_node * find(la_node * root, const int64_t in_x, const int64_t in_y)
     {
 
         relative_quadrant quadrant = root->get_relative_quadrant(in_x, in_y);
@@ -78,7 +78,7 @@ public:
         {
             return root;
         }
-        node * current_parent = root;
+        la_node * current_parent = root;
         while (true)
         {
             if (current_parent->is_leaf_)
@@ -100,10 +100,10 @@ public:
         }
     }
     
-    static node * put_child(node * parent, const int64_t x, const int64_t y, const int in_value)
+    static la_node * put_child(la_node * parent, const int64_t x, const int64_t y, const int in_value)
     {
 
-        node * current_parent = parent;
+        la_node * current_parent = parent;
         while (true)
         {
 
@@ -120,16 +120,16 @@ public:
             if (current_parent->is_leaf_)
             {
                 current_parent->split();
-                const auto new_node = new node(x, y, in_value);
+                const auto new_node = new la_node(x, y, in_value);
                 current_parent->children[quadrant] = new_node;
                 return new_node;
             }
 
             // Destination is relative child node
-            node * child = current_parent->get_child(quadrant);
+            la_node * child = current_parent->get_child(quadrant);
             if (!child)
             {
-                const auto new_node = new node(x, y, in_value);
+                const auto new_node = new la_node(x, y, in_value);
                 current_parent->children[quadrant] = new_node;
                 return new_node;
             }

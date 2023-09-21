@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 // abstract Cell class
-class cell
+class la_cell
 {
 public:
-    virtual ~cell() = default;
+    virtual ~la_cell() = default;
     
     int value;
 
@@ -12,6 +12,6 @@ public:
     // currently unused, probably needs a return value or to take a reference to the ant
     // virtual void rule() = 0;
 
-    cell() = default;
-    explicit cell(const int value): value(value) {}
+    la_cell() = default;
+    explicit la_cell(const int value): value(value) {}
 };

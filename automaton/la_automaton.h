@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "spatial_structure/spatial_structure.h"
+#include <vector>
+#include "../spatial_structure/la_spatial_structure.h"
 
 // We will be converting what was in the include/grid.h file to an object oriented design
 
@@ -12,18 +13,19 @@ struct positional_diff
 };
 
 
-class automaton
+class la_automaton
 {
 protected:
-    spatial_structure * space_;
+    la_spatial_structure * space_;
     int iteration_ = 0;
 
     virtual std::vector<positional_diff> do_tick() = 0;
 public:
     
-    automaton(spatial_structure * space) : space_(space) {}
+    la_automaton(la_spatial_structure * space) : space_(space) {}
     
-    virtual ~automaton() = default;
+    virtual ~la_automaton() = default;
+    
     std::vector<positional_diff> tick()
     {
         iteration_++;

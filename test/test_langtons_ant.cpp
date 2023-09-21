@@ -5,7 +5,7 @@
 TEST(langtons_ant, test_langtons_ant_quadtree)
 {
   
-  ant_automaton automaton(new quadtree());
+  ant_automaton automaton(new la_quadtree());
   
   auto ant = automaton.add_ant<langtons_ant>();
 
@@ -94,7 +94,7 @@ TEST(langtons_ant, test_langtons_ant_quadtree)
 TEST(langtons_ant, test_langtons_ant_bounded)
 {
 
-  quadtree qt({1, 1});
+  la_quadtree qt({1, 1});
   ant_automaton automaton(&qt);
   automaton.add_ant<langtons_ant>();
 
