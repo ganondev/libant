@@ -25,4 +25,11 @@ public:
     la_quadtree(const coords bounds={}) : la_spatial_structure(bounds), root(new la_node(0, 0, 0))
     {
     }
+
+    std::unique_ptr<la_spatial_structure> clone() override
+    // la_quadtree * clone() override
+    {
+        // TODO
+        return nullptr;
+    }
 };
