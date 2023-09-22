@@ -40,12 +40,12 @@ public:
         return std::unique_ptr<la_matrix>(new la_matrix(*this));
     }
 
-    // coords get_extents() override
-    // {
-    //     return {
-    //         matrix.rows() - 1,
-    //         matrix.cols() - 1,
-    //     };
-    // }
+    coords get_extents() override
+    {
+        return {
+            matrix.rows() - 1,
+            matrix.cols() - 1,
+        };
+    }
     
 };

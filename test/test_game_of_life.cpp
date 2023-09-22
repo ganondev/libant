@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <gtest/gtest.h>
 #include "../libant.h"
-//
+
 TEST(game_of_life, test_game_of_life_toggle)
 {
 

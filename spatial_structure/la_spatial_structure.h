@@ -33,7 +33,7 @@ class la_spatial_structure
 
             // If x is out of bounds, reset x and increment y
             auto extents = ss_->get_extents(); 
-            if (x_ >= extents.x) {
+            if (x_ >= extents.x + 1) {
                 x_ = 0;
                 ++y_;
             }
@@ -113,7 +113,7 @@ public:
 
     iterator end() {
         auto extents = get_extents();
-        return {this, extents.x - 1, extents.y - 1};
+        return {this, extents.x, extents.y};
     }
 
     int get_num_neighbors(int64_t x, int64_t y)
