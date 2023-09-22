@@ -105,8 +105,7 @@ public:
     // virtual la_spatial_structure * clone() = 0;
 
     using iterator = SpatialStructureIterator;
-
-    // TODO will need to use derived extents
+    
     iterator begin() {
         return {this, 0, 0};
     }
@@ -139,10 +138,6 @@ public:
         return bounds_;
     }
 
-    virtual coords get_extents()
-    {
-        // TODO remove defaults
-        return bounds_;
-    }
+    virtual coords get_extents() = 0;
 };
 

@@ -27,9 +27,13 @@ public:
     }
 
     std::unique_ptr<la_spatial_structure> clone() override
-    // la_quadtree * clone() override
     {
         // TODO
         return nullptr;
+    }
+
+    coords get_extents() override
+    {
+        return get_bounds();
     }
 };
