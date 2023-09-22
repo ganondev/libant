@@ -140,5 +140,21 @@ public:
         }
         
     }
+
+    la_node* deep_clone() const
+    {
+        la_node* new_node = new la_node(this->x_, this->y_, this->value); // Assuming x_, y_, and value are member variables
+        new_node->is_leaf_ = this->is_leaf_; // Copy the leaf status
+
+        for (int i = 0; i < 4; ++i)
+        {
+            if (this->children[i])
+            {
+                new_node->children[i] = this->children[i]->deep_clone();
+            }
+        }
+
+        return new_node;
+    }
     
 };
