@@ -118,6 +118,9 @@
   <ItemGroup>
     <Content Include="..\.github\workflows\test.yml" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fixtures.h" />
+  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
