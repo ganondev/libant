@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <gtest/gtest.h>
 
 #include "fixtures.h"
 #include "../libant.h"
