@@ -80,6 +80,8 @@ public:
         return s;
     }
 
+    // TODO this should not be opt_cell, it should be guaranteed
+    [[nodiscard]]
     opt_cell get_cell(const int64_t x, const int64_t y)
     {
         return get_cell_impl(project(x, y));
