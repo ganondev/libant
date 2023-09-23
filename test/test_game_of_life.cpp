@@ -1,36 +1,45 @@
 ﻿#pragma once
 #include <gtest/gtest.h>
+
+#include "fixtures.h"
 #include "../libant.h"
 
-TEST(game_of_life, test_game_of_life_toggle)
-{
+class GameOfLifeTest : public AutomatonTestFixtures {
+  // No need for additional setup and teardown here
+};
 
-  la_game_of_life automaton(new la_matrix({1, 1}));
+INSTANTIATE_TEST_CASE_P(
+    BackendTypes,
+    GameOfLifeTest,
+    ::testing::ValuesIn(GameOfLifeTest::shared_params()),
+    custom_test_name<GameOfLifeTest>
+);
+
+TEST_P(GameOfLifeTest, test_toggle)
+{
+  const auto backend = get_backend({1, 1});
+  la_game_of_life automaton{backend.get()};
   EXPECT_EQ(automaton.get_value(0, 0), 0);
   automaton.toggle_cell(0, 0);
   EXPECT_EQ(automaton.get_value(0, 0), 1);
   automaton.toggle_cell(0, 0);
   EXPECT_EQ(automaton.get_value(0, 0), 0);
-  
 }
 
-TEST(game_of_life, test_game_of_life_empty_matrix)
+TEST_P(GameOfLifeTest, test_empty_state)
 {
-  
-  la_game_of_life automaton(new la_matrix({3, 3}));
-  
+  const auto backend = get_backend({3, 3});
+  la_game_of_life automaton(backend.get());
   EXPECT_EQ(automaton.get_value(0, 0), 0);
-  
   auto diffs = automaton.tick();
-  
   EXPECT_EQ(diffs.size(), 0);
-
 }
 
-TEST(game_of_life, test_game_of_life_cell_birth)
+TEST_P(GameOfLifeTest, test_cell_birth)
 {
-  
-  la_game_of_life automaton(new la_matrix({3, 3}));
+
+  const auto backend = get_backend({3, 3});
+  la_game_of_life automaton(backend.get());
 
   automaton.toggle_cell(0, 0);
   automaton.toggle_cell(1, 0);
@@ -45,7 +54,7 @@ TEST(game_of_life, test_game_of_life_cell_birth)
   // expect center is empty
   EXPECT_EQ(automaton.get_value(1, 1), 0);
 
-  auto diffs = automaton.tick();
+  const auto diffs = automaton.tick();
 
   // XXX
   // XXX
@@ -55,10 +64,10 @@ TEST(game_of_life, test_game_of_life_cell_birth)
   EXPECT_EQ(diffs.size(), 6);
 
   // all changes should report a change from 0 -> 1
-  for (auto diff : diffs)
+  for (auto [x, y, old_value, new_value] : diffs)
   {
-    EXPECT_EQ(diff.old_value, 0);
-    EXPECT_EQ(diff.new_value, 1);
+    EXPECT_EQ(old_value, 0);
+    EXPECT_EQ(new_value, 1);
   }
 
   // all cells should now be alive
@@ -72,10 +81,11 @@ TEST(game_of_life, test_game_of_life_cell_birth)
   
 }
 
-TEST(game_of_life, test_game_of_life_cell_death_by_loneliness)
+TEST_P(GameOfLifeTest, test_cell_death_by_loneliness)
 {
-  
-  la_game_of_life automaton(new la_matrix({3, 3}));
+
+  auto backend = get_backend({3, 3});
+  la_game_of_life automaton(backend.get());
 
   automaton.toggle_cell(1, 1);
 
@@ -112,7 +122,8 @@ TEST(game_of_life, test_game_of_life_cell_death_by_loneliness)
   }
 
   // Do it again, but there is another live cell to the left of center
-  automaton = la_game_of_life(new la_matrix({3, 3}));
+  backend = get_backend({3, 3});
+  automaton = la_game_of_life(backend.get());
 
   automaton.toggle_cell(1, 1);
   automaton.toggle_cell(0, 1);
@@ -157,10 +168,11 @@ TEST(game_of_life, test_game_of_life_cell_death_by_loneliness)
   
 }
 
-TEST(game_of_life, test_game_of_life_death_by_overpopulation)
+TEST_P(GameOfLifeTest, test_death_by_overpopulation)
 {
-  
-  la_game_of_life automaton(new la_matrix({3, 3}));
+
+  auto backend = get_backend({3, 3});
+  la_game_of_life automaton(backend.get());
 
   automaton.toggle_cell(0, 0);
   automaton.toggle_cell(1, 0);
@@ -186,10 +198,10 @@ TEST(game_of_life, test_game_of_life_death_by_overpopulation)
   EXPECT_EQ(diffs.size(), 9);
 
   // check that all the diffs show a transition from 1 -> 0
-  for (auto diff : diffs)
+  for (auto [x, y, old_value, new_value] : diffs)
   {
-    EXPECT_EQ(diff.old_value, 1);
-    EXPECT_EQ(diff.new_value, 0);
+    EXPECT_EQ(old_value, 1);
+    EXPECT_EQ(new_value, 0);
   }
 
   // all the active cells should have died
@@ -207,10 +219,10 @@ TEST(game_of_life, test_game_of_life_death_by_overpopulation)
 
 }
 
-TEST(game_of_life, test_game_of_life_cell_sustaining)
+TEST_P(GameOfLifeTest, test_game_of_life_cell_sustaining)
 {
-  
-  la_game_of_life automaton(new la_matrix({4, 4}));
+  const auto backend = get_backend({4, 4});
+  la_game_of_life automaton(backend.get());
 
   automaton.toggle_cell(1, 1);
   automaton.toggle_cell(1, 2);
@@ -228,7 +240,7 @@ TEST(game_of_life, test_game_of_life_cell_sustaining)
   EXPECT_EQ(automaton.get_value(2, 1), 1);
   EXPECT_EQ(automaton.get_value(2, 2), 1);
 
-  auto diff = automaton.tick();
+  const auto diff = automaton.tick();
 
   // ####
   // #XX#

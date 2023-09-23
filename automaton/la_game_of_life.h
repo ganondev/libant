@@ -10,7 +10,7 @@ protected:
         std::vector<positional_diff> diffs;
         for (auto [x, y, opt_cell] : *space_)
         {
-            la_cell& my_cell = opt_cell.value().get();
+            la_cell& my_cell = opt_cell.has_value() ? opt_cell.value().get() : space_->insert(x, y, 0);
             int64_t old_value = my_cell.value;
             int64_t num_neighbors = space_copy->get_num_neighbors(x, y);
             if (old_value == 0 && num_neighbors == 3)

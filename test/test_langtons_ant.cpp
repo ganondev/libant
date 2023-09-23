@@ -4,22 +4,22 @@
 #include "fixtures.h"
 #include "../libant.h"
 
-class LangtonsAntTest : public AutomatonTestFixtures<{3, 3}> {
+class LangtonsAntTest : public AutomatonTestFixtures {
   // No need for additional setup and teardown here
 };
 
 INSTANTIATE_TEST_CASE_P(
     BackendTypes,
     LangtonsAntTest,
-    ::testing::ValuesIn(LangtonsAntTest::sharedParams()),
-    customTestName<LangtonsAntTest>
+    ::testing::ValuesIn(LangtonsAntTest::shared_params()),
+    custom_test_name<LangtonsAntTest>
 );
 
 // TEST_P(LangtonsAntTest, test_langtons_ant_quadtree)
 TEST_P(LangtonsAntTest, test_langtons_ant)
 {
-  
-  ant_automaton automaton{backend};
+  auto backend = get_backend({3, 3});
+  ant_automaton automaton{backend.get()};
   
   auto ant = automaton.add_ant<langtons_ant>();
 
