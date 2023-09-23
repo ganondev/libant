@@ -25,4 +25,18 @@ public:
     la_quadtree(const coords bounds={}) : la_spatial_structure(bounds), root(new la_node(0, 0, 0))
     {
     }
+
+    std::unique_ptr<la_spatial_structure> clone() override
+    {
+        auto new_quadtree = std::make_unique<la_quadtree>(get_bounds());
+        new_quadtree->root = root->deep_clone(); // Assuming you implement a deep_clone() method in la_node
+        return new_quadtree;
+    }
+
+    coords get_extents() override
+    {
+        // TODO this will need to derive the bounds, but it can't because extents only
+        // looks at max extends, and assumes a min extent of 0
+        return get_bounds();
+    }
 };

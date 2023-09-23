@@ -162,6 +162,7 @@
     <ClInclude Include="automaton\ant\ant_automaton.h" />
     <ClInclude Include="automaton\automaton.h" />
     <ClInclude Include="automaton\la_automaton.h" />
+    <ClInclude Include="automaton\la_game_of_life.h" />
     <ClInclude Include="libant.h" />
     <ClInclude Include="spatial_structure\la_cell.h" />
     <ClInclude Include="spatial_structure\la_matrix.h" />
