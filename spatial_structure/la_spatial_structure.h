@@ -55,6 +55,7 @@ struct coords
     {
         return {x + by, y - by};
     }
+    
 };
 
 class la_spatial_structure
@@ -138,7 +139,7 @@ public:
     [[nodiscard]]
     opt_cell get_cell(const int64_t x, const int64_t y)
     {
-        return get_cell_impl({x, y});
+        return get_cell({x, y});
     }
 
     [[nodiscard]]
