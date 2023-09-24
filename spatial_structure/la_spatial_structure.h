@@ -119,13 +119,13 @@ public:
     virtual ~la_spatial_structure() = default;
 
     [[nodiscard]] 
-    auto project(const int64_t in_x, const int64_t in_y) const
+    coords project(const int64_t in_x, const int64_t in_y) const
     {
         return project({in_x, in_y});
     }
 
     [[nodiscard]]
-    auto project(const coords in_coords) const
+    coords project(const coords in_coords) const
     {
         const coords s {
             bounds_.x == 0 ? in_coords.x : ((in_coords.x % bounds_.x) + bounds_.x) % bounds_.x,
