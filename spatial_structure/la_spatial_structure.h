@@ -7,6 +7,54 @@ struct coords
 {
     int64_t x;
     int64_t y;
+
+    [[nodiscard]] 
+    coords up(const int by=1) const
+    {
+        return {x, y + by};
+    }
+
+    [[nodiscard]] 
+    coords down(const int by=1) const
+    {
+        return {x, y - by};
+    }
+
+    [[nodiscard]] 
+    coords left(const int by=1) const
+    {
+        return {x - by, y};
+    }
+
+    [[nodiscard]] 
+    coords right(const int by=1) const
+    {
+        return {x + by, y};
+    }
+
+    [[nodiscard]]
+    coords up_left(const int by=1) const
+    {
+        return {x - by, y + by};
+    }
+
+    [[nodiscard]]
+    coords up_right(const int by=1) const
+    {
+        return {x + by, y + by};
+    }
+
+    [[nodiscard]]
+    coords down_left(const int by=1) const
+    {
+        return {x - by, y - by};
+    }
+
+    [[nodiscard]]
+    coords down_right(const int by=1) const
+    {
+        return {x + by, y - by};
+    }
 };
 
 class la_spatial_structure
@@ -73,9 +121,15 @@ public:
     [[nodiscard]] 
     auto project(const int64_t in_x, const int64_t in_y) const
     {
+        return project({in_x, in_y});
+    }
+
+    [[nodiscard]]
+    auto project(const coords in_coords) const
+    {
         const coords s {
-            bounds_.x == 0 ? in_x : ((in_x % bounds_.x) + bounds_.x) % bounds_.x,
-            bounds_.y == 0 ? in_y : ((in_y % bounds_.y) + bounds_.y) % bounds_.y,
+            bounds_.x == 0 ? in_coords.x : ((in_coords.x % bounds_.x) + bounds_.x) % bounds_.x,
+            bounds_.y == 0 ? in_coords.y : ((in_coords.y % bounds_.y) + bounds_.y) % bounds_.y,
         };
         return s;
     }
@@ -84,14 +138,26 @@ public:
     [[nodiscard]]
     opt_cell get_cell(const int64_t x, const int64_t y)
     {
-        return get_cell_impl(project(x, y));
+        return get_cell_impl({x, y});
+    }
+
+    [[nodiscard]]
+    opt_cell get_cell(const coords coords)
+    {
+        return get_cell_impl(project(coords));
     }
 
     // get value from cell
     [[nodiscard]]
     int get_value(const int64_t x, const int64_t y)
     {
-        if (const auto opt_cell = get_cell(x, y); opt_cell)
+        return get_value({x, y});
+    }
+
+    [[nodiscard]]
+    int get_value(const coords coords)
+    {
+        if (const auto opt_cell = get_cell(coords); opt_cell)
             return opt_cell->get().value;
         return 0;
     }
