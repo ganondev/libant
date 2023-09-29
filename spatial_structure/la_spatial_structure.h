@@ -184,6 +184,27 @@ public:
         return {this, extents.x, extents.y};
     }
 
+    [[nodiscard]]
+    virtual std::vector<std::vector<int>> get_cells_around(const coords& center_coord, const int radius=1)
+    {
+        std::vector<std::vector<int>> result;
+        // Loop through each row within the radius.
+        for(int dy = -radius; dy <= radius; ++dy) {
+            std::vector<int> row;
+            // Loop through each column within the radius.
+            for(int dx = -radius; dx <= radius; ++dx) {
+                // Use your helper methods for getting the new coordinates.
+                const coords new_coord = center_coord.right(dx).up(dy);
+                // Assume get_cell_value returns int.
+                int cell_value = get_value(new_coord);
+                row.push_back(cell_value);
+            }
+            result.push_back(row);
+        }
+        return result;
+    }
+
+    [[nodiscard]]
     int get_num_neighbors(int64_t x, int64_t y)
     {
         int num_neighbors = 0;
