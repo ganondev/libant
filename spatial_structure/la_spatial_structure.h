@@ -205,7 +205,7 @@ public:
     }
 
     [[nodiscard]]
-    int get_num_neighbors(int64_t x, int64_t y)
+    int count_neighbours(int64_t x, int64_t y)
     {
         int num_neighbors = 0;
         for (int64_t dx = -1; dx <= 1; dx++)

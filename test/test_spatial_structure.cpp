@@ -78,7 +78,7 @@ TEST_P(SpatialStructureTest, test_get_num_neighbours)
     backend->insert(2, 3, 1);
     backend->insert(3, 3, 1);
 
-    const auto num_neighbours = backend->get_num_neighbors(2, 2);
+    const auto num_neighbours = backend->count_neighbours(2, 2);
 
     EXPECT_EQ(num_neighbours, 8);
     
