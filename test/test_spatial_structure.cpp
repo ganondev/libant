@@ -53,3 +53,33 @@ TEST_P(SpatialStructureTest, test_get_cells_around)
     }
     
 }
+
+TEST_P(SpatialStructureTest, test_get_num_neighbours)
+{
+
+    const auto backend = get_backend({5, 5});
+
+    // set backend to look like this:
+    // 4  0 0 0 0 0
+    // 3  0 1 1 1 0
+    // 2  0 2 0 2 0
+    // 1  0 3 3 3 0
+    // 0  0 0 0 0 0
+    // Y
+    //  X 0 1 2 3 4
+
+    // set backend to look like this:
+    backend->insert(1, 1, 3);
+    backend->insert(2, 1, 3);
+    backend->insert(3, 1, 3);
+    backend->insert(1, 2, 2);
+    backend->insert(3, 2, 2);
+    backend->insert(1, 3, 1);
+    backend->insert(2, 3, 1);
+    backend->insert(3, 3, 1);
+
+    const auto num_neighbours = backend->get_num_neighbors(2, 2);
+
+    EXPECT_EQ(num_neighbours, 8);
+    
+}

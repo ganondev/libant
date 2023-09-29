@@ -216,7 +216,7 @@ public:
                 {
                     continue;
                 }
-                num_neighbors += get_value(x + dx, y + dy);
+                num_neighbors += (get_value(x + dx, y + dy) ? 1 : 0);
             }
         }
         return num_neighbors;
