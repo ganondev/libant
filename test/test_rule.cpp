@@ -10,7 +10,7 @@ TEST(rule, test_rule_mapper) {
 
     ASSERT_EQ(r.mapper, nullptr); // Mapper should be zeroed
     
-    r.maps_to([](const symbols& vars) {
+    r.maps_to([](const symbols&) {
         return 1;
     });
 
@@ -60,7 +60,7 @@ TEST(rule, test_rule_mapper_invalid_variable)
 TEST(rule, test_rule_predicate_condition) {
     
     rule r;
-    r.maps_to([](const symbols& vars) {
+    r.maps_to([](const symbols&) {
         return 1;
     });
     r.cell_satisfies_predicate({0, 0}, [](const int val) { return val > 5; });
@@ -75,7 +75,7 @@ TEST(rule, test_rule_predicate_condition) {
 TEST(rule, test_rule_scalar_condition) {
     
     rule r;
-    r.maps_to([](const symbols& vars) {
+    r.maps_to([](const symbols&) {
         return 1;
     });
     r.cell_matches_scalar({0, 0}, 5);
@@ -85,4 +85,24 @@ TEST(rule, test_rule_scalar_condition) {
     ASSERT_EQ(r.apply({{5}}), 1);  // Assert positive case for apply
     ASSERT_EQ(r.apply({{4}}), 0);  // Assert negative case for apply
     
+}
+
+TEST(rule, test_rule_radius) {
+    rule r;
+
+    // Initially, the radius should be zero
+    EXPECT_EQ(r.radius(), 0);
+
+    // Add a predicate at (1, 1), which should update the radius to 1
+    r.cell_satisfies_predicate({1, 1}, [](const int) { return false; });
+    EXPECT_EQ(r.radius(), 1);
+
+    // Add a variable at (-2, 0), which should update the radius to 2
+    r.variable_cell({-2, 0}, 'a');
+    EXPECT_EQ(r.radius(), 2);
+
+    // Add another variable at (1, 1), which should not update the radius
+    // because it's already within the bounds of the current radius
+    r.variable_cell({1, 1}, 'b');
+    EXPECT_EQ(r.radius(), 2);
 }

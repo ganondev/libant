@@ -45,24 +45,35 @@ namespace libant
         }
     };
     
-    struct rule {
+    class rule {
+        
+        int radius_ = 0;
+
+        void update_radius(const coords& new_coords)
+        {
+            const int new_radius = static_cast<int>(std::max(std::abs(new_coords.x), std::abs(new_coords.y)));
+            radius_ = std::max(radius_, new_radius);
+        }
+        
+    public:
         std::vector<condition> conditions;
         std::vector<assignment> assignments;
         std::function<int(const symbols&)> mapper;
 
         rule& cell_matches_scalar(const coords relative_coords, int scalar) {
             const std::function predicate = [scalar](const int value) { return value == scalar; };
-            
             return cell_satisfies_predicate(relative_coords, predicate);
         }
 
         rule& cell_satisfies_predicate(const coords relative_coords, const std::function<bool(int)>& predicate) {
             conditions.push_back({relative_coords, predicate});
+            update_radius(relative_coords);
             return *this;
         }
         
         rule& variable_cell(const coords relative_coords, const char name) {
             assignments.push_back({relative_coords, name});
+            update_radius(relative_coords);
             return *this;
         }
 
@@ -70,6 +81,11 @@ namespace libant
         rule& maps_to(std::function<int(const symbols&)> fn) {
             mapper = std::move(fn);
             return *this;
+        }
+
+        [[nodiscard]]
+        int radius() const {
+            return radius_;
         }
         
         [[nodiscard]] 
@@ -101,9 +117,10 @@ namespace libant
             }
         }
     };
-}
 
-// inline int apply_rule(const rule& rule, const coords& center_coord) {
-//     const rule::cell_map_t cell_slice = get_cells_around(center_coord);  // To be implemented in derived classes
-//     return rule.apply(cell_slice);
-// }
+    // inline int apply_rule(const rule& rule, const coords& center_coord) {
+    //     const rule::cell_map_t cell_slice = get_cells_around(center_coord);  // To be implemented in derived classes
+    //     return rule.apply(cell_slice);
+    // }
+    
+}
