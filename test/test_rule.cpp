@@ -1,5 +1,6 @@
 ﻿#include <gtest/gtest.h>
 
+#include "fixtures.h"
 #include "../libant.h"
 
 using namespace libant;
@@ -87,6 +88,26 @@ TEST(rule, test_rule_scalar_condition) {
     
 }
 
+TEST(rule, test_rule_negative_relative_coords) {
+    
+    rule r;
+    r.maps_to([](const symbols&) {
+        return 1;
+    });
+    r.cell_matches_scalar({-1, 0}, 5);
+    r.cell_matches_scalar({0, -1}, 4);
+
+    EXPECT_EQ(r.conditions.size(), 2);  // Assert vector is populated
+    EXPECT_TRUE(r.conditions[0].predicate(5));  // Assert predicate checks correctly
+    EXPECT_TRUE(r.conditions[1].predicate(4));  // Assert predicate checks correctly
+    EXPECT_EQ(r.apply({
+        {0, 4, 0},
+        {5, 0, 0},
+        {0, 0, 0}
+    }), 1);  // Assert positive case for apply
+    
+}
+
 TEST(rule, test_rule_radius) {
     rule r;
 
@@ -105,4 +126,68 @@ TEST(rule, test_rule_radius) {
     // because it's already within the bounds of the current radius
     r.variable_cell({1, 1}, 'b');
     EXPECT_EQ(r.radius(), 2);
+}
+
+class MaskingRuleAutomatonTest : public AutomatonTestFixtures {
+    // No need for additional setup and teardown here
+};
+
+INSTANTIATE_TEST_CASE_P(
+    BackendTypes,
+    MaskingRuleAutomatonTest,
+    ::testing::ValuesIn(MaskingRuleAutomatonTest::shared_params()),
+    custom_test_name<MaskingRuleAutomatonTest>
+);
+
+TEST_P(MaskingRuleAutomatonTest, test_masking_rule_automaton_with_scalar)
+{
+    
+    const auto backend = get_backend({2, 3});
+    
+    // create a simple rule
+    const auto r = rule()
+        .cell_matches_scalar({0, -1}, 3)
+        .variable_cell({0, -1}, 'a')
+        .maps_to([](const symbols& vars){return vars.value_of('a') - 1;});
+
+    masking_rule_automaton automaton(backend.get(), r);
+
+    // Set initial state to look like this
+    // 0 0
+    // 0 0
+    // 3 0
+
+    automaton.set_value(0, 0, 3);
+
+    auto diffs = automaton.tick();
+
+    // Expect the automaton to look like this
+    // 0 0
+    // 2 0
+    // 0 0
+    
+    EXPECT_EQ(diffs.size(), 2);
+    EXPECT_EQ(diffs[0].x, 0);
+    EXPECT_EQ(diffs[0].y, 0);
+    EXPECT_EQ(diffs[0].old_value, 3);
+    EXPECT_EQ(diffs[0].new_value, 0);
+    EXPECT_EQ(diffs[1].x, 0);
+    EXPECT_EQ(diffs[1].y, 1);
+    EXPECT_EQ(diffs[1].old_value, 0);
+    EXPECT_EQ(diffs[1].new_value, 2);
+
+    diffs = automaton.tick();
+
+    // Middle cell should be killed since 2 doesn't match scalar
+    
+    EXPECT_EQ(diffs.size(), 1);
+    EXPECT_EQ(diffs[0].x, 0);
+    EXPECT_EQ(diffs[0].y, 1);
+    EXPECT_EQ(diffs[0].old_value, 2);
+    EXPECT_EQ(diffs[0].new_value, 0);
+
+    diffs = automaton.tick();
+
+    EXPECT_EQ(diffs.size(), 0);
+    
 }

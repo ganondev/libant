@@ -92,17 +92,24 @@ namespace libant
         int apply(const std::vector<std::vector<int>>& slice) const {
             std::unordered_map<char, int> variables;
 
+            // Calculate the center of the slice
+            int center_y = static_cast<int>(slice.size() / 2);
+            int center_x = static_cast<int>(slice[0].size() / 2);
+
             // Validate conditions
             for (const auto& [relative_position, predicate] : conditions) {
-                if (const int& cell_value = slice[relative_position.y][relative_position.x]; !predicate(cell_value)) {
-                    return 0; // Condition failed based on predicate
+                int y = center_y + relative_position.y;
+                int x = center_x + relative_position.x;
+                if (!predicate(slice[y][x])) {
+                    return 0;  // Condition failed based on predicate
                 }
             }
 
             // Assign variables
             for (const auto& [relative_position, variable_name] : assignments) {
-                const int& cell_value = slice[relative_position.y][relative_position.x];
-                variables[variable_name] = cell_value;
+                int y = center_y + relative_position.y;
+                int x = center_x + relative_position.x;
+                variables[variable_name] = slice[y][x];
             }
 
             try
