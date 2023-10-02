@@ -6,7 +6,7 @@ class la_game_of_life final : public la_scanning_automaton
 {
     static int game_of_life_mapper(const int64_t x, const int64_t y, const la_cell& cell, la_spatial_structure * space)
     {
-        const int64_t num_neighbors = space->get_num_neighbors(x, y);
+        const int64_t num_neighbors = space->count_neighbours(x, y);
         if (cell.value == 0 && num_neighbors == 3)
         {
             return 1;

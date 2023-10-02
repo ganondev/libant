@@ -165,6 +165,7 @@
     <ClInclude Include="automaton\scanning\la_game_of_life.h" />
     <ClInclude Include="automaton\scanning\la_scanning_automaton.h" />
     <ClInclude Include="libant.h" />
+    <ClInclude Include="rule\la_rule.h" />
     <ClInclude Include="spatial_structure\la_cell.h" />
     <ClInclude Include="spatial_structure\la_matrix.h" />
     <ClInclude Include="spatial_structure\quadtree\la_node.h" />

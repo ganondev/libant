@@ -2,6 +2,7 @@
 #include <functional>
 
 #include "../la_automaton.h"
+#include "../rule/la_rule.h"
 
 class la_scanning_automaton : public la_automaton
 {
@@ -33,3 +34,24 @@ public:
         la_automaton(space), mapper_(std::move(mapper_fn)) {}
     
 };
+
+namespace libant
+{
+
+    class masking_rule_automaton : public la_scanning_automaton
+    {
+        
+    public:
+        // constructor takes a rule
+        explicit masking_rule_automaton(la_spatial_structure * space_in, const rule& rule) :
+            la_scanning_automaton(space_in, [rule](
+                const int64_t x,
+                const int64_t y,
+                const la_cell&,
+                la_spatial_structure * space
+            ) {
+                const auto slice = space->get_cells_around({x, y}, rule.radius());
+                return rule.apply(slice);
+            }) {}
+    };
+}

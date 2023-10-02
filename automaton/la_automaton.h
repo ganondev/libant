@@ -38,7 +38,7 @@ public:
         return space_->get_value(x, y);
     }
 
-    void set_value(int64_t x, int64_t y, const int val) const
+    void set_value(int64_t x, int64_t y, const int val)
     {
         space_->insert(x, y, val);
     }
