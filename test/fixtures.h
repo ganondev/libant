@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <gtest/gtest.h>
-#include "../libant.h"
+#include <libant.h>
 
 class AutomatonTestFixtures : public ::testing::TestWithParam<const char *>
 {

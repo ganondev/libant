@@ -1,7 +1,4 @@
-﻿#pragma once
-
-#include "fixtures.h"
-#include "../libant.h"
+﻿#include "fixtures.h"
 
 class LangtonsAntTest : public AutomatonTestFixtures {
   // No need for additional setup and teardown here
@@ -14,7 +11,6 @@ INSTANTIATE_TEST_CASE_P(
     custom_test_name<LangtonsAntTest>
 );
 
-// TEST_P(LangtonsAntTest, test_langtons_ant_quadtree)
 TEST_P(LangtonsAntTest, test_langtons_ant)
 {
   auto backend = get_backend({3, 3});

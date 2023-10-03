@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "../spatial_structure/la_cell.h"
+#include <spatial_structure/la_cell.h>
 
 constexpr int NORTH_2D[2] = {0, -1};
 constexpr int EAST_2D[2] = {1, 0};

@@ -1,7 +1,6 @@
 ﻿#include <gtest/gtest.h>
 
 #include "fixtures.h"
-#include "../libant.h"
 
 using namespace libant;
 

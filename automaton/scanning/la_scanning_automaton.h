@@ -2,7 +2,7 @@
 #include <functional>
 
 #include "../la_automaton.h"
-#include "../rule/la_rule.h"
+#include "../../rule/la_rule.h"
 
 class la_scanning_automaton : public la_automaton
 {

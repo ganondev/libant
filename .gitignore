@@ -3,3 +3,4 @@ libant.sln.DotSettings.user
 *.filters  
 packages/  
 x64/
+cmake-build-debug/ 
