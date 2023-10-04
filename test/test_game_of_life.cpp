@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "fixtures.h"
-#include "../libant.h"
 
 class GameOfLifeTest : public AutomatonTestFixtures {
   // No need for additional setup and teardown here
