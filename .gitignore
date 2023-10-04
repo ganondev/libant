@@ -4,3 +4,4 @@ libant.sln.DotSettings.user
 packages/  
 x64/
 cmake-build-debug/ 
+Debug/ 
